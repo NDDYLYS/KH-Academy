@@ -73,7 +73,6 @@ public class Test10선택정렬
     	}
     	//System.out.println("minimum_index : " + minimum_index);
     	
-    	System.out.println();
     	System.out.print("After : ");
     	for(int a = 0; a < array.length; a++)
     	{

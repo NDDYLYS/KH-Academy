@@ -38,6 +38,17 @@ public class Test11버블정렬
     		}
     	}
     	
+    	/*
+	 *		for(int k = array.length - 2; k >= 0; k--)
+    	 * 		for(int i = 0; i <= k; i++)
+    	 * 			if (array[i + 1] < array[i]) 
+    				{
+    					int swap = array[i];
+    					array[i] = array[i + 1];
+    					array[i + 1] = swap;	
+    				}
+    	 * */
+    	
     	
     	System.out.print("After : ");
     	for(int a = 0; a < array.length; a++)

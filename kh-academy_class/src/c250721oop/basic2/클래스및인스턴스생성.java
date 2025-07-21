@@ -29,5 +29,9 @@ public class 클래스및인스턴스생성
     	Country china = new Country("중국", "베이징", 140000000L);
     	Country america = new Country("미국", "워싱턴", 250000000L);
     	
+    	korean.PrintAll();
+    	japan.PrintAll();
+    	china.PrintAll();
+    	america.PrintAll();
     }
 }

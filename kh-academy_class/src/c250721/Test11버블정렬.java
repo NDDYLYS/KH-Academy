@@ -7,7 +7,7 @@ public class Test11버블정렬
     public static void main(String[] args) 
     {
        	Random r = new Random();
-    	int[] array = new int[3];
+    	int[] array = new int[5];
     	
     	for(int i = 0; i < array.length; i++)
     	{
@@ -23,19 +23,20 @@ public class Test11버블정렬
     	System.out.println();
     	
     	// burble sort
-      	
-      	for(int c = 0; c < array.length - 1; c++) 
-      	{
-      		for (int i = c + 1; i < array.length - 1; i++) 
-      		{
-      			if (array[i] < array[c]) 
-          		{
-          			int swap = array[c];
-          			array[c] = array[i];
-          			array[i] = swap;
-          		}
-      		}
-      	}
+    	for(int c = array.length - 2; c >= 0; c--) 
+    	{    		
+    		for (int i = 0; i <= c; i++) 
+    		{
+    			//System.out.println(i + "와 " + (i + 1) + "을 비교");
+    			
+    			if (array[i + 1] < array[i]) 
+    			{
+    				int swap = array[i];
+    				array[i] = array[i + 1];
+    				array[i + 1] = swap;	
+    			}
+    		}
+    	}
     	
     	
     	System.out.print("After : ");

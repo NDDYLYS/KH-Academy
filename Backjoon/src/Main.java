@@ -5,19 +5,26 @@ public class Main
         public static void main(String[] args) 
         {
         	Scanner sc = new Scanner(System.in);
-        	int num = sc.nextInt();
+        	int count = sc.nextInt();
+        	
+        	int[] array = new int[count];
+        	for(int i = 0; i < array.length; i++)
+        	{
+        		array[i] = sc.nextInt();		
+        	}
         	sc.close();
         	
-        	int count = 1;
-        	for(int i = 0; i < num; i++) 
+        	int min = 0;
+        	
+        	for (int i = 0; i < array.length; i++) 
         	{
-        		for(int j = 0; j < count; j++) 
-            	{
-            		System.out.print("*");
-            	}
-        		
-        		count++;
-        		System.out.println();
+        		if (array[min] < array[i]) 
+        		{
+        			min = i;
+        		}
         	}
+        	
+        	System.out.println(array[min]);
+        	System.out.println(min);
         }
 }

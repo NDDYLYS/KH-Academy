@@ -4,6 +4,5 @@ package c250724oop.multi1;
 // 인터페이스는 implements로 여러 개 상속 가능
 public interface GameMachine 
 {
-	void record();
 	void capture();
 }

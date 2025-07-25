@@ -1,4 +1,4 @@
-package d250724oop.inherit7;;
+package c250724oop.inherit7;;
 
 public abstract class Galaxy 
 {

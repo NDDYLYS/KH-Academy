@@ -17,6 +17,8 @@ public class Test02포켓몬스터등록
 		dataSource.setUsername("kh16");
 		dataSource.setPassword("kh16");
 		
+		
+		
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		
     	Scanner sc = new Scanner(System.in);
@@ -33,8 +35,9 @@ public class Test02포켓몬스터등록
       		if (attribute.equals("종료"))
     			break;  
     		
-    		String insertinto = "insert into pokemon (pokemon_no, pokemon_name, pokemon_type) values (pokemon_seq.nextval, '" + name + "', '" + attribute + "')";
-    		jdbcTemplate.update(insertinto);
+    		String insertinto = "insert into pokemon (pokemon_no, pokemon_name, pokemon_type) values (pokemon_seq.nextval, ?, ?)";
+    		Object[] param = {name, attribute};
+    		jdbcTemplate.update(insertinto, param);
     		
     		System.out.println("포켓몬 " + name + "가 입력되었습니다.");
     	}

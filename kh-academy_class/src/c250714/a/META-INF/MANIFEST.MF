@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: A
+Bundle-SymbolicName: a
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.eclipse.swt,
+ org.eclipse.jface,
+ org.eclipse.swt,
+ org.eclipse.jface
+Automatic-Module-Name: a
+Bundle-RequiredExecutionEnvironment: JavaSE-21

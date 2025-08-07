@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SampleJavaProject" default="jar" basedir=".">
+
+    <!-- 속성 정의 -->
+    <property name="src.dir"     value="src"/>
+    <property name="build.dir"   value="bin"/>
+    <property name="dist.dir"    value="dist"/>
+    <property name="jar.name"    value="SampleApp.jar"/>
+
+    <!-- 초기화: 디렉토리 생성 -->
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${dist.dir}"/>
+    </target>
+
+    <!-- 컴파일 -->
+    <target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false"/>
+    </target>
+
+    <!-- JAR 패키징 -->
+    <target name="jar" depends="compile">
+        <jar destfile="${dist.dir}/${jar.name}" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="com.example.Main"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- 클린: 빌드 디렉토리 제거 -->
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+</project>

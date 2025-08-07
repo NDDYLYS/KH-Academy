@@ -1,0 +1,2 @@
+INDEX VERSION 1.134+D:\EclipseProject\kh-academy_class\src\c250715io\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index

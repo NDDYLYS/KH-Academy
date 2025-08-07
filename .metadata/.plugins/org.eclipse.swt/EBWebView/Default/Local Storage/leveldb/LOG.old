@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 2025/07/14-14:36:34.788 35c8 Reusing MANIFEST D:\KH-Academy16\Workspace\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
 2025/07/14-14:36:34.792 35c8 Recovering log #3
 2025/07/14-14:36:34.793 35c8 Reusing old log D:\KH-Academy16\Workspace\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/000003.log 
+=======
+2025/08/07-16:58:39.801 4dc Reusing MANIFEST D:\KH-Academy16\Workspace\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/MANIFEST-000001
+2025/08/07-16:58:39.807 4dc Recovering log #3
+2025/08/07-16:58:39.807 4dc Reusing old log D:\KH-Academy16\Workspace\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Local Storage\leveldb/000003.log 
+>>>>>>> 9bf65c13e5f683d17bda2093aa976d15ac973c01

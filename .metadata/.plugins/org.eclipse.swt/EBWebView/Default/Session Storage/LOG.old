@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 2025/07/14-14:36:30.930 2ce0 Reusing MANIFEST D:\KH-Academy16\Workspace\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Session Storage/MANIFEST-000001
 2025/07/14-14:36:30.930 2ce0 Recovering log #3
 2025/07/14-14:36:30.931 2ce0 Reusing old log D:\KH-Academy16\Workspace\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Session Storage/000003.log 
+=======
+2025/08/07-16:58:40.288 4dc Reusing MANIFEST D:\KH-Academy16\Workspace\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Session Storage/MANIFEST-000001
+2025/08/07-16:58:40.290 4dc Recovering log #3
+2025/08/07-16:58:40.294 4dc Reusing old log D:\KH-Academy16\Workspace\.metadata\.plugins\org.eclipse.swt\EBWebView\Default\Session Storage/000003.log 
+>>>>>>> 9bf65c13e5f683d17bda2093aa976d15ac973c01

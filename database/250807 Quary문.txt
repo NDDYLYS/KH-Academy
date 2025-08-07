@@ -1,0 +1,266 @@
+create table pokemon (
+no number(4), 
+name varchar2(21), 
+type varchar(18)
+);
+
+insert into pokemon(no, name, type) values(1, '이상해씨', '풀,독');
+
+select * from pokemon;
+
+스토리지의 71% 사용됨 … 스토리지가 부족하면 파일을 만들거나 수정하거나 업로드할 수 없습니다. 3개월 동안 100GB 스토리지를 월 ₩2,400 ₩600에 이용하세요.
+오라클 SQL 기본 문법 정리
+=======================
+
+1. SELECT 문
+------------
+SELECT 컬럼1, 컬럼2, ...
+FROM 테이블명
+WHERE 조건
+ORDER BY 컬럼 [ASC|DESC];
+
+예:
+SELECT * FROM employees WHERE department_id = 10 ORDER BY salary DESC;
+
+
+2. INSERT 문
+------------
+INSERT INTO 테이블명 (컬럼1, 컬럼2, ...)
+VALUES (값1, 값2, ...);
+
+예:
+INSERT INTO employees (employee_id, name, salary)
+VALUES (101, '홍길동', 3000);
+
+
+3. UPDATE 문
+------------
+UPDATE 테이블명
+SET 컬럼1 = 값1, 컬럼2 = 값2, ...
+WHERE 조건;
+
+예:
+UPDATE employees
+SET salary = salary * 1.1
+WHERE department_id = 10;
+
+
+4. DELETE 문
+------------
+DELETE FROM 테이블명
+WHERE 조건;
+
+예:
+DELETE FROM employees WHERE employee_id = 101;
+
+
+5. CREATE TABLE 문
+------------------
+CREATE TABLE 테이블명 (
+  컬럼명1 자료형 [제약조건],
+  컬럼명2 자료형 [제약조건],
+  ...
+);
+
+예:
+CREATE TABLE departments (
+  department_id NUMBER PRIMARY KEY,
+  department_name VARCHAR2(50) NOT NULL
+);
+
+
+6. DROP TABLE 문
+----------------
+DROP TABLE 테이블명;
+
+예:
+DROP TABLE departments;
+
+
+7. 기본 함수들
+--------------
+- 문자열: UPPER(), LOWER(), LENGTH(), SUBSTR()
+- 숫자: ROUND(), TRUNC(), MOD()
+- 날짜: SYSDATE, ADD_MONTHS(), MONTHS_BETWEEN()
+- 변환: TO_CHAR(), TO_DATE(), TO_NUMBER()
+
+예:
+SELECT UPPER(name), ROUND(salary, -3) FROM employees;
+
+
+8. JOIN 문
+-----------
+SELECT A.컬럼, B.컬럼
+FROM 테이블A A
+JOIN 테이블B B ON A.공통컬럼 = B.공통컬럼;
+
+예:
+SELECT e.name, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id;
+
+
+create table pokemon (
+no number(4), 
+name varchar2(21), 
+type varchar(18)
+);
+
+create table country (
+country_name varchar2(60),
+country_capital varchar2(45),
+country_population number
+);
+
+create table medalist (
+medalist_name varchar2(10),
+medalist_category varchar2(10),
+medalist_event varchar2(20),
+medalist_gold number(4),
+medalist_silver number(4),
+medalist_bronze number(4)
+);
+
+INSERT INTO employees (employee_id, name, salary)
+VALUES (101, '홍길동', 3000);
+
+insert into country (country_name, country_capital, country_population) values ('한국', '서울', 50000000);
+insert into country (country_name, country_capital, country_population) values ('일본', '도쿄', 120000000);
+insert into country (country_name, country_capital, country_population) values ('중국', '베이징', 1400000000);
+insert into country (country_name, country_capital, country_population) values ('미국', '워싱턴', 25000000);
+
+insert into medalist (medalist_name, medalist_category, medalist_event, medalist_gold, medalist_silver, medalist_bronze) values ('진종오', '하계', '사격', 4, 2, 0);
+insert into medalist (medalist_name, medalist_category, medalist_event, medalist_gold, medalist_silver, medalist_bronze) values ('김수녕', '하계', '양궁', 4, 1, 1);
+insert into medalist (medalist_name, medalist_category, medalist_event, medalist_gold, medalist_silver, medalist_bronze) values ('김우진', '하계', '양궁', 5, 0, 0);
+insert into medalist (medalist_name, medalist_category, medalist_event, medalist_gold, medalist_silver, medalist_bronze) values ('전이경', '동계', '쇼트트랙', 4, 0, 1);
+
+col country_name for a30;
+col country_capital for a30;
+col country_population for 999999999999;
+
+create table item (
+item_name varchar2(30),
+item_category varchar2(24),
+item_price number,
+item_sale number,
+item_count number,
+item_dilivery char(1)
+);
+
+insert into item (item_name, item_category, item_price, item_sale, item_count, item_dilivery) values ('비김면', '라면', 16800, null, 2, 'y');
+insert into item (item_name, item_category, item_price, item_sale, item_count, item_dilivery) values ('크림대빵', '제과', 6500, null, 2, 'n');
+insert into item (item_name, item_category, item_price, item_sale, item_count, item_dilivery) values ('점보도시락', '라면', 8500, 5, 3, 'y');
+insert into item (item_name, item_category, item_price, item_sale, item_count, item_dilivery) values ('공간춘', '라면', 12300, 20, 3, 'n');
+
+
+IP : 인터넷 연결된 PC의 네트워크 번호 (aaa.bbb.ccc.ddd 000~255까지 가능)
+ - 외부회선에 부여된 번호를 공인IP라 함
+ - 내부에서 사용하는 번호를 사설IP라 함
+host
+ - ip뿐 아니라 돈 주고 등록한 의미 있는 번호
+ - 127.0.0.1 자기 자신
+
+Port
+ - PC 내부에서 실행 중인 프로그램을 구분하기 위한 번호
+ - 통신을 하는 프로그램에만 부여, 0~65535
+ - 1521, 2030, 8080
+ - 동시에 두 개의 프로그램이 같은 포트 차지 불가
+
+SID
+ - 통신과 무관하게 오라클에서 쓰는 서비스 이름
+ - ORCL : 정식버젼, XE : express edition 
+
+유저 생성
+create user id identified by password;
+grant connect, resource to id;
+
+권한 부여
+grant connect, resource to id;
+
+null 불가 : not null
+중복불가 : unique
+특정 값에 대한 조건 : check (조건)
+not null 다음에 unique 다음에 check
+check (item_category in ('제과', '라면', '음료')),
+check (regexp_like(item_name, '^[가-힣0-9A-Za-z]{1,20}$')),
+
+create table item (
+item_name varchar2(30) not null unique,
+item_category varchar2(24) not null,
+item_price number not null,
+item_sale number null,
+item_count number not null,
+item_dilivery char(1) not null,
+check (regexp_like(item_name, '^[가-힣0-9A-Za-z]{1,20}$')),
+check (item_category in ('제과', '라면', '음료'))
+check (item_price >= 0),
+check (item_sale >= 0 and item_sale <= 100),
+check (item_count >= 0)
+);
+
+create table phone (
+phone_name varchar2(30) not null,
+phone_telecom varchar2(12) not null,
+phone_price number not null,
+phone_agreement number null,
+check (regexp_like(phone_name, '^[가-힣0-9A-Za-z]{1,10}$')),
+check (phone_telecom in ('SK', 'KT', 'LG', '알뜰폰')),
+check (phone_price >= 0),
+check (phone_agreement in (24, 30, 36))
+unique(phone_name, phone_telecom)
+);
+
+insert into phone (phone_name, phone_telecom, phone_price, phone_agreement) values ('갤럭시Fold7', 'SK', 2200000, '미설정');
+insert into phone (phone_name, phone_telecom, phone_price, phone_agreement) values ('갤럭시Fold7', 'KT', 2150000, '24개월'); 
+insert into phone (phone_name, phone_telecom, phone_price, phone_agreement) values ('아이폰17', 'LG', 2100000, '36개월');
+insert into phone (phone_name, phone_telecom, phone_price, phone_agreement) values ('아이폰17', 'SK', 2150000, '미설정');
+
+
+
+
+create table goods (
+goods_name varchar2(60),
+goods_price number
+// 알까지 지정할 경우
+goods_begin timestamp,
+goods_end timestamp,
+goods_reg timestamp
+);
+Date, TimeStamp
+
+// 날짜 등록시 문자열 변환 명령 사용
+
+// date -> to_date(항목, 형식)
+// timestamp -> to_timestamp(항목, 형식)
+// 현재 시간을 구해주는 도구 (sysdate, systimestamp)
+
+insert into goods (good_name, goods_price, goods_begin, goods_end, goods_reg) values 
+('이름', 1000, to_timestamp('2025-08-09 09:00:00', 'YYYY-MM-DD HH24:MI:SS'), to_timestamp('2025-08-31 18:00', 'YYYY-MM-DD HH24:MI'), );
+
+
+
+
+고유번호를 부여하는 방법
+ - 데이터의 무결성을 확보하려면 유일한 값이 하나 이상은 있어야 한다.
+not null + unique
+가장 적은 크기를 차지하는 번호로 이를 처리
+시퀀스
+
+create sequence book_seq;
+
+create table book 
+(
+book_no not null unique,
+book_title varchar2(60) not null unique, 
+book_pric number not null
+);
+
+insert into book (book_no, book_title, book_Pric) values (book_seq.nextval, '123123', 1000);
+insert into book (book_no, book_title, book_Pric) values (book_seq.nextval, '123131323', 1000);
+insert into book (book_no, book_title, book_Pric) values (book_seq.nextval, '122223123', 1000);
+insert into book (book_no, book_title, book_Pric) values (book_seq.nextval, '1123', 1000);
+insert into book (book_no, book_title, book_Pric) values (book_seq.nextval, '144', 1000);
+insert into book (book_no, book_title, book_Pric) values (book_seq.nextval, '1231323', 7000);
+insert into book (book_no, book_title, book_Pric) values (book_seq.nextval, '1222423123', 100);
+insert into book (book_no, book_title, book_Pric) values (book_seq.nextval, '1123', 107700);
+insert into book (book_no, book_title, book_Pric) values (book_seq.nextval, '144', 7770);

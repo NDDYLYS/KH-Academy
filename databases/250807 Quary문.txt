@@ -1,0 +1,313 @@
+** 250805 **
+
+1. SELECT 문
+------------
+SELECT 컬럼1, 컬럼2, ...
+FROM 테이블명
+WHERE 조건
+ORDER BY 컬럼 [ASC|DESC];
+
+예:
+SELECT * FROM employees WHERE department_id = 10 ORDER BY salary DESC;
+
+
+2. INSERT 문
+------------
+INSERT INTO 테이블명 (컬럼1, 컬럼2, ...)
+VALUES (값1, 값2, ...);
+
+예:
+INSERT INTO employees (employee_id, name, salary)
+VALUES (101, '홍길동', 3000);
+
+
+3. UPDATE 문
+------------
+UPDATE 테이블명
+SET 컬럼1 = 값1, 컬럼2 = 값2, ...
+WHERE 조건;
+
+예:
+UPDATE employees
+SET salary = salary * 1.1
+WHERE department_id = 10;
+
+
+4. DELETE 문
+------------
+DELETE FROM 테이블명
+WHERE 조건;
+
+예:
+DELETE FROM employees WHERE employee_id = 101;
+
+
+5. CREATE TABLE 문
+------------------
+CREATE TABLE 테이블명 (
+  컬럼명1 자료형 [제약조건],
+  컬럼명2 자료형 [제약조건],
+  ...
+);
+
+예:
+CREATE TABLE departments (
+  department_id NUMBER PRIMARY KEY,
+  department_name VARCHAR2(50) NOT NULL
+);
+
+
+6. DROP TABLE 문
+----------------
+DROP TABLE 테이블명;
+
+예:
+DROP TABLE departments;
+
+
+7. 기본 함수들
+--------------
+- 문자열: UPPER(), LOWER(), LENGTH(), SUBSTR()
+- 숫자: ROUND(), TRUNC(), MOD()
+- 날짜: SYSDATE, ADD_MONTHS(), MONTHS_BETWEEN()
+- 변환: TO_CHAR(), TO_DATE(), TO_NUMBER()
+
+예:
+SELECT UPPER(name), ROUND(salary, -3) FROM employees;
+
+
+8. JOIN 문
+-----------
+SELECT A.컬럼, B.컬럼
+FROM 테이블A A
+JOIN 테이블B B ON A.공통컬럼 = B.공통컬럼;
+
+예:
+SELECT e.name, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id;
+
+
+INSERT INTO employees (employee_id, name, salary)
+VALUES (101, '홍길동', 3000);
+
+** 250806 **
+
+IP : 인터넷 연결된 PC의 네트워크 번호 (aaa.bbb.ccc.ddd 000~255까지 가능)
+ - 외부회선에 부여된 번호를 공인IP라 함
+ - 내부에서 사용하는 번호를 사설IP라 함
+host
+ - ip뿐 아니라 돈 주고 등록한 의미 있는 번호
+ - 127.0.0.1 자기 자신
+
+Port
+ - PC 내부에서 실행 중인 프로그램을 구분하기 위한 번호
+ - 통신을 하는 프로그램에만 부여, 0~65535
+ - 1521, 2030, 8080
+ - 동시에 두 개의 프로그램이 같은 포트 차지 불가
+
+SID
+ - 통신과 무관하게 오라클에서 쓰는 서비스 이름
+ - ORCL : 정식버젼, XE : express edition 
+
+유저 생성
+create user id identified by password;
+
+권한 부여
+grant connect, resource to id;
+
+null 불가 : not null
+중복불가 : unique
+특정 값에 대한 조건 : check (조건)
+not null 다음에 unique 다음에 check
+check (item_category in ('제과', '라면', '음료')),
+check (regexp_like(item_name, '^[가-힣0-9A-Za-z]{1,20}$')),
+
+create table item (
+item_name varchar2(30) not null unique,
+item_category varchar2(24) not null,
+item_price number not null,
+item_sale number null,
+item_count number not null,
+item_dilivery char(1) not null,
+check (regexp_like(item_name, '^[가-힣0-9A-Za-z]{1,20}$')),
+check (item_category in ('제과', '라면', '음료'))
+check (item_price >= 0),
+check (item_sale >= 0 and item_sale <= 100),
+check (item_count >= 0)
+);
+
+// 날짜 등록시 문자열 변환 명령 사용
+
+// date -> to_date(항목, 형식)
+// timestamp -> to_timestamp(항목, 형식)
+// 현재 시간을 구해주는 도구 (sysdate, systimestamp)
+
+
+고유번호를 부여하는 방법
+ - 데이터의 무결성을 확보하려면 유일한 값이 하나 이상은 있어야 한다.
+not null + unique
+가장 적은 크기를 차지하는 번호로 이를 처리
+시퀀스
+
+create sequence book_seq;
+
+*** Member
+
+create table member (
+member_id varchar2(20) primary key,
+member_pw varchar2(16) not null,
+member_nickname varchar2(30) not null unique,
+member_birth char(10),
+member_contact char(11),
+member_email varchar2(60) not null,
+member_level varchar2(12) default '일반회원' not null,
+member_point number default 0 not null,
+member_post varchar2(6),
+member_address1 varchar2(300),
+member_address2 varchar2(300),
+member_join timestamp default systimestamp not null,
+member_login timestamp,
+member_change timestamp,
+check(regexp_like(member_id, '^[a-z][a-z0-9]{4,19}$')),
+check(
+	--regexp_like(member_pw, '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\!\@\#\$])[A-Za-z0-9\!\@\#\$]{8,16}$')
+	regexp_like(member_pw, '^[A-Za-z0-9\!\@\#\$]{8,16}$')
+	and
+	regexp_like(member_pw, '[A-Z]+')
+	and
+	regexp_like(member_pw, '[a-z]+')
+	and
+	regexp_like(member_pw, '[0-9]+')
+	and
+	regexp_like(member_pw, '[\!\@\#\$]+')
+),
+check(regexp_like(member_nickname, '^[가-힣0-9]{2,10}$')),
+check(regexp_like(member_birth, '^(19[0-9]{2}|20[0-9]{2})-((02-(0[1-9]|1[0-9]|2[0-9]))|((0[469]|11)-(0[1-9]|1[0-9]|2[0-9]|30))|((0[13578]|1[02])-(0[1-9]|1[0-9]|2[0-9]|3[01])))$')),
+check(regexp_like(member_contact, '^010[1-9][0-9]{7}$')),
+check(regexp_like(member_email, '^[A-Za-z0-9\-\_]+@[A-Za-z0-9\-\_]+$')),
+check(member_level in ('일반회원', '우수회원', '관리자')),
+check(member_point >= 0),
+check(regexp_like(member_post, '^[0-9]{5,6}$')),
+check(
+	(member_post is null and member_address1 is null and member_address2 is null) 
+	or 
+	(member_post is not null and member_address1 is not null and member_address2 is not null)
+)
+);
+
+** 250807 **
+
+vachar2 -> 최대 4000
+char -> 최대 2000
+clob -> 대용량
+
+select book_title, book_price from book;
+SELECT book_title "책 제목", book_price / book_page_count "페이지당 가격" from book;
+
+*** 별칭 짓기
+
+SELECT book_title 책제목, book_price / book_page_count 페이지당가격 from book;
+별칭 지을 때 "" 안 하는 대신에 띄어쓰기 없애기
+select book.*, book_price / book_page_count 페이지당가격 from book;
+
+-- 필터링 조건 추가
+-- 숫자 문자열 날짜
+
+*** 숫자 조건 Where
+
+select * from book where book_id = 5;
+
+select * from book where 20000 <= book_price;
+select * from book where 10000 <= book_price and book_price < 20000;
+select * from book where book_price between 10000 and 19999;
+select * from book where book_title = '어린왕자';
+select * from book where book_publisher = '열린책들';
+
+select * from book where instr(book_title, '마법사') > 0; --Indexof와 비슷한 함수, 전반적인 성능 우수
+select * from book where book_title like '%마법사%'; --'%' 있어도 되고 없어도 된다(시작 검색에 최적화된 명령)
+select * from book where regexp_like(book_title, '마법사'); --regexp_like 복잡한 패턴 지정 가능
+
+*** 문자열 조건 Where
+
+select * from book where instr(book_title, '해리포터') = 1;
+select * from book where book_title like '해리포터%'; --자동 완성이 시작 검사이다, 압도적 성능
+select * from book where regexp_like(book_title, '^해리포터');
+
+// 숫자만 어루어진 도서 조회
+select * from book where regexp_like(book_title, '^[0-9]+$');
+
+*** 날짜 조건 Where
+
+-- to_char() <-> to_date() or to_timestamp() -- 문자열과 치환이 가능
+
+-- 2000년 이후에 출판된 도서 검색
+select * from book where instr(book_publication, '2') = 1;
+select * from book where book_publication like '2%';
+
+select * from book where extract(year from book_publication_date);
+
+select * from book where extract(
+year from to_timestamp(book_publication_date, 'YYYY-MM-DD') >= 2000);
+
+select * from book where extract(
+month from to_timestamp(book_publication_date, 'YYYY-MM-DD') in [6, 7, 8]);
+
+select * from book where extract(
+month from to_timestamp(book_publication_date, 'YYYY-MM-DD')) >= 6 and extract(
+month from to_timestamp(book_publication_date, 'YYYY-MM-DD')) <= 8;
+
+select * from book where extract(
+month from to_timestamp(book_publication_date, 'YYYY-MM-DD')) between 6 and 8;
+
+select * from book where extract(
+month from to_timestamp(book_publication_date, 'YYYY-MM-DD')) in (1, 2, 3);
+
+*** YYYY-MM-DD 예제
+
+-- 2010년부터 2020년까지 조회하라
+select * from book where to_timestamp(book_publication_date, 'YYYY-MM-DD')
+between 
+to_timestamp('2010-01-01 00:00:00', 'YYYY-MM-DD HH24:MI:SS:FF3')
+and 
+to_timestamp('2020-12-31 23:59:59', 'YYYY-MM-DD HH24:MI:SS:FF3');
+
+*** 최근 90일 사이 코드
+select * from book where to_timestamp(book_publication_date, 'YYYY-MM-DD')
+between 
+systimestamp - interval '90' day
+and 
+systimestamp;
+
+*** 정렬 Order by [ASC | DESC]
+
+*** 수정 UPDATE
+
+updater table set code where condition;
+UPDATE employees SET salary = salary * 1.1 WHERE department_id = 10;
+
+*** 삭제 DELETE : 이미 저장되어 있는 테이블 내의 데이터를 지우는 작업
+
+DELETE FROM table WHERE condition;
+DELETE FROM 테이블명 WHERE 조건;
+
+*** 자동 저장 취소 후 해야할 것
+
+commit; -- 작업내역 저장
+rollback; -- 작업내역 취소
+
+
+# 평가 안내
+- 2~3개의 능력단위를 묶어서 실시하고 있음
+- 평가 유형
+  - 문제해결 시나리오 - 문제가 있는 코드를 보고 원인과 해결방법을 제출
+  - 포트폴리오 - 과제처럼 제시된 문항에 맞는 프로그램 제작 후 제출
+- 재평가 및 보충수업 안내
+  - 결시자 또는 60점 미만 득점자에 한해서 진행
+  - 평가일 다음날 수업 종료 후 실시
+  - 60점 미만이 3명 이상이면 평가 당일 수업 종료 후 보충수업 30분 실시
+  - 평가가 동일한 문항이 아니라 미리 준비한 3개 세트 중 다른 걸 응시
+- 평가 시 주의 사항
+  - 컨닝금지, GPT 사용 금지, 잡담 금지
+  - 제출 완료 전까지 화장실 금지
+  - 문항 관련 외 질문 금지

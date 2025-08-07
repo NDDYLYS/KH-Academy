@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 \package c250715io;
+=======
+package c250715io;
+>>>>>>> 9bf65c13e5f683d17bda2093aa976d15ac973c01
 
 import java.time.LocalDate;
 import java.util.Scanner;

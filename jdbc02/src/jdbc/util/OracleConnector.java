@@ -1,4 +1,7 @@
-package jdbc02;
+package jdbc.util;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -23,7 +26,7 @@ public class OracleConnector
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	public void Run_Sql(String sql, Object[] params) 
+	public void RunSQL(String sql, Object[] params) 
 	{
 		jdbcTemplate.update(sql, params);
 	}

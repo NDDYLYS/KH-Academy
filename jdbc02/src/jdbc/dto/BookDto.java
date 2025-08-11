@@ -77,6 +77,13 @@ public class BookDto
 	public void setBookGenre(String bookGenre) {
 		this.bookGenre = bookGenre;
 	}
+
+	@Override
+	public String toString() {
+		return "BookDto [bookId=" + bookId + ", bookTitle=" + bookTitle + ", bookAuthor=" + bookAuthor
+				+ ", bookPublicationDate=" + bookPublicationDate + ", bookPrice=" + bookPrice + ", bookPublisher="
+				+ bookPublisher + ", bookPageCount=" + bookPageCount + ", bookGenre=" + bookGenre + "]";
+	}
 	
 	
 }

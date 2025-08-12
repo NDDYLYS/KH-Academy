@@ -1,0 +1,168 @@
+new spring starter project
+
+maven
+war
+21
+java
+
+aaa.bbb.ccc
+기업.기업.프로그램
+
+aaa.bbb group
+ccc artifact
+
+major.minor.patch
+상위 버전이 오르면 하위 버전은 초기화
+메이저 - 기존과 시스템이 달라 업데이트 요구
+마이너 - 업데이트 안 해도 됨
+
+spring web
+
+project -> run as -> spring boot app
+
+1521, 2030, 8080 오라클 사용 중 port
+오라클 port -> 9090으로 변경
+
+dbeaver에서 관리자로 로그인
+select dbms_xdb.gethttpport() from dual; // 포트 확인
+call dbms_xdb.sethttpport(9090); // 포트 수정
+
+package com.kh.spring01;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HomeController 
+{
+	@RequestMapping("/")
+	public String home() 
+	{
+		return "Welcome to Spring Boot";
+	}
+}
+
+http://localhost:8080/ = 마지막 / = @RequestMapping("/")
+
+project -> spring -> add devtools
+
+maven 덕에 자동으로 라이브러리 추가
+
+pom.xml
+eXtend Markup Language
+
+<!-- Maven의 모델 버전-->
+xml의 주석 방법
+
+
+프로젝트에서 사용하는 외부 의존성
+ - 이곳에 작성된 라이브러리는 maven이 자동으로 다운받아 저장
+ - maven dependencies
+
+build 배포파일을 만들 때 사용하는 도구
+
+// 강사님 블로그
+https://docs.sysout.co.kr/database/oracle
+
+target 폴더 ->  빌드랑 연관
+
+src -> source
+
+src/main/java java 파일 놓는 곳
+src/test/java 임시 파일 놓는 곳
+src/main/resource java는 아니지만 프로그램에 영향을 주는 파일들
+src/main/webapp
+
+Spring02Application // 만지면 안됨 - 지워도 안됨
+
+ServletInitializer.java -> war를 선택해서 자동으로 생성
+
+깃 연동 후 alt + f5로 빌드를 다시 해야함
+
+이클립스 우측 상단에 java <-> git 전환 버튼이 있음. 여기에 git 연동하기
+
+새 프로젝트 생성 -> team -> share project
+
+request <-> response
+요청		응답
+
+등록을 해야 사용이 된다
+@RestContoller, @Controller, @RequestMapping
+
+의존성 주입(injection)
+
+inversion of control, 제어 반전이라고 한다(스프링의 제 1특징)
+
+query parameter
+
+예제 : http://localhost:8080/quiz01?cream=5&nutella=2
+
+quiz01 등록한 함수 이름 
+? 뒤 파라미터
+cream, nutella 파라미터 이름
+5, 2 파라미터 값
+& AND 연산자
+
+class 위 선언
+
+@RequestMapping("/quiz") // 공용 주소
+@RequestMapping("/quiz01") // 개별 주소
+
+http://localhost:8080/quiz/quiz01
+
+
+public String Quiz01(@RequestParam(required = false, defaultValue = "0") int cream, 
+@RequestParam(required = false, defaultValue = "0") int nutella)
+cream과 nutella가 없어도 되게 한다
+
+// ctrl + space
+
+
+public int quiz02(@RequestParam(required = false) Integer year) 
+{
+	if (year == null)
+		return 1550;
+}
+
+
+application.properties
+
+# main configuration file
+# key=value
+
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+spring.datasource.url=jdbc:oracle:thin@localhost:1521:xe
+spring.datasource.username=kh16
+spring.datasource.password=kh16
+
+Oracle Driver
+Spring Data JDBC
+
+오라클 연동
+
+@Autowired
+private JdbcTemplate jdbcTemplate;
+
+Dto는 1회용 취급, 등록하지 않는다
+
+@Repository
+Dao를 등록한다
+
+@Component
+Mapper를 등록한다
+
+dataSource -> jdbcTemplate > pokemonDao
+pokemonMapper > pokemonDao
+pokemonDao > controller
+
+com.kh.spring04jdbc.
+
+
+// 객체를 달라고 하면 객체 내부의 필드값을 달라는 소리로 해석된다
+// 이때는 @ModelAttribute라고 선언한다
+@RequestMapping("/add")
+public String add(@ModelAttributePokemonDto pokemonDto) 
+{
+	pokemonDao.insert(pokemonDto);
+	return "포켓몬 등록 완료";
+}

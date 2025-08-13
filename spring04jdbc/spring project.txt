@@ -161,8 +161,36 @@ com.kh.spring04jdbc.
 // 객체를 달라고 하면 객체 내부의 필드값을 달라는 소리로 해석된다
 // 이때는 @ModelAttribute라고 선언한다
 @RequestMapping("/add")
-public String add(@ModelAttributePokemonDto pokemonDto) 
+public String add(@ModelAttribute PokemonDto pokemonDto) 
 {
 	pokemonDao.insert(pokemonDto);
 	return "포켓몬 등록 완료";
 }
+
+@Controller: 요청 처리 도구(결과가 화면)
+@RestController : 요청 처리 도구(결과가 데이터)
+@RequestMapping("/페이지추가") : 주소 설정 도구
+PokemonController
+
+@Repository : 데이터베이스 제어 도구(DAO)
+PokemonDao
+
+@Conmponent : 단위 작업 도구(유틸, 혼자 작동하는 도구들)
+PokemonMapper
+
+@ModelAttribute 매개변수 : 파라미터를 객체로 한 번에 서신
+@RequestParam 매개변수 : 요청 파라미터 변수
+
+@Service : 작업 그룹 (서비스라 부를 수 있는 복잡한 행위)
+
+@Autowired : 등록된 대상을 가져와서 사용하도록 해주는 코드
+
+application.properties
+
+# main configuration file
+# key=value
+
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+spring.datasource.username=kh16
+spring.datasource.password=kh16

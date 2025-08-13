@@ -22,4 +22,11 @@ public class PokemonController2
 		pokemonDao.insert(pokemonDto);
 		return "포켓몬 등록 완료";
 	}
+	
+	@RequestMapping("/edit")
+	public String edit(@ModelAttribute PokemonDto pokemonDto) 
+	{
+		pokemonDao.update(pokemonDto);
+		return "포켓몬 수정 완료";
+	}
 }

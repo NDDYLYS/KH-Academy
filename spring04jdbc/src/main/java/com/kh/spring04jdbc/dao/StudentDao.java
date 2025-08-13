@@ -1,0 +1,60 @@
+package com.kh.spring04jdbc.dao;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+import com.kh.spring04jdbc.dto.StudentDto;
+import com.kh.spring04jdbc.mapper.StudentMapper;
+
+@Repository
+public class StudentDao 
+{
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private StudentMapper studentMapper;
+
+	public void insert(StudentDto studentDto) 
+	{
+		String sql = "insert into student (student_no, student_name, "
+				+ "student_kor, student_eng, student_mat, student_reg) "
+				+ "values (student_seq.nextval, ?, ?, ?, ?, systimestamp)";
+		Object[] params = {studentDto.getStudentName(), 
+				studentDto.getStudentKor(), 
+				studentDto.getStudentEng(), 
+				studentDto.getStudentMat()};
+		jdbcTemplate.update(sql, params);
+	}
+	
+	public boolean update(StudentDto studentDto) 
+	{
+		String sql = "update student set student_name=?, student_kor=?, student_eng=?, student_mat=? where student_no=?";
+    	Object[] params = {studentDto.getStudentName(), studentDto.getStudentKor(), 
+    			studentDto.getStudentEng(), studentDto.getStudentMat(), 
+    			studentDto.getStudentNo()};
+    	int result = jdbcTemplate.update(sql, params);
+    	return 0 < result;
+	} 
+	
+	public boolean delete(int studentNo) 
+	{
+		String sql = "delete student where student_no=?";
+    	Object[] params = {studentNo};
+    	int result = jdbcTemplate.update(sql, params);
+    	return 0 < result;
+	}
+	
+	public List<StudentDto> selectList()
+	{
+		String sql = "select * from student order by student_no asc";
+    	return jdbcTemplate.query(sql, studentMapper);
+	}
+	
+	public StudentDto selectSolo(String studentName)
+	{
+		String sql = "select * from student where student_name = ?";
+    	Object[] params = {studentName};
+    	return jdbcTemplate.query(sql, params, studentMapper).getFirst();
+	}
+}

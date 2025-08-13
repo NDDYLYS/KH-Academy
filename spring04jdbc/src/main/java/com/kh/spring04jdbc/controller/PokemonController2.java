@@ -26,7 +26,10 @@ public class PokemonController2
 	@RequestMapping("/edit")
 	public String edit(@ModelAttribute PokemonDto pokemonDto) 
 	{
-		pokemonDao.update(pokemonDto);
-		return "포켓몬 수정 완료";
+		boolean success = pokemonDao.update(pokemonDto);
+		if (success)
+			return "포켓몬 수정 완료";
+		else
+			return "존재하지 않는 포켓몬입니다.";
 	}
 }

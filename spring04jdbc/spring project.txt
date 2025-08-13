@@ -178,7 +178,7 @@ PokemonDao
 @Conmponent : 단위 작업 도구(유틸, 혼자 작동하는 도구들)
 PokemonMapper
 
-@ModelAttribute 매개변수 : 파라미터를 객체로 한 번에 서신
+@ModelAttribute 매개변수 : 파라미터를 객체로 한 번에 서신 || Controller만 사용 가능
 @RequestParam 매개변수 : 요청 파라미터 변수
 
 @Service : 작업 그룹 (서비스라 부를 수 있는 복잡한 행위)

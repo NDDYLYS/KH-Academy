@@ -201,3 +201,6 @@ Oracle Driver
 Spring Boot DevTools
 Spring Data JDBC
 Spring Web
+
+
+jdbcTemplate.update(); // db에 변화를 일으키는 작업

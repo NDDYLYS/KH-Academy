@@ -196,3 +196,8 @@ spring.datasource.username=kh16
 spring.datasource.password=kh16
 
 
+
+Oracle Driver
+Spring Boot DevTools
+Spring Data JDBC
+Spring Web

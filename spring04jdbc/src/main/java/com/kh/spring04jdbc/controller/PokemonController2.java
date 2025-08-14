@@ -12,7 +12,7 @@ import com.kh.spring04jdbc.dao.PokemonDao;
 import com.kh.spring04jdbc.dto.PokemonDto;
 import com.kh.spring04jdbc.dto.StudentDto;
 
-@RestController
+@RestController //
 @RequestMapping("/pokemon")
 public class PokemonController2 
 {

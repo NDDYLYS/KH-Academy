@@ -89,9 +89,9 @@ public class StudentController
 	}
 	
 	@RequestMapping("/detail")
-	public String detail(@RequestParam int student_no) 
+	public String detail(@RequestParam int studentNo) 
 	{
-		StudentDto studentDto = studentDao.selectOne(student_no);
+		StudentDto studentDto = studentDao.selectOne(studentNo);
 		if (studentDto == null)
 			return "존재하지 않는 학생입니다.";
 			

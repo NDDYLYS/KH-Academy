@@ -44,6 +44,13 @@ public class PokemonDao
     	return 0 < result;
 	}
 	
+
+	public List<PokemonDto> selectList()
+	{
+		String sql = "select * from pokemon order by pokemon_no asc";
+		return jdbcTemplate.query(sql, pokemonMapper);
+	}
+	
 	public List<PokemonDto> selectList(String column, String keyword)
 	{
     	Set<String> allowList = Set.of("pokemon_name", "pokemon_type");

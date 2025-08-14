@@ -66,7 +66,7 @@ public class StudentDto
 
 	@Override
 	public String toString() {
-		return "StudentDao [studentNo=" + studentNo + ", studentName=" + studentName + ", studentKor=" + studentKor
-				+ ", studentEng=" + studentEng + ", studentMat=" + studentMat + "]";
+		return "StudentDto [studentNo=" + studentNo + ", studentName=" + studentName + ", studentKor=" + studentKor
+				+ ", studentEng=" + studentEng + ", studentMat=" + studentMat + ", studentReg=" + studentReg + "]";
 	}
 }

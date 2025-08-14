@@ -65,10 +65,11 @@ public class StudentDao
     	return jdbcTemplate.query(sql, studentMapper);
 	}
 	
-	public StudentDto selectSolo(String studentName)
-	{
-		String sql = "select * from student where student_name = ?";
-    	Object[] params = {studentName};
-    	return jdbcTemplate.query(sql, params, studentMapper).getFirst();
+	public StudentDto selectOne(int studentNo)
+	{		
+		String sql = "select * from student where student_no = ?";
+		Object[] params = {studentNo};
+		List<StudentDto> list = jdbcTemplate.query(sql, studentMapper, params);
+		return list.isEmpty()? null : list.get(0);
 	}
 }

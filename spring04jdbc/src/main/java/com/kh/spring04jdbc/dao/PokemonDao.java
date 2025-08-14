@@ -58,20 +58,17 @@ public class PokemonDao
 		if (allowList.contains(column) == false)
 			return List.of(); // 비어있는 리스트;		
 		
-		String sql = "select * from pookemon where instr("+column+", ?) > 0 "
+		String sql = "select * from pokemon where instr("+column+", ?) > 0 "
 				+ "order by "+column+" asc, pokemon_no asc";
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, pokemonMapper, params);
 	}
 	
-	public PokemonDto selectOne(int pokemonNo) 
+	public PokemonDto selectOne(int pokemon_no)
 	{
-		String sql = "select * from pokemon where pokemon_no = ?";
-    	Object[] params = {pokemonNo};
-    	// sql, params, mapper를 쓰면 List가 나온다
-    	// ResultSetExtractor / PokemonDto
-    	List<PokemonDto> list = jdbcTemplate.query(sql, pokemonMapper, params);
-    	
-    	return list.isEmpty() ? null : list.get(0);
+		String sql = "select * from pokemon where pokemon_no=?";
+		Object[] params = {pokemon_no};
+		List<PokemonDto> list = jdbcTemplate.query(sql, pokemonMapper, params);
+		return list.isEmpty()? null : list.get(0);
 	}
 }

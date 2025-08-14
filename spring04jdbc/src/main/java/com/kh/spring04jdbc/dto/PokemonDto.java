@@ -21,7 +21,7 @@ public class PokemonDto
 
 	public String getPokemonName() {
 		return pokemonName;
-	}
+	} //
 
 	public void setPokemonName(String pokemonName) {
 		this.pokemonName = pokemonName;

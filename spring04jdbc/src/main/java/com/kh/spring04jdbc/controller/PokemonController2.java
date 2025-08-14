@@ -47,10 +47,16 @@ public class PokemonController2
 			return "존재하지 않는 포켓몬입니다.";
 	}
 	
-	@RequestMapping("/select")
-	public String select() 
+	@RequestMapping("/list")
+	public String select(@RequestParam(required = false) String column, 
+			@RequestParam(required = false) String keyword) 
 	{
-		List<PokemonDto> list = pokemonDao.selectList();
+		List<PokemonDto> list = null;
+		if (column == null || keyword == null)
+			list = pokemonDao.selectList();
+		else
+			list = pokemonDao.selectList(column, keyword);
+			
 		StringBuffer buffer = new StringBuffer();
 	
 		buffer.append("포켓몬 수 : " + list.size() + "<br>");
@@ -59,6 +65,23 @@ public class PokemonController2
 			buffer.append(solo);
 			buffer.append("<br>");			
 		}
+		
+		return buffer.toString();
+	}
+	
+	@RequestMapping("/detail")
+	public String detail(@RequestParam int pokemon_no) 
+	{
+		PokemonDto pokemonDto = pokemonDao.selectOne(pokemon_no);
+		if (pokemonDto == null)
+			return "존재하지 않는 포켓몬입니다.";
+			
+		StringBuffer buffer = new StringBuffer();
+	
+		buffer.append("포켓몬 : " + pokemonDto.getPokemonName() + "<br>");
+		buffer.append("<br>");
+		buffer.append(pokemonDto);
+		buffer.append("<br>");
 		
 		return buffer.toString();
 	}

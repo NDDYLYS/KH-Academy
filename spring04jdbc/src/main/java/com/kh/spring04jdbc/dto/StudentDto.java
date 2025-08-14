@@ -65,7 +65,7 @@ public class StudentDto
 	}
 
 	@Override
-	public String toString() {
+	public String toString() { //123
 		return "StudentDto [studentNo=" + studentNo + ", studentName=" + studentName + ", studentKor=" + studentKor
 				+ ", studentEng=" + studentEng + ", studentMat=" + studentMat + ", studentReg=" + studentReg + "]";
 	}

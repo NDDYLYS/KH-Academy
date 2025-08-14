@@ -87,4 +87,20 @@ public class StudentController
 		
 		return buffer.toString();
 	}
+	
+	@RequestMapping("/detail")
+	public String detail(@RequestParam int student_no) 
+	{
+		StudentDto studentDto = studentDao.selectOne(student_no);
+		if (studentDto == null)
+			return "존재하지 않는 학생입니다.";
+			
+		StringBuffer buffer = new StringBuffer();
+	
+		buffer.append("학생 : " + studentDto.getStudentName() + "<br>");
+		buffer.append(studentDto);
+		buffer.append("<br>");
+		
+		return buffer.toString();
+	}
 }

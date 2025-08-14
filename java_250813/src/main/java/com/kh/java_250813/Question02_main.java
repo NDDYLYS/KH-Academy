@@ -1,6 +1,6 @@
 package com.kh.java_250813;
 
-public class question02_main {
+public class Question02_main {
 
 	public static void main(String[] args) 
 	{

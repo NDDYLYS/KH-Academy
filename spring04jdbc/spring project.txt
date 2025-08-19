@@ -205,4 +205,12 @@ Spring Web
 
 jdbcTemplate.update(); // db에 변화를 일으키는 작업
 
-123123123
+** 250819
+
+Java EE -> Spring
+주방 백엔드
+홀 프론트엔드
+ - JSP(배울 것), Thymeleaf(사용 중), Velocity, 
+ - CSR(React(배울 것), Vue)
+
+컨트롤러 쓰려면 Spring Web

@@ -99,3 +99,6 @@ Lorem Picsum
 -https://picsum.photos/
 -https://picsum.photos/id/#/#/#
 id, width, height
+
+src/main/resources
+static 아래에 이미지를 넣으면 바로 올릴 수 있음

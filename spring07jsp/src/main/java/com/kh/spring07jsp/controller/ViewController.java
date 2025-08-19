@@ -29,4 +29,10 @@ public class ViewController
 	{
 		return "/WEB-INF/views/test03.jsp";
 	}
+	
+	@RequestMapping("/test04")
+	public String test04() 
+	{
+		return "/WEB-INF/views/test04.jsp";
+	}
 }

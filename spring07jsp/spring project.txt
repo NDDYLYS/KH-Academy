@@ -68,7 +68,8 @@ Hyper Text Markup Language
 <h1>태그로 감싼 글자</h1>
 <h2>태그로 감싼 글자</h2>
 <h3>태그로 감싼 글자</h3>
-<hr>
+<hr> 구분선
+
 <h4>태그로 감싼 글자</h4>
 <h5>태그로 감싼 글자</h5>
 <h6>태그로 감싼 글자</h6>
@@ -102,3 +103,41 @@ id, width, height
 
 src/main/resources
 static 아래에 이미지를 넣으면 바로 올릴 수 있음
+
+
+입력창 만들기
+- input, select, textarea
+- input은 button으로 가능
+- </input> 없음
+- 외부에 form 태그를 만들어서 입력창과 버튼을 묶고 전송하도록 설정한다
+
+<form>
+<input>
+<button></button>
+</form>
+
+action 공용 주소
+name form에서 입력한 값이 적용될 부분
+
+<form action = "https://genie.co.kr/search/searchMain">
+<input name = "query">
+<button>전송</button>
+</form>
+
+<form action = "https://www.youtube.com/results">
+<input name = "search_query">
+<button>전송</button>
+</form>
+
+<form action = "https://github.com/search">
+<input name = "q" placeholder = "자동으로 써있는 문구">
+<input type = "hidden" name = "type" value = "repositories">
+<button>검색</button>
+</form>
+
+<form action = "https://www.coupang.com/np/search">
+<input type = "hidden" name = "component" value = "">
+<input name = "q">
+<input type = "hidden" name = "channel" value = "user">
+<button>검색</button>
+</form>

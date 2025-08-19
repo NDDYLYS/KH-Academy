@@ -1,22 +1,59 @@
-package com.kh.spring04jdbc.controller;
+package com.kh.spring08.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.kh.spring04jdbc.dao.PokemonDao;
-import com.kh.spring04jdbc.dto.StudentDto;
+import com.kh.spring08.dao.PokemonDao;
+import com.kh.spring08.dto.PokemonDto;
 
-@RestController //
+@Controller
 @RequestMapping("/pokemon")
-public class PokemonController2 
+public class PokemonController 
 {
 	@Autowired
 	private PokemonDao pokemonDao;
+	
+	@RequestMapping("/add1")
+	public String add1() 
+	{
+		return "/WEB-INF/views/pokemon/add1.jsp";
+	}
+	
+	@RequestMapping("/add2")
+	public String add2(@ModelAttribute PokemonDto pokemonDto) 
+	{
+		pokemonDao.insert(pokemonDto);
+		//return "/WEB-INF/views/pokemon/add2.jsp";
+		return "redirect:add3";
+	}
+	
+	@RequestMapping("/add3")
+	public String add3() 
+	{
+		return "/WEB-INF/views/pokemon/add3.jsp";
+	}
+//	@RequestMapping("/add2")
+//	@RequestMapping("/add3")
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	// 객체를 달라고 하면 객체 내부의 필드값을 달라는 소리로 해석된다
 	@RequestMapping("/add")

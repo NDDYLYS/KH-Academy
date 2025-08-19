@@ -1,4 +1,4 @@
-package com.kh.spring04jdbc.mapper;
+package com.kh.spring08.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.kh.spring04jdbc.dto.PokemonDto;
+import com.kh.spring08.dto.PokemonDto;
 
 
 @Component

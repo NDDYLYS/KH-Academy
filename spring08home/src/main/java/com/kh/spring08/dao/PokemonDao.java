@@ -1,4 +1,4 @@
-package com.kh.spring04jdbc.dao;
+package com.kh.spring08.dao;
 
 import java.util.List;
 import java.util.Set;

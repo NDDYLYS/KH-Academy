@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring04jdbc.dao.StudentDao;
-import com.kh.spring04jdbc.dto.PokemonDto;
 import com.kh.spring04jdbc.dto.StudentDto;
 
 @RestController

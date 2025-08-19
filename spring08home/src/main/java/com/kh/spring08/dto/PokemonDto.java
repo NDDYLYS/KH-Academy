@@ -1,4 +1,4 @@
-package com.kh.spring04jdbc.dto;
+package com.kh.spring08.dto;
 
 // 일회용이라 등록 안 함
 public class PokemonDto 

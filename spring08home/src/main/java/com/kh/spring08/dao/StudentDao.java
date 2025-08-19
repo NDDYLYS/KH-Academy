@@ -1,15 +1,13 @@
-package com.kh.spring04jdbc.dao;
+package com.kh.spring08.dao;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.kh.spring04jdbc.dto.StudentDto;
-import com.kh.spring04jdbc.mapper.StudentMapper;
-import com.kh.spring08.dto.PokemonDto;
+import com.kh.spring08.dto.StudentDto;
+import com.kh.spring08.mapper.StudentMapper;
 
 @Repository
 public class StudentDao 

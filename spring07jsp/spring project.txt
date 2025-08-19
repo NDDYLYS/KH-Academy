@@ -158,3 +158,11 @@ name form에서 입력한 값이 적용될 부분
 <input type = "hidden" name = "channel" value = "user">
 <button>검색</button>
 </form>
+
+
+"redirect:add3"; 새로고침에 대응 || add3 Mapping 이름
+
+
+@Controller가 아닌 @RestController를 import하면 jsp파일을 못 찾는다
+
+<input inputmode = "numeric"></input> // 모바일에서 우선된다.

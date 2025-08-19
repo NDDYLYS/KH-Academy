@@ -31,3 +31,71 @@ help -> eclipse marketplace -> web -> eclipse enterprise java and web developer 
 new > other > jsp 생김
 
 **
+
+@Controller
+public class ViewController 
+{
+	@RequestMapping("/hello")
+	public String hello()
+	{
+		return "/WEB-INF/views/hello.jsp";
+	}
+}
+
+
+ JSP 
+ - Java Server Page(자바를 기반으로 만든 화면)
+ - 자바 코드와 html을 섞어서 사용 가능
+ - html을 먼저 배우고 자바 코드를 섞는 방법을 배운다
+ - 맨 위에 작성되는 것은 지우면 안된다
+ - contentType은 사용자가 받을 화면의 형태를 저장한다
+ - (MIME-TYPE, text/html, video/mp4, text/plain, 대분류/소분류)
+ - pageEncoding은 내부적으류 변환할 때 적용시킬 글자셋을 의미
+
+
+
+<h1>1번 예제</h1>
+
+<%--
+Hyper Text Markup Language
+- text끼리 얽힌 게 Hyper Text
+- 태그. 미리 정의된 tag를 이용하여 구현(지정된 영역에 정해진 효과 부여)
+- a 태그는 클릭하면 다른 페이지로 이동하는 하이퍼태그
+- 태그 만으로 정보가 부족할 때 속성을 사용하여 추가 정보를 제공
+--%>
+
+아무런 태그 없이 작성한 일반 글자
+<h1>태그로 감싼 글자</h1>
+<h2>태그로 감싼 글자</h2>
+<h3>태그로 감싼 글자</h3>
+<hr>
+<h4>태그로 감싼 글자</h4>
+<h5>태그로 감싼 글자</h5>
+<h6>태그로 감싼 글자</h6>
+<marquee direction="left" scrollamount="5">
+  흐르는 글자 예시
+</marquee>
+<marquee direction="right" scrollamount="5">
+  흐르는 글자 예시2
+</marquee>
+<a href = "https://naver.com">네이버로 이동</a>
+<a href = "http://localhost:8080/hello">hello로 이동</a>
+<a href = "./hello">hello로 이동</a>
+<a href = "hello">hello로 이동</a>
+
+마지막 / -> endPoint
+
+이미지 태그
+<img src = "link" width="pixel" height="pixel">123
+width="50%"
+</img>가 없음
+
+<a href ="#"></a>
+# : 이동은 안 되지만 링크처럼 보인다
+
+online dummy image
+
+Lorem Picsum
+-https://picsum.photos/
+-https://picsum.photos/id/#/#/#
+id, width, height

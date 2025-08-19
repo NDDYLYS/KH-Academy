@@ -11,4 +11,22 @@ public class ViewController
 	{
 		return "/WEB-INF/views/hello.jsp";
 	}
+	
+	@RequestMapping("/test01")
+	public String test01() 
+	{
+		return "/WEB-INF/views/test01.jsp";
+	}
+	
+	@RequestMapping("/test02")
+	public String test02() 
+	{
+		return "/WEB-INF/views/test02.jsp";
+	}
+	
+	@RequestMapping("/test03")
+	public String test03() 
+	{
+		return "/WEB-INF/views/test03.jsp";
+	}
 }

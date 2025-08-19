@@ -21,4 +21,13 @@
 </dependency>
 
 
-src/main/webapp/WEB-INF
+src/main/webapp/WEB-INF(이름 중요, 다른 이름 허용 안함)/views
+
+new > other > jsp 없음
+**
+help -> eclipse marketplace -> web -> eclipse enterprise java and web developer tools 3.37
+다운 중 신뢰하냐고 묻는 말에 모두 동의. 동의 안하면 다운이 안됨
+**
+new > other > jsp 생김
+
+**

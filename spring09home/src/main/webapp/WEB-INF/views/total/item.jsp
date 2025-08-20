@@ -18,7 +18,7 @@
     <tr>
     	<td>비김면</td>
     	<td>라면</td>
-        <td>16800</td>
+        <td align = "right">16,800</td>
     	<td>없음</td>    
     	<td>2</td>
     	<td>가능</td>
@@ -26,7 +26,7 @@
         <tr>
     	<td>크림대빵</td>
     	<td>제과</td>
-        <td>6500</td>
+        <td align = "right">6,500</td>
     	<td>없음</td>    
     	<td>2</td>
     	<td>불가능</td>
@@ -34,7 +34,7 @@
         <tr>
     	<td>점보도시락</td>
     	<td>라면</td>
-        <td>8500</td>
+        <td align = "right">8,500</td>
     	<td>5%</td>    
     	<td>3</td>
     	<td>가능</td>
@@ -42,7 +42,7 @@
         <tr>
     	<td>공간춘</td>
     	<td>라면</td>
-        <td>12300</td>
+        <td align = "right">12,300</td>
     	<td>20%</td>    
     	<td>3</td>
     	<td>불가능</td>

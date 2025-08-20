@@ -40,7 +40,7 @@ redirect : 화면을 튕겨낼 때 URL이 바뀜
     <tbody>1</tbody> 내용
     <tfoot><tfoot> 태그로 하단 정보 영역을 지정
     <tr></tr> 한 줄을 생성
-    <th> 태그로 칸을 생성 (제목용, 가운데 정렬에 굵은 글씨)
+    <th> 태그로 칸을 생성 (제목, 가운데 정렬, 굵은 글씨)
     <td> 태그로 칸을 생성 (내용, 왼쪽 정렬 , 일반 글씨)
     </table>
 
@@ -58,3 +58,7 @@ redirect : 화면을 튕겨낼 때 URL이 바뀜
     </table>
 
 <tbody align = "center">를 쓴다. align 속성이 여럿이면 가장 가까운 게 적용된다
+
+flatuicolors.com/palette/us
+
+bgcolor = ""

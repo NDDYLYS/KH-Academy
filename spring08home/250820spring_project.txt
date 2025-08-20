@@ -72,12 +72,60 @@ model.addAttribute("pokemonList", pokemonList);
 ${} 표현 언어 Expression Language EL : 받아온 데이터를 쓸 때
 
 이 페이지에서 반복 등 프로그래밍 태그를 사용하도록 설정
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>>
 
 <c:forEach var = "pokemonDto" items = "${ pokemonList }">
-<tr>
-	<td>${ pokemonDto.getPokemonNo() }</td>
-	<td>${ pokemonDto.getPokemonName() }</td>
-	<td>${ pokemonDto.getPokemonType() }</td>
-</tr>
+	<tr>
+		<td>${ pokemonDto.getPokemonNo() }</td>
+		<td>${ pokemonDto.getPokemonName() }</td>
+		<td>${ pokemonDto.getPokemonType() }</td>
+	</tr>
 </c:forEach>
+
+<td>${ pokemonDto.pokemonNo }</td>
+<td>${ pokemonDto.pokemonName }</td>
+<td>${ pokemonDto.pokemonType }</td>
+
+<%-- --%>
+JSP 주석
+<!-- -->
+HTML 표준 주석
+
+JSTL(Jsp Standart Tag Library) JSP 표준 태그 모음. 을 사용하여 프로그래밍 처리를 수행
+날 것의 자바 코드를 절대로 JSP에 쓰지 않는다
+
+for (int i = 0; i < 10; i++)
+
+var = i
+begin = 0;
+end = 10;
+step = i++;
+
+
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>>
+
+JSP가 더 편한 것들
+1. 숫자에 컴마 찍기 -> java.text.DecimalFormat : fmt:formatNumber		
+<td><fmt:formatNumber value="${studentDto.getStudentAverage()}" pattern="#,##0.00"/></td>
+
+2. 날짜 형식 바꾸기 -> java.time.format.DateTimeFormatter fmt:formatDate
+
+	<td>${ studentDto.getStudentReg() }</td>
+
+column과 keyword의 상태에 따라 검색인지 아닌지 판정
+boolean isSearch = column != null && keyword != null;
+
+
+<form action = "https://www.coupang.com/np/search">
+<!-- <input type = "hidden" name = "component"> -->
+	<select name = "component">
+		<option value = "">전체</option>
+		<option value = "564553">패션의류/잡화</option>
+		<option value = "176422">뷰티</option>
+		<option value = "194176">식품</option>
+	</select>
+	<input type = "text" name = "q" placeholder = "상품명을 입력하세요">
+	<input type = "hidden" name = "channel" value = "user">
+	<button>검색</button>
+</form>

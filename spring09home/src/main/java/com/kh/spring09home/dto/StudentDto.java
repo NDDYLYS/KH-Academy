@@ -64,6 +64,11 @@ public class StudentDto
 	public void setStudentMat(int studentMat) {
 		this.studentMat = studentMat;
 	}
+	
+	public double getStudentAverage() 
+	{
+		return (getStudentKor() + getStudentEng() + getStudentMat()) / 3d;
+	}
 
 	@Override
 	public String toString() { //123

@@ -62,3 +62,22 @@ redirect : 화면을 튕겨낼 때 URL이 바뀜
 flatuicolors.com/palette/us
 
 bgcolor = ""
+
+컨트롤러의 역할은 단순한 페이지 연결이 아닌 페이지에 필요한 데이터 전달
+전달할 데이터가 있다면 매개변수에 Model을 선언
+public String list(Model model) 
+model.addAttribute("이름", 값) 형태로 전달
+
+model.addAttribute("pokemonList", pokemonList);
+${} 표현 언어 Expression Language EL : 받아온 데이터를 쓸 때
+
+이 페이지에서 반복 등 프로그래밍 태그를 사용하도록 설정
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>>
+
+<c:forEach var = "pokemonDto" items = "${ pokemonList }">
+<tr>
+	<td>${ pokemonDto.getPokemonNo() }</td>
+	<td>${ pokemonDto.getPokemonName() }</td>
+	<td>${ pokemonDto.getPokemonType() }</td>
+</tr>
+</c:forEach>

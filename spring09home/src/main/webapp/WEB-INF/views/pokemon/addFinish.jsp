@@ -3,4 +3,5 @@
 
  <h2>포켓몬 등록 완료</h2>
  
- <a href = "./add">다시 등록</a>
+ <a href = "add">다시 등록</a>
+ <a href = "list">목록 보기</a>

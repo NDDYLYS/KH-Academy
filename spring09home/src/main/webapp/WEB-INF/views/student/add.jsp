@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <h1>학생 등록</h1>
 
-<form action = "./add2">
+<form action = "./add" method = "post">
 <input type = "text" name = "studentName" placeholder = "학생이름을 입력하세요.">
 <input type = "text" name = "studentKor" placeholder = "국어점수를 입력하세요.">
 <input type = "text" name = "studentEng" placeholder = "영어점수를 입력하세요.">

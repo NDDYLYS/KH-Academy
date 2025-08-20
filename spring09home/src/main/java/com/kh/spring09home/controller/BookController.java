@@ -2,7 +2,9 @@ package com.kh.spring09home.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kh.spring09home.dao.BookDao;
@@ -15,23 +17,23 @@ public class BookController
 	@Autowired
 	private BookDao bookDao;
 	
-	@RequestMapping("/add1")
-	public String add1() 
+	@GetMapping("/save")
+	public String save() 
 	{
-		return "/WEB-INF/views/book/add1.jsp";
+		return "/WEB-INF/views/book/save.jsp";
 	}
 	
-	@RequestMapping("/add2")
-	public String add2(@ModelAttribute BookDto bookDto) 
+	@PostMapping("/save")
+	public String save(@ModelAttribute BookDto bookDto) 
 	{
 		bookDao.insert(bookDto);
 		//return "/WEB-INF/views/pokemon/add2.jsp";
-		return "redirect:add3";
+		return "redirect:saveFinish";
 	}
 	
-	@RequestMapping("/add3")
-	public String add3() 
+	@RequestMapping("/saveFinish")
+	public String saveFinish() 
 	{
-		return "/WEB-INF/views/book/add3.jsp";
+		return "/WEB-INF/views/book/saveFinish.jsp";
 	}
 }

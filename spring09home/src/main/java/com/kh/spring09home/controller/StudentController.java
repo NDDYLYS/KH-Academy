@@ -2,7 +2,9 @@ package com.kh.spring09home.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kh.spring09home.dao.StudentDao;
@@ -15,23 +17,23 @@ public class StudentController
 	@Autowired
 	private StudentDao studentDao;
 	
-	@RequestMapping("/add1")
-	public String add1() 
+	@GetMapping("/add")
+	public String add() 
 	{
-		return "/WEB-INF/views/student/add1.jsp";
+		return "/WEB-INF/views/student/add.jsp";
 	}
 	
-	@RequestMapping("/add2")
-	public String add2(@ModelAttribute StudentDto studentDto) 
+	@PostMapping("/add")
+	public String add(@ModelAttribute StudentDto studentDto) 
 	{
 		studentDao.insert(studentDto);
 		//return "/WEB-INF/views/pokemon/add2.jsp";
-		return "redirect:add3";
+		return "redirect:addFinish";
 	}
 	
-	@RequestMapping("/add3")
-	public String add3() 
+	@RequestMapping("/addFinish")
+	public String addFinish() 
 	{
-		return "/WEB-INF/views/student/add3.jsp";
+		return "/WEB-INF/views/student/addFinish.jsp";
 	}
 }

@@ -19,3 +19,42 @@ Profile tool (형상관리, github)	형상관리 시스템
  - 제출하는 페이지를 POST로 개선
 
  - ADD1, ADD3 GET, ADD2 POST
+
+@RequestMapping -> @GetMapping, @PostMapping
+@RequestMapping(value = "/add", method = RequestMethod.GET)
+@RequestMapping(value = "/add", method = RequestMethod.POST)
+
+url 쳐서 들어가면 get이 기본이다
+
+<form action = "./add" method = "post">
+</form>
+
+forward와 redirect의 차이
+forward : 화면이 필요할 때 URL은 바뀌지 않음
+redirect : 화면을 튕겨낼 때 URL이 바뀜
+
+목록
+표를 만드려면 태그가 많이 필요함
+    <table>
+    <thead>번호</thead> 제목
+    <tbody>1</tbody> 내용
+    <tfoot><tfoot> 태그로 하단 정보 영역을 지정
+    <tr></tr> 한 줄을 생성
+    <th> 태그로 칸을 생성 (제목용, 가운데 정렬에 굵은 글씨)
+    <td> 태그로 칸을 생성 (내용, 왼쪽 정렬 , 일반 글씨)
+    </table>
+
+    <table border = "1" width = "500">
+    <thead>
+    <tr>
+    <th></th>
+    </tr>
+    </thead>
+    <tbody align = "center">
+    <tr>
+    	<td>1</td>
+    </tr>
+    </tbody>
+    </table>
+
+<tbody align = "center">를 쓴다. align 속성이 여럿이면 가장 가까운 게 적용된다

@@ -1,1 +1,21 @@
+miroboard
+다이어그램 제작 프로그램
 
+ERD - Entity Relational Diagram 	데이터베이스 관계도
+Flow Diagram 			홈페이지 흐름도
+Usercase Diagram 		사용자별 이용현황
+UI tool (figma)			화면 설계도구
+Memo tool (notion)		문서 공유 시스템
+Profile tool (형상관리, github)	형상관리 시스템
+
+홈페이지 요청 방식(Request Method)
+ - 홈페이지에 대한 요청이 다양할 수 있기에 용도별로 이름 구분
+ - GET 방식 : 홈페이지 기본 요청 방식(주소를 이용한 요청)
+ - POST방식 : 대용량 데이터 전송을 위한 요청 방식 (ex : 파일)
+ - 그 외에도 PUT, PATCH, DELETE, OPTIONS, TRACE, HEAD 등 다양
+ - GET, POST는 기본적으로 제공되는 태그에서 사용 가능
+ - 나머지는 자바 스크립트를 배워야 함
+ - (중요) 주소가 같아도 방식이 다르면 공존 가능
+ - 제출하는 페이지를 POST로 개선
+
+ - ADD1, ADD3 GET, ADD2 POST

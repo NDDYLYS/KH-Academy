@@ -70,4 +70,14 @@ public class BookController
 		}
 		return "/WEB-INF/views/book/list.jsp";
 	}
+	
+	@RequestMapping("/detail")
+	public String detail(Model model,
+			@RequestParam int bookId) 
+	{
+		BookDto bookDto = bookDao.selectOne(bookId);
+		model.addAttribute("bookDto", bookDto);
+		
+		return "/WEB-INF/views/book/detail.jsp";
+	}
 }

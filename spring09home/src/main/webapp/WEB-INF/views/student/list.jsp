@@ -17,7 +17,8 @@
 		<option value="student_eng">영어점수</option>
 		<option value="student_mat">수학점수</option>
 	</select>
-	<input type ="search" name="keyword" value = "${keyword}">
+	<input type ="search" name="keyword" value = "${keyword}" required>
+	<Button>찾기</Button>
 </form>
 
 <table border="1" width="700">
@@ -36,7 +37,7 @@
 		<c:forEach var = "studentDto" items = "${ studentList }">
 			<tr>
 				<td>${ studentDto.getStudentNo() }</td>
-				<td>${ studentDto.getStudentName() }</td>
+				<td><a href = "detail?studentNo=${studentDto.getStudentNo()}">${ studentDto.getStudentName() }</a></td>
 				<td>${ studentDto.getStudentKor() }</td>
 				<td>${ studentDto.getStudentEng() }</td>
 				<td>${ studentDto.getStudentMat() }</td>

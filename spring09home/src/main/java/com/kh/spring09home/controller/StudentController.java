@@ -64,4 +64,14 @@ public class StudentController
 		}
 		return "/WEB-INF/views/student/list.jsp";
 	}
+	
+	@RequestMapping("/detail")
+	public String detail(Model model,
+						@RequestParam int studentNo) 
+	{
+		StudentDto studentDto = studentDao.selectOne(studentNo);
+		model.addAttribute("studentDto", studentDto);
+		
+		return "/WEB-INF/views/student/detail.jsp";
+	}
 }

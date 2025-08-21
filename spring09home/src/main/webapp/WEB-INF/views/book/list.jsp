@@ -37,7 +37,7 @@
 		<c:forEach var = "bookDto" items = "${ bookList }">
 			<tr>
 				<td>${ bookDto.getBookId() }</td>
-				<td>${ bookDto.getBookTitle() }</td>
+				<td><a href="detail?bookId=${bookDto.getBookId()}">${ bookDto.getBookTitle() }</a></td>
 				<td>${ bookDto.getBookAuthor() }</td>
 				<td>${ bookDto.getBookPublisher() }</td>
 				<td>${ bookDto.getBookGenre() }</td>

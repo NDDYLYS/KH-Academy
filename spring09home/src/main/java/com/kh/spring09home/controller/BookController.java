@@ -105,4 +105,17 @@ public class BookController
 		bookDao.update(bookDto);
 		return "redirect:detail?bookId=" + bookDto.getBookId();
 	}
+	
+	@RequestMapping("/remove")
+	public String remove(@RequestParam int bookId)
+	{
+		BookDto bookDto = bookDao.selectOne(bookId);
+		if (bookDto == null) 
+		{
+			throw new TargetNotfoundException("존재하지 않는 도서 번호");
+		}
+		
+		bookDao.delete(bookId);
+		return "redirect:list";
+	}
 }

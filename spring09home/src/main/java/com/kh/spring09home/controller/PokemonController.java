@@ -94,4 +94,17 @@ public class PokemonController
 		pokemonDao.update(pokemonDto);
 		return "redirect:detail?pokemonNo=" + pokemonDto.getPokemonNo();
 	}
+	
+	@RequestMapping("/remove")
+	public String remove(@RequestParam int pokemonNo)
+	{
+		PokemonDto pokemonDto = pokemonDao.selectOne(pokemonNo);
+		if (pokemonDto == null) 
+		{
+			throw new TargetNotfoundException("존재하지 않는 포켓몬 번호");
+		}
+		
+		pokemonDao.delete(pokemonNo);
+		return "redirect:list";
+	}
 }

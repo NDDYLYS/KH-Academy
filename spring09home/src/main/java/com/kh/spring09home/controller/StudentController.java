@@ -99,4 +99,17 @@ public class StudentController
 		studentDao.update(studentDto);
 		return "redirect:detail?studentNo=" + studentDto.getStudentNo();
 	}
+	
+	@RequestMapping("/remove")
+	public String remove(@RequestParam int studentNo)
+	{
+		StudentDto studentDto = studentDao.selectOne(studentNo);
+		if (studentDto == null) 
+		{
+			throw new TargetNotfoundException("존재하지 않는 학생 번호");
+		}
+		
+		studentDao.delete(studentNo);
+		return "redirect:list";
+	}
 }

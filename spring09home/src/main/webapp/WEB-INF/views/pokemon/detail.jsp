@@ -21,4 +21,4 @@
     </table>
     
 <a href = "edit?pokemonNo=${pokemonDto.getPokemonNo()}">수정</a>
-삭제
+<a href = "remove?pokemonNo=${pokemonDto.getPokemonNo()}">삭제</a>

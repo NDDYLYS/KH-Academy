@@ -39,4 +39,4 @@
 </table>
 
 <a href = "edit?studentNo=${studentDto.getStudentNo()}">수정</a>
-삭제
+<a href = "remove?studentNo=${studentDto.getStudentNo()}">삭제</a>

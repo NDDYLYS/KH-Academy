@@ -50,4 +50,4 @@
 </c:choose>
 
 <a href = "edit?bookId=${bookDto.getBookId()}">수정</a>
-삭제
+<a href = "remove?bookId=${bookDto.getBookId()}">삭제</a>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.StudentDao;
 import com.kh.spring09home.dto.PokemonDto;
@@ -43,10 +44,21 @@ public class StudentController
 	
 	// 목록 페이지 매핑
 	@RequestMapping("/list")
-	public String list(Model model) 
+	public String list(Model model, 
+			@RequestParam(required = false) String column, 
+			@RequestParam(required = false) String keyword) 
 	{
-		List<StudentDto> studentList = studentDao.selectList();
-		model.addAttribute("studentList", studentList);
+		boolean isSearch = column != null && keyword != null;
+		if (isSearch) 
+		{
+			List<StudentDto> studentList = studentDao.selectList(column, keyword);
+			model.addAttribute("studentList", studentList);
+		}
+		else 
+		{
+			List<StudentDto> studentList = studentDao.selectList();
+			model.addAttribute("studentList", studentList);
+		}
 		return "/WEB-INF/views/student/list.jsp";
 	}
 }

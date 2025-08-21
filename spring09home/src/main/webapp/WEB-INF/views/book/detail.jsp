@@ -48,3 +48,6 @@
         </table>
     </c:otherwise>
 </c:choose>
+
+<a href = "edit?bookId=${bookDto.getBookId()}">수정</a>
+삭제

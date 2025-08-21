@@ -479,10 +479,6 @@ ${} 표현 언어 Expression Language EL : 받아온 데이터를 쓸 때
 	</tr>
 </c:forEach>
 
-<td>${ pokemonDto.pokemonNo }</td>
-<td>${ pokemonDto.pokemonName }</td>
-<td>${ pokemonDto.pokemonType }</td>
-
 <%-- --%>
 JSP 주석
 <!-- -->
@@ -512,6 +508,8 @@ JSP가 더 편한 것들
 column과 keyword의 상태에 따라 ****검색인지 아닌지 판정
 boolean isSearch = column != null && keyword != null;
 
+<td><fmt:formatNumber value="${studentDto.getStudentAverage()}" pattern="#,##0.00"/></td>
+<td><fmt:formatDate value="${studentDto.getStudentReg()}" pattern="y년 M월 d일"/></td>
 
 <form action = "https://www.coupang.com/np/search">
 <!-- <input type = "hidden" name = "component"> -->
@@ -605,3 +603,39 @@ public void InitBinder(WebDataBinder binder)
 검색을 해도 선택한 드롭박스가 유지된다
 
 EL, JSTL null을 유연하게 처리
+
+
+JSP에서 if 쓰기
+<c:if test= "${studentDto == null}">
+<h3>존재하지 않는 학생 정보입니다.</h3>
+</c:if>
+
+JSP에서 if else 쓰기
+<c:choose>
+<c:when test="${bookDto == null}"></c:when>
+<c:otherwhen></c:otherwhen>// 여기에는 test 설정 불가. 위가 아니라면 들어온다
+</c:choose>
+
+
+함수 throws Exception
+throw new Exception("에러상황"); // unchecked exception
+throw new RuntimeException("존재하지 않는 포켓몬 번호"); // checked exception
+
+package com.kh.spring09home.error;
+
+// 사용처 : 대상이 없어서 더 이상 진행할 수 없는 경우 사용하는 커스텀 예외
+public class TargetNotfoundException extends RuntimeException
+{
+	//private static final long serialVersionUID = 1;
+	public TargetNotfoundException() 
+	{
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public TargetNotfoundException(String message) 
+	{
+		super(message);
+		// TODO Auto-generated constructor stub
+	}
+}

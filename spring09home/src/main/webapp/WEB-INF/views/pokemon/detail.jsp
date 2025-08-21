@@ -19,3 +19,6 @@
     		<td>${pokemonDto.getPokemonType()}</td>
     	</tr>
     </table>
+    
+<a href = "edit?pokemonNo=${pokemonDto.getPokemonNo()}">수정</a>
+삭제

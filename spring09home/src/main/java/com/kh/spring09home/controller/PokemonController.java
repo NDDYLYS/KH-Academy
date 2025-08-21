@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.PokemonDao;
 import com.kh.spring09home.dto.PokemonDto;
+import com.kh.spring09home.error.TargetNotfondException;
 
 @Controller
 @RequestMapping("/pokemon")
@@ -69,5 +70,28 @@ public class PokemonController
 		model.addAttribute("pokemonDto", pokemonDto);
 		
 		return "/WEB-INF/views/pokemon/detail.jsp";
+	}
+	
+	@GetMapping("/edit")
+	public String edit(Model model,
+			@RequestParam int pokemonNo)
+	{
+		PokemonDto pokemonDto = pokemonDao.selectOne(pokemonNo);
+		if (pokemonDto == null) 
+		{
+			//return "redirect:list"; // 에러페이지매핑
+			//throw new RuntimeException("존재하지 않는 포켓몬 번호");
+			throw new TargetNotfoundException("존재하지 않는 포켓몬 번호");
+		}
+		
+		model.addAttribute("pokemonDto", pokemonDto);
+		return "/WEB-INF/views/pokemon/edit.jsp";
+	}
+	
+	@PostMapping("/edit")
+	public String edit(@ModelAttribute PokemonDto pokemonDto) 
+	{
+		pokemonDao.update(pokemonDto);
+		return "redirect:detail?pokemonNo=" + pokemonDto.getPokemonNo();
 	}
 }

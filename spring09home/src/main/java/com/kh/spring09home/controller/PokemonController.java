@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.PokemonDao;
 import com.kh.spring09home.dto.PokemonDto;
-import com.kh.spring09home.error.TargetNotfondException;
+import com.kh.spring09home.error.TargetNotfoundException;
 
 @Controller
 @RequestMapping("/pokemon")

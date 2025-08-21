@@ -37,3 +37,6 @@
 		<td>${studentDto.getStudentReg()}</td>
 	</tr>
 </table>
+
+<a href = "edit?studentNo=${studentDto.getStudentNo()}">수정</a>
+삭제

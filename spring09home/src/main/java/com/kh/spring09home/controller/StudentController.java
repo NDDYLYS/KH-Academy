@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.StudentDao;
-import com.kh.spring09home.dto.PokemonDto;
 import com.kh.spring09home.dto.StudentDto;
 
 @Controller
@@ -49,10 +48,14 @@ public class StudentController
 			@RequestParam(required = false) String keyword) 
 	{
 		boolean isSearch = column != null && keyword != null;
+		model.addAttribute("isSearch", isSearch);
+		model.addAttribute("column", column);
+		model.addAttribute("keyword", keyword);
+		
 		if (isSearch) 
 		{
 			List<StudentDto> studentList = studentDao.selectList(column, keyword);
-			model.addAttribute("studentList", studentList);
+			model.addAttribute("studentList", studentList);			
 		}
 		else 
 		{

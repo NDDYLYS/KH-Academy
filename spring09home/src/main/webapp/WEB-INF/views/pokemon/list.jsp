@@ -23,6 +23,7 @@
 			<th>번호</th>
 			<th>이름</th>
 			<th>속성</th>
+			<th>바로가기</th>
 		</tr>
 	</thead>
 	<tbody align = "center">
@@ -31,6 +32,7 @@
 				<td>${ pokemonDto.getPokemonNo() }</td>
 				<td>${ pokemonDto.getPokemonName() }</td>
 				<td>${ pokemonDto.getPokemonType() }</td>
+				<td><a href = "detail?pokemonNo=${pokemonDto.getPokemonNo()}">바로가기</a></td>
 			</tr>
 		</c:forEach>
 	</tbody>

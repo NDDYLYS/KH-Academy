@@ -60,4 +60,14 @@ public class PokemonController
 		}
 		return "/WEB-INF/views/pokemon/list.jsp";
 	}
+	
+	@RequestMapping("/detail")
+	public String detail(Model model,
+			@RequestParam int pokemonNo) 
+	{
+		PokemonDto pokemonDto = pokemonDao.selectOne(pokemonNo);
+		model.addAttribute("pokemonDto", pokemonDto);
+		
+		return "/WEB-INF/views/pokemon/detail.jsp";
+	}
 }

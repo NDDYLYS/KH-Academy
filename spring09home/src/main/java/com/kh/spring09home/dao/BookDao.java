@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring09home.dto.BookDto;
+import com.kh.spring09home.dto.StudentDto;
 import com.kh.spring09home.mapper.BookMapper;
 
 @Repository
@@ -54,9 +55,9 @@ public class BookDao
     	return 0 < result;
 	}
 	
-	public List<BookDto> selectSearch(String column, String keyword)
+	public List<BookDto> selectList(String column, String keyword)
 	{
-		Set<String> allowList = Set.of("book_title", "book_author");
+		Set<String> allowList = Set.of("book_title", "book_author", "book_publisher");
 		
 		if (allowList.contains(column) == false)
 			return List.of(); // 비어있는 리스트;	

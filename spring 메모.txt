@@ -525,3 +525,83 @@ boolean isSearch = column != null && keyword != null;
 	<input type = "hidden" name = "channel" value = "user">
 	<button>검색</button>
 </form>
+
+** 250821
+
+client -> 브라우저
+
+브라우저가 다르면 다른 client으로 인식한다
+
+식당 Spring Boot
+1 주문, 요청하는 행위를 Client -> Request
+2-1 DispatcherServlet 모든 스프링의 행위를 담당
+ -> 처리할 수 없는 요청, 없는 주소 404 에러
+ -> 옵션 불일치 400 에러
+
+@Controller, @RestController
+-> 주방직원
+2-2 프로그래밍 처리 지시
+
+DB 
+-> 식료품 창고
+창고에 다녀오는 행위
+-> JDBC
+
+3 다된 음식 -> DispatcherServlet에게 전달
+Model
+
+3-2 redirect 302
+
+4 화면 제작 지시
+-> Java 코드와 html로 완성된 화면 제작
+
+5 화면 완성
+
+6 정상적으로 만들어진 화면 200
+response 응답 -> client
+
+
+MVC pattern
+
+Model
+View
+Control
+
+
+${isSearch ? "검색" : "목록"}
+
+검색 키워드를 input창에 다시 적기
+<input type ="search" name="keyword" value = "${keyword}">
+
+스프링 컨트롤러의 Model에서 건네준 값을 jsp에서 쓰려면 ${param}으로 쓸 수 있는데 특정 태그의 내부 옵션 설정이면 "${param}"으로 쓴다
+
+<input type ="text" name="keyword" value = "${keyword}" required="required">
+검색어 없이 검색
+
+readonly = "readonly"
+
+select에서 해당 값이 이미 선택되어 있게 한다
+selected = "selected"
+
+required, readonly, selected 이름과 설정값이 같은 속성들은 생략 가능
+
+
+root_package.aop
+
+// (+추가) 이 콘트롤러로 들어오는 empty string은 null이다
+@InitBinder // 콘트롤러가 미리 알아야 하는 내용을 알려주기 위한 메소드(전처리 메소드)
+public void InitBinder(WebDataBinder binder) 
+{
+	// binder.registerCustomEditor(데이터 종류, 사용할 도구);
+	binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+}
+
+<select name="column">
+	<option value="book_title" ${column == "book_title" ? "selected" : ""}>책 제목</option>
+	<option value="book_author" ${column == "book_author" ? "selected" : ""}>저자</option>
+	<option value="book_publisher" ${column == "book_publisher" ? "selected" : ""}>출판사</option>
+</select>
+
+검색을 해도 선택한 드롭박스가 유지된다
+
+EL, JSTL null을 유연하게 처리

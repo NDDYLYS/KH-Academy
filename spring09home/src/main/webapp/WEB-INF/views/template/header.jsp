@@ -7,10 +7,10 @@
 <hr>
 
 <div>
-	<a href = "localhost:8080/">Home</a>
-	<a href = "./pokemon/list">Pokemon</a>
-	<a href = "./student/list">Student</a>
-	<a href = "./book/list">Book</a>
+	<a href = "/">Home</a>
+	<a href = "/pokemon/list">Pokemon</a>
+	<a href = "/student/list">Student</a>
+	<a href = "/book/list">Book</a>
 </div>
 
 <hr>

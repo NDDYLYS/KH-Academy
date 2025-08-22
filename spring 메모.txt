@@ -639,3 +639,37 @@ public class TargetNotfoundException extends RuntimeException
 		// TODO Auto-generated constructor stub
 	}
 }
+
+
+** 250822
+
+헤더 템플릿 페이지
+메인 페이지 -> 포켓몬, 학생, 도서 테이블이랑 연결
+푸터 템플릿 페이지
+
+HTML 5
+
+<%--비어있는 블럭 생성(div)--%> 
+
+헤더와 푸터 합치기
+
+동적 include
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+header.jsp		header.java		header.class
+home.jsp		변환	home.java	 컴파일	home.class	합체	실행
+footer.jsp		footer.java		footer.class
+서로간의 영향 없이 화면만 붙이고 싶을 때 쓴다
+
+정적 include
+<%@ include file = "/WEB-INF/views/template/footer.jsp"%>
+header.jsp 		
+home.jsp		합체&변환	home.java	컴파일		home.class	실행
+footer.jsp
+의존도가 높다(강한 결합) - 요즘은 비선호
+
+템플릿 페이지에서 작성하는 경로는 반드시 절대 경로여야 한다
+
+<a href = "/">Home</a>
+<a href = "/pokemon/list">Pokemon</a>
+<a href = "/student/list">Student</a>
+<a href = "/book/list">Book</a>

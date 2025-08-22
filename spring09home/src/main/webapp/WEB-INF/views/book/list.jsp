@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+
 <h1>도서 ${isSearch ? "검색" : "목록"}</h1>
 
 <h2><a href = "save">신규 등록</a></h2>
@@ -48,3 +50,5 @@
 		</c:forEach>
 	</tbody>
 </table>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

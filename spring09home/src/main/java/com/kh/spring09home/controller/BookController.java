@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.BookDao;
 import com.kh.spring09home.dto.BookDto;
-import com.kh.spring09home.dto.StudentDto;
 import com.kh.spring09home.error.TargetNotfoundException;
 
 @Controller

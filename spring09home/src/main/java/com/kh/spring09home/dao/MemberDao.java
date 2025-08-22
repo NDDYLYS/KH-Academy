@@ -20,19 +20,19 @@ public class MemberDao
 	
 	public void insert(MemberDto memberDto) 
 	{
-		String sql = "insert into member (member_id, member_pw, member_nickname, "
-				+ "member_email, member_birth, member_contact,"
-				+ "member_post, member_address1, member_address2) values"
-				+ " (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		Object[] params = {memberDto.getMemberId(), 
-				memberDto.getMemberPw(),
-				memberDto.getMemberNickname(),
-				memberDto.getMemberEmail(),
-				memberDto.getMemberBirth(),
-				memberDto.getMemberContact(),
-				memberDto.getMemberPost(),
-				memberDto.getMemberAddress1(),
-				memberDto.getMemberAddress2()};
+		String sql = "insert into member("
+				+ "member_id, member_pw, member_nickname, member_email, "
+				+ "member_birth, member_contact,"
+				+ "member_post, member_address1, member_address2"
+			+ ") "
+			+ "values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		Object[] params = {
+		memberDto.getMemberId(), memberDto.getMemberPw(),
+		memberDto.getMemberNickname(), memberDto.getMemberEmail(),
+		memberDto.getMemberBirth(), memberDto.getMemberContact(),
+		memberDto.getMemberPost(), memberDto.getMemberAddress1(),
+		memberDto.getMemberAddress2()
+		};
 		jdbcTemplate.update(sql, params);
 	}
 	
@@ -63,7 +63,7 @@ public class MemberDao
 	
 	public List<MemberDto> selectList(String column, String keyword)
 	{
-		Set<String> allowList = Set.of("book_title", "book_author", "book_publisher");
+		Set<String> allowList = Set.of("member_id", "member_", "book_publisher");
 		
 		if (allowList.contains(column) == false)
 			return List.of(); // 비어있는 리스트;	
@@ -80,7 +80,7 @@ public class MemberDao
     	return jdbcTemplate.query(sql, memberMapper);
 	}
 	
-	public MemberDto selectOne(int memberId) 
+	public MemberDto selectOne(String memberId) 
 	{
 		String sql = "select * from member where member_id = ?";
 		Object[] params = {memberId};

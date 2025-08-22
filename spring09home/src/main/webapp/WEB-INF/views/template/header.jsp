@@ -11,6 +11,7 @@
 	<a href = "/pokemon/list">Pokemon</a>
 	<a href = "/student/list">Student</a>
 	<a href = "/book/list">Book</a>
+	<a href = "/member/list">회원 목록 보기</a>
 	<a href = "/member/login">로그인</a>
 	<a href = "/member/join">회원가입</a>
 </div>

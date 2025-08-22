@@ -673,3 +673,6 @@ footer.jsp
 <a href = "/pokemon/list">Pokemon</a>
 <a href = "/student/list">Student</a>
 <a href = "/book/list">Book</a>
+
+
+<pre> 엔터 등 사용자가 입력한 내용들을 그대로 출력하는 태그</pre>

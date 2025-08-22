@@ -701,3 +701,20 @@ java -jar lombok-1.18.38.jar
 2. 의존성 주입
 3. ???
 4. POJO 암것도 없는 자바 객체
+
+아래로
+rowspan
+오른쪽으로
+colspan
+
+
+파라미터 정도는 별도의 선언 없이도 쓸 수 있다
+param.
+
+
+member/login get
+로그인 정보 입력
+
+member/login post
+로그인 판정
+로그인 성공시 첫 페이지로

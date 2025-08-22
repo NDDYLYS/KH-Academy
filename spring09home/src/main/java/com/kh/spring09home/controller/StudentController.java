@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.StudentDao;
-import com.kh.spring09home.dto.PokemonDto;
 import com.kh.spring09home.dto.StudentDto;
 import com.kh.spring09home.error.TargetNotfoundException;
 

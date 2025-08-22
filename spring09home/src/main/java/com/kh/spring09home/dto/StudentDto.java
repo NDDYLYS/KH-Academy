@@ -3,6 +3,11 @@ package com.kh.spring09home.dto;
 
 import java.sql.Timestamp;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class StudentDto 
 {
 	private int studentNo;
@@ -12,67 +17,9 @@ public class StudentDto
 	private int studentMat;
 	private Timestamp studentReg;
 	
-	public Timestamp getStudentReg() {
-		return studentReg;
-	}
-
-	public void setStudentReg(Timestamp studentReg) {
-		this.studentReg = studentReg;
-	}
-
-	public StudentDto() 
-	{
-		
-	}
-
-	public int getStudentNo() {
-		return studentNo;
-	}
-
-	public void setStudentNo(int studentNo) {
-		this.studentNo = studentNo;
-	}
-
-	public String getStudentName() {
-		return studentName;
-	}
-
-	public void setStudentName(String studentName) {
-		this.studentName = studentName;
-	}
-
-	public int getStudentKor() {
-		return studentKor;
-	}
-
-	public void setStudentKor(int studentKor) {
-		this.studentKor = studentKor;
-	}
-
-	public int getStudentEng() {
-		return studentEng;
-	}
-
-	public void setStudentEng(int studentEng) {
-		this.studentEng = studentEng;
-	}
-
-	public int getStudentMat() {
-		return studentMat;
-	}
-
-	public void setStudentMat(int studentMat) {
-		this.studentMat = studentMat;
-	}
 	
 	public double getStudentAverage() 
 	{
 		return (getStudentKor() + getStudentEng() + getStudentMat()) / 3d;
-	}
-
-	@Override
-	public String toString() { //123
-		return "StudentDto [studentNo=" + studentNo + ", studentName=" + studentName + ", studentKor=" + studentKor
-				+ ", studentEng=" + studentEng + ", studentMat=" + studentMat + ", studentReg=" + studentReg + "]";
 	}
 }

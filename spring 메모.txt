@@ -676,3 +676,28 @@ footer.jsp
 
 
 <pre> 엔터 등 사용자가 입력한 내용들을 그대로 출력하는 태그</pre>
+
+Lombok
+Project 우클릭 > Spring > add starters
+pom.xml에 lombok 추가
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+@Setter @Getter @ToString @NoArgsConstructor
+
+@Data
+public class Dto
+@ToString(exclude = {"memberPw"})
+
+
+C:\Users\user1\.m2\repository\org\projectlombok\lombok
+
+java -jar lombok-1.18.38.jar
+
+1. 제어반전
+2. 의존성 주입
+3. ???
+4. POJO 암것도 없는 자바 객체

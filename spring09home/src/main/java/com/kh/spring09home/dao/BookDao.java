@@ -8,7 +8,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring09home.dto.BookDto;
-import com.kh.spring09home.dto.StudentDto;
 import com.kh.spring09home.mapper.BookMapper;
 
 @Repository

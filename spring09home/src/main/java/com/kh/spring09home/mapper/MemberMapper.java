@@ -2,9 +2,13 @@ package com.kh.spring09home.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
 import com.kh.spring09home.dto.MemberDto;
 
+@Component
 public class MemberMapper implements RowMapper<MemberDto>
 {
 	@Override

@@ -469,7 +469,7 @@ ${} 표현 언어 Expression Language EL : 받아온 데이터를 쓸 때
 
 이 페이지에서 반복 등 프로그래밍 태그를 사용하도록 설정
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:forEach var = "pokemonDto" items = "${ pokemonList }">
 	<tr>
@@ -718,3 +718,95 @@ member/login get
 member/login post
 로그인 판정
 로그인 성공시 첫 페이지로
+
+** 250825
+
+select * from member where member_id
+select * from member where member_id and member_pw
+
+2번쨰는 쓰면 나중에 암호화 때 문제가 생긴다
+
+홈으로 이동시킨다
+redirect:/
+
+testuser1
+Testuser1!
+테스트유저1
+testuser1@kh.com
+
+정상접근 /member/login
+이상접근 /member/login?error
+
+
+@PostMapping("/login")
+public String login(@ModelAttribute MemberDto memberDto)
+//public String login(@RequestParam String memberId, 
+//		@RequestParam String memberPw) 
+{
+	MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
+	if (findDto == null)
+		return "redirect:login?error";
+	
+	boolean isLogin = findDto.getMemberPw().equals(memberDto.getMemberPw());
+	if (isLogin)
+		return "redirect:/";
+	else
+		return "redirect:login?error";
+}
+
+${ param.error }
+
+<!-- error 파라미터가 있다면 오류 메세지 출력 -->
+<c:if test = "${ param.error != null }">
+	<h2 style = "color:red">입력하신 정보가 일치하지 않습니다.</h2>
+</c:if>
+
+HttpSession : Map<String, Object>
+
+public String login(@ModelAttribute MemberDto memberDto, 
+			HttpSession session)
+
+HttpSession은 서버에서 사용자마다 부옇는 공간의 모음
+최소 30분은 유지
+스프링 컨트롤러에서 달라고 하면 주입해준다 > 자유롭게 사용 가능
+데이터 추가 setAttribute
+데이터 제거 removeAttribute
+데이터 확인 getAttribute
+
+session.setAttribute(이름,  값);
+session.setAttribute("loginId",  findDto.getMemberId());
+session.setAttribute("loginLevel",  findDto.getMemberLevel());
+
+@RequestMapping("/logout")
+public String logout(HttpSession session) 
+{
+	session.removeAttribute("loginId");
+	session.removeAttribute("loginLevel");
+	return "redirect:/";
+}
+
+세션ID : ${pageContext.session.id} - loginId : ${sessionScope.loginId} , loginLevel : ${sessionScope.loginLevel}
+
+<c:if test = "${ sessionScope.loginId == null }">
+		<a href = "/member/login">로그인</a>
+</c:if>
+<c:if test = "${ sessionScope.loginId != null }">
+		<a href = "/member/logout">로그아웃</a>
+</c:if>
+
+주소를 통한 비화원의 관리자 기능 접근 차단
+
+Upcasting, Downcasting
+
+<fmt:formatDate value="${memberDto.memberJoin}" pattern="y년 M월 d일 H시 m분 s초"/>
+
+회원 탈퇴시 로그아웃도 되어야 한다
+
+redirect는 GET밖에 못 보낸다
+
+삭제 우선. 후 로그아웃
+
+상대경로 ../image/google.png
+
+
+update는 전반적인 정보 수정에 사용

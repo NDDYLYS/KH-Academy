@@ -5,6 +5,8 @@
  
  <h2>회원가입 완료</h2>
  
+ <a href = "/member/login">로그인</a>
+ 
 <!--  <a href = "add">다시 등록</a> -->
 <!--  <a href = "list">목록 보기</a> -->
     

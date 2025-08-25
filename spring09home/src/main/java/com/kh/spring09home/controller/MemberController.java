@@ -1,5 +1,7 @@
 package com.kh.spring09home.controller;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.MemberDao;
 import com.kh.spring09home.dto.MemberDto;
-import com.kh.spring09home.error.TargetNotfoundException;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -95,6 +96,16 @@ public class MemberController
 		{
 			session.setAttribute("loginId",  findDto.getMemberId());
 			session.setAttribute("loginLevel",  findDto.getMemberLevel());
+			
+			memberDao.loginUser(findDto.getMemberId());
+			
+			Timestamp now = new Timestamp(System.currentTimeMillis());
+			Timestamp lastChange = findDto.getMemberChange();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(lastChange);
+			cal.add(Calendar.DAY_OF_MONTH, 30); // 30일 뒤
+			if (now.after(lastChange))
+				return "redirect:password";
 			return "redirect:/";
 		}
 		else 
@@ -162,41 +173,47 @@ public class MemberController
 	public String edit(Model model,
 				HttpSession session)
 	{
-		String memberId = (String)session.getAttribute("loginId");
-		MemberDto memberDto = memberDao.selectOne(memberId);
-		if (memberDto == null) 
-		{
-			//return "redirect:list"; // 에러페이지매핑
-			//throw new RuntimeException("존재하지 않는 포켓몬 번호");
-			throw new TargetNotfoundException("존재하지 않는 회원 아이디");
-		}
-		
+		String loginId = (String)session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(loginId);
 		model.addAttribute("memberDto", memberDto);
 		return "/WEB-INF/views/member/edit.jsp";
 	}
 	
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute MemberDto memberDto) 
+	public String edit(@ModelAttribute MemberDto memberDto,
+			HttpSession session) 
 	{
-		memberDao.update(memberDto);
+		String loginId = (String)session.getAttribute("loginId");
+		MemberDto findDto = memberDao.selectOne(loginId);
+		boolean isValid = memberDto.getMemberPw().equals(findDto.getMemberPw());
+		if (!isValid) 
+			return "redirect:edit?error";
+		
+		memberDto.setMemberId(loginId);
+		memberDao.updateMember(memberDto);
 		return "redirect:mypage";
 	}
 	
-//	@GetMapping("/password")
-//	public String password() 
-//	{
-//		return "/WEB-INF/views/member/password.jsp";
-//	}
-//	
-//	@PostMapping("/password")
-//	public String password(@ModelAttribute MemberDto memberDto, 
-//			HttpSession session) 
-//	{
-//		String loginId = (String)session.getAttribute("loginId");
-//		MemberDto loginUser = memberDao.selectOne(loginId);
-//		MemberDto findDto = 
-//		
-//		memberDao.update(memberDto);
-//		return "redirect:mypage";
-//	}
+	@GetMapping("/password")
+	public String password() 
+	{
+		return "/WEB-INF/views/member/password.jsp";
+	}
+	
+	@PostMapping("/password")
+	public String password(String oldPassword, String newPassword,
+			HttpSession session) 
+	{
+		String loginId = (String)session.getAttribute("loginId");
+		MemberDto loginMember = memberDao.selectOne(loginId);
+		
+		if (!loginMember.getMemberPw().equals(oldPassword))
+			 return "redirect:password?error";
+		
+		MemberDto memberDto = new MemberDto();
+		memberDto.setMemberId(loginId);
+		memberDto.setMemberPw(newPassword);
+		memberDao.updatePassword(memberDto);
+		return "redirect:mypage";
+	}
 }

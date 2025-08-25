@@ -810,3 +810,9 @@ redirect는 GET밖에 못 보낸다
 
 
 update는 전반적인 정보 수정에 사용
+
+String loginId = (String)session.getAttribute("loginId");
+
+정보를 변경하는 경우는 크게 두 가지
+1. 회원이 자기 정보를 변경
+2. 관리자가 회원의 정보를 변경

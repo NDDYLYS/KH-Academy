@@ -37,22 +37,43 @@ public class MemberDao
 		jdbcTemplate.update(sql, params);
 	}
 	
-public boolean update(MemberDto memberDto) 
-{                        
-	String sql = "update member set member_id=?, member_pw=?, "
-			+ "member_nickname=?, member_birth=?, member_contact=?, "
-			+ "member_email=?, member_level=?, member_point=?, "
-			+ "member_post=?, member_address1=?, member_address2=?, "
-			+ "member_login=?, member_change=systimestamp "
-			+ "where member_id=?";
-	Object[] params = {memberDto.getMemberId(), memberDto.getMemberPw(), 
-			memberDto.getMemberNickname(), memberDto.getMemberBirth(), memberDto.getMemberContact(),
-			memberDto.getMemberEmail(), memberDto.getMemberLevel(), memberDto.getMemberPoint(),
-			memberDto.getMemberPost(), memberDto.getMemberAddress1(), memberDto.getMemberAddress2(),
-			memberDto.getMemberLogin(), memberDto.getMemberId()};
-	int result = jdbcTemplate.update(sql, params);
-	return 0 < result;
-} 
+	public boolean update(MemberDto memberDto) 
+	{                        
+		String sql = "update member set member_id=?, member_pw=?, "
+				+ "member_nickname=?, member_birth=?, member_contact=?, "
+				+ "member_email=?, member_level=?, member_point=?, "
+				+ "member_post=?, member_address1=?, member_address2=?, "
+				+ "member_login=?, member_change=systimestamp "
+				+ "where member_id=?";
+		Object[] params = {memberDto.getMemberId(), memberDto.getMemberPw(), 
+				memberDto.getMemberNickname(), memberDto.getMemberBirth(), memberDto.getMemberContact(),
+				memberDto.getMemberEmail(), memberDto.getMemberLevel(), memberDto.getMemberPoint(),
+				memberDto.getMemberPost(), memberDto.getMemberAddress1(), memberDto.getMemberAddress2(),
+				memberDto.getMemberLogin(), memberDto.getMemberId()};
+		int result = jdbcTemplate.update(sql, params);
+		return 0 < result;
+	}
+	
+	public boolean updateMember(MemberDto memberDto) 
+	{
+		String sql = "update member set "
+				+ "member_nickname=?, member_birth=?, member_contact=?,"
+				+ "member_email=?, member_post=?, member_address1=?, "
+				+ "member_address2=? where member_id=?";
+		Object[] params = {memberDto.getMemberNickname(), memberDto.getMemberBirth(),
+				memberDto.getMemberContact(), memberDto.getMemberEmail(),
+				memberDto.getMemberPost(), memberDto.getMemberAddress1(),
+				memberDto.getMemberAddress2(), memberDto.getMemberId()};
+		return 0 < jdbcTemplate.update(sql, params);
+	}
+
+	public boolean updatePassword(MemberDto memberDto) 
+	{
+		String sql = "update member set member_pw=?, member_change=systimestamp "
+				+ "where member_id=?";
+		Object[] params = {memberDto.getMemberPw(), memberDto.getMemberId()};
+		return 0 < jdbcTemplate.update(sql, params);
+	}
 	
 	public boolean delete(String memberId) 
 	{
@@ -87,5 +108,14 @@ public boolean update(MemberDto memberDto)
 		Object[] params = {memberId};
 		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
 		return list.isEmpty()? null : list.get(0);
+	}
+	
+	public boolean loginUser(String loginId) 
+	{
+		String sql = "update member set member_login=systimestamp "
+				+ "where member_id=?";
+		Object[] params = {loginId};
+		int result = jdbcTemplate.update(sql, params);
+		return 0 < result;	
 	}
 }

@@ -34,8 +34,8 @@
 		<a href = "/pokemon/list">Pokemon</a>
 		<a href = "/student/list">Student</a>
 		<a href = "/book/list">Book</a>
-		<a href = "/member/list">회원 목록 검색</a>		
 		<a href = "/member/logout">로그아웃</a>
+		<a href = "/admin/home">[관리메뉴]</a>
 	</c:when>
 	<c:otherwise>
 		<a href = "/">Home</a>

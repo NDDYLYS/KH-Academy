@@ -88,11 +88,7 @@ public class BookController
 	{
 		BookDto bookDto = bookDao.selectOne(bookId);
 		if (bookDto == null) 
-		{
-			//return "redirect:list"; // 에러페이지매핑
-			//throw new RuntimeException("존재하지 않는 포켓몬 번호");
-			throw new TargetNotfoundException("존재하지 않는 학생 번호");
-		}
+			throw new TargetNotfoundException("존재하지 않는 도서 번호");
 		
 		model.addAttribute("bookDto", bookDto);
 		return "/WEB-INF/views/book/edit.jsp";
@@ -110,9 +106,7 @@ public class BookController
 	{
 		BookDto bookDto = bookDao.selectOne(bookId);
 		if (bookDto == null) 
-		{
 			throw new TargetNotfoundException("존재하지 않는 도서 번호");
-		}
 		
 		bookDao.delete(bookId);
 		return "redirect:list";

@@ -67,6 +67,13 @@ public class PokemonController
 			@RequestParam int pokemonNo) 
 	{
 		PokemonDto pokemonDto = pokemonDao.selectOne(pokemonNo);
+		if (pokemonDto == null) 
+		{
+			//return "redirect:list"; // 에러페이지매핑
+			//throw new RuntimeException("존재하지 않는 포켓몬 번호");
+			throw new TargetNotfoundException("존재하지 않는 포켓몬 번호");
+		}
+		
 		model.addAttribute("pokemonDto", pokemonDto);
 		
 		return "/WEB-INF/views/pokemon/detail.jsp";

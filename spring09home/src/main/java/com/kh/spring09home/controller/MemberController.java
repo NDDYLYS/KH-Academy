@@ -44,26 +44,26 @@ public class MemberController
 		return "/WEB-INF/views/member/joinFinish.jsp";
 	}
 	
-	@RequestMapping("/list")
-	public String list(Model model,
-					@RequestParam(required = false) String column,
-					@RequestParam(required = false) String keyword) 
-	{
-		boolean isSearch = column != null && keyword != null;
-		model.addAttribute("isSearch", isSearch);
-		
-		if (isSearch) 
-		{
-			List<MemberDto> memberList = memberDao.selectList(column, keyword);
-			model.addAttribute("memberList", memberList);			
-		}
-		else 
-		{
-			List<MemberDto> memberList = memberDao.selectList();
-			model.addAttribute("memberList", memberList);
-		}
-		return "/WEB-INF/views/member/list.jsp";
-	}
+//	@RequestMapping("/list")
+//	public String list(Model model,
+//					@RequestParam(required = false) String column,
+//					@RequestParam(required = false) String keyword) 
+//	{
+//		boolean isSearch = column != null && keyword != null;
+//		model.addAttribute("isSearch", isSearch);
+//		
+//		if (isSearch) 
+//		{
+//			List<MemberDto> memberList = memberDao.selectList(column, keyword);
+//			model.addAttribute("memberList", memberList);			
+//		}
+//		else 
+//		{
+//			List<MemberDto> memberList = memberDao.selectList();
+//			model.addAttribute("memberList", memberList);
+//		}
+//		return "/WEB-INF/views/member/list.jsp";
+//	}
 	
 	@RequestMapping("/detail")
 	public String detail(Model model, 
@@ -201,7 +201,8 @@ public class MemberController
 	}
 	
 	@PostMapping("/password")
-	public String password(String oldPassword, String newPassword,
+	public String password(@RequestParam String oldPassword, 
+			@RequestParam String newPassword,
 			HttpSession session) 
 	{
 		String loginId = (String)session.getAttribute("loginId");
@@ -211,7 +212,7 @@ public class MemberController
 			 return "redirect:password?error";
 		
 		MemberDto memberDto = new MemberDto();
-		memberDto.setMemberId(loginId);
+		// memberDto.setMemberId(loginId); 없어도 된다
 		memberDto.setMemberPw(newPassword);
 		memberDao.updatePassword(memberDto);
 		return "redirect:mypage";

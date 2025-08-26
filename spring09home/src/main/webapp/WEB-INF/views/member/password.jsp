@@ -9,9 +9,9 @@
 
 <form action = "password" method = "post">
 	<input type = "password" name = "oldPassword" placeholder = "옛 비밀번호"
-		value = "">
+		value = "" required>
 	<input type = "password" name = "newPassword" placeholder = "수정할 비밀번호"
-		value = "">
+		value = "" required>
 	<button>회원 비밀번호 확인</button>
 </form>
 

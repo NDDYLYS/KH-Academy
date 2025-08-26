@@ -82,12 +82,8 @@ public class StudentController
 	{
 		StudentDto studentDto = studentDao.selectOne(studentNo);
 		if (studentDto == null) 
-		{
-			//return "redirect:list"; // 에러페이지매핑
-			//throw new RuntimeException("존재하지 않는 포켓몬 번호");
 			throw new TargetNotfoundException("존재하지 않는 학생 번호");
-		}
-		
+
 		model.addAttribute("studentDto", studentDto);
 		return "/WEB-INF/views/student/edit.jsp";
 	}
@@ -104,9 +100,7 @@ public class StudentController
 	{
 		StudentDto studentDto = studentDao.selectOne(studentNo);
 		if (studentDto == null) 
-		{
 			throw new TargetNotfoundException("존재하지 않는 학생 번호");
-		}
 		
 		studentDao.delete(studentNo);
 		return "redirect:list";

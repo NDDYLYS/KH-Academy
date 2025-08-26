@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
 
 @ControllerAdvice //컨트롤러에 간섭하는 잔소리꾼
-public class EmptyStringAdvice 
+public class EmptySpringControllerAdvice 
 {
 	@InitBinder
 	public void InitBinder(WebDataBinder binder) 

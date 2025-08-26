@@ -9,7 +9,7 @@
 
 <c:choose>
     <c:when test="${memberDto == null}">
-        존재하지 않는 회원 정보입니다.
+<!--         존재하지 않는 회원 정보입니다. -->
     </c:when>
     <c:otherwise>
         <table border = "1" width = "900">
@@ -48,5 +48,9 @@
         </table>
     </c:otherwise>
 </c:choose>
+
+<h2><a href = "/admin/crud/edit?memberId=${memberDto.memberId}"">정보 수정</a></h2>
+<h2><a href = "/admin/crud/password?memberId=${memberDto.memberId}"">비밀번호 수정</a></h2>
+<h2><a href = "/admin/crud/drop?memberId=${memberDto.memberId}">강퇴</a></h2>
     
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

@@ -24,7 +24,7 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 	{
 		//registry.addInterceptor(testInterceptor).addPathPatterns("/**");
 		registry.addInterceptor(memberLoginInterceptor)
-		.addPathPatterns("/student/**", "book/**", "/member/**")
+		.addPathPatterns("/student/**", "book/**", "/member/**", "admin/**")
 		.excludePathPatterns("/member/join*", 
 				"/member/login", "/member/goodbye").order(1);
 		
@@ -32,6 +32,6 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 		.addPathPatterns("book/**").order(2);
 		
 		registry.addInterceptor(adminInterceptor)
-		.addPathPatterns("/member/list").order(3);
+		.addPathPatterns("/admin/**").order(3);
 	}
 }

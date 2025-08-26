@@ -38,4 +38,14 @@ public class AdminMemberController
 		}
 		return "/WEB-INF/views/admin/member/list.jsp";
 	}
+	
+	@RequestMapping("/detail")
+	public String detail(Model model, 
+			@RequestParam String memberId) 
+	{
+		MemberDto memberDto = memberDao.selectOne(memberId);
+		model.addAttribute("memberDto", memberDto);
+		
+		return "/WEB-INF/views/admin/member/detail.jsp";
+	}
 }

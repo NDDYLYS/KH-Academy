@@ -7,8 +7,8 @@
  
 <h1>회원 ${isSearch ? "검색" : "목록"}</h1>
 
-<h2><a href = "save">신규 회원 등록</a></h2>
-<h2><a href = "list">회원 목록 보기</a></h2>
+<!-- <h2><a href = "save">신규 회원 등록</a></h2> -->
+<!-- <h2><a href = "list">회원 목록 보기</a></h2> -->
 
 <form action="list" method="get">
 	<select name="column">
@@ -43,7 +43,7 @@
 		<tbody align = "center">
 			<c:forEach var = "memberDto" items = "${ memberList }">
 				<tr>
-					<td><a href="detail?memberId=${memberDto.memberId}">${ memberDto.memberId }</a></td>
+					<td><a href="/admin/member/detail?memberId=${memberDto.memberId}">${ memberDto.memberId }</a></td>
 					<td>${ memberDto.memberNickname}</td>
 					<td>${ memberDto.memberBirth}</td>
 					<td>${ memberDto.memberContact}</td>

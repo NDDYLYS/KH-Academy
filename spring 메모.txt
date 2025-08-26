@@ -816,3 +816,150 @@ String loginId = (String)session.getAttribute("loginId");
 정보를 변경하는 경우는 크게 두 가지
 1. 회원이 자기 정보를 변경
 2. 관리자가 회원의 정보를 변경
+
+
+*** 250826
+
+비정상적인 접근 차단 (주소를 통한 비화원의 관리자 기능 접근 차단)
+ -> 인터셉터, 필터(스프링)
+
+
+
+@Controller // MVC Controller, View 반환
+@RestController // REST API Controller, JSON 등 데이터 반환
+@Component // 범용적인 스프링 Bean 등록
+@Repository // DB 접근 계층, 예외 변환 기능 포함
+
+@Service // 복합적인 기능을 수행하는 도구
+
+@Autowired를 쓰면 @Service, 안 쓰면 @Component
+
+*** 인터셉터 코드
+
+@Service
+public class TestInterceptor implements HandlerInterceptor
+{
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+		System.out.println("테스트 인터셉터 실행");
+		return false;
+	}
+}
+
+// application.properties에서 할 수 없는 프로그래밍 설정을 수행한다
+@Configuration
+public class InterceptorConfiguration implements WebMvcConfigurer
+{
+	@Autowired
+	private TestInterceptor testInterceptor;
+	@Autowired
+	private MemberLoginInterceptor memberLoginInterceptor;
+	
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) // 인터셉터 등록메소드
+	{
+		registry.addInterceptor(memberLoginInterceptor)
+		.addPathPatterns("/student/**", "book/**", "/member/**")
+		.excludePathPatterns("/member/join*", 
+				"/member/login", "/member/goodbye").order(1);
+		
+		registry.addInterceptor(advencedMemberInterceptor)
+		.addPathPatterns("book/**").order(2);
+		
+		registry.addInterceptor(adminInterceptor)
+		.addPathPatterns("/member/list").order(3);
+	}
+}
+
+스프링에서는 주소 패턴을 위해 다음과 같은 기호를 제공
+*를 이용해서 지정한 대상과 동일한 엔드포인트 내의 모든 항목을 지정
+**를 이용해서 지정한 대상과 하위 모든 항목을 지정
+/student/add* : /student/add, /student/addFinish 포함
+/** 모든 주소 : 
+
+@Service
+public class MemberLoginInterceptor implements HandlerInterceptor
+{
+	@Override
+	public boolean preHandle(HttpServletRequest request, // 요청 정보가 담긴 객체, 사용자 정보
+			HttpServletResponse response, // 응답 정보가 담긴 객체, 사용자에게 나갈 정보
+			Object handler)
+			throws Exception {
+
+		// 사용자의 정보를 조회하고 싶을 때는 Request 사용 (파라미터, 세션, 쿠키)
+		// 사용자의 결과화면을 제어하고 싶을 떄는 Response 사용 (에러처리, 리다이렉트)
+		HttpSession session = request.getSession();
+		String loginId = (String)session.getAttribute("loginId");
+		// 세션에 loginId가 존재한다면
+		boolean isMember = loginId != null;
+		
+		System.out.println("멤버 로그인 인터셉터 실행");
+		if (isMember) // 회원이면
+		{
+			return true;			
+		}
+		else 
+		{
+			// 차단하기 전에 사용자에게 보여줄 내용을 설정하도록 구현
+			// [1] 로그인 페이지로 리다이렉트 - 화면을 JSP로 만들 때 유용
+			// response.sendRedirect("/member/login");
+			// [2] http 표준 상태번호를 전송 - 화면을 다른 기술러 구현할 때
+			// response.sendError(401);
+			// [3] 예외처리(가장 권장) - 예외 클래스를 만들어야 함
+			// throw new UnauthorizationException("로그인이 필요합니다.");
+			return false;
+		}
+		
+	}
+}
+
+
+***
+
+http 표준 상태번호
+1xx 실시간 연결
+2xx 성공
+3xx 다른데로 이동
+4xx 없거나 안됨
+5xx 오류
+
+
+InterceptorConfiguration.order(int);
+
+** 에러페이지
+
+4xx, 5xx이 에러 취급
+4xx은 상황상 안되는 경우
+5xx는 만들다 에러가 발생한 경우
+
+Spring의 핵심부품인 DispatcherServlet을 기준으로 봤을 때
+4xx은 DispatcherServlet이 일을 시킬 대상이 없는 것
+ = 컨투롤러가 실행이 안된 상황
+5xx은 DispatcherServlet이 일을 시켰는데 문제가 생긴 것
+ = 컨트롤러가 실행이 된 상황
+ = 스프링에서 처리해야 하는 핵심적인 에러
+
+컨트롤러어드바이스
+
+error 페이지는 무조건 절대경로여야 한다
+
+e.getMassage();
+
+@ControllerAdvice
+public class ExceptionControllerAdvice 
+{
+	@ExceptionHandler(TargetNotfoundException.class)
+	public String notFound(TargetNotfoundException e, Model model	) 
+	{
+		// 컨트롤러에서 작성 가능한 코드라면 뭐든지 가능
+		model.addAttribute("title", e.getMessage());
+		return "/WEB-INF/views/error/notFound.jsp";
+	}
+}
+
+JSP에서 ${ title }로 사용 가능
+
+
+@ControllerAdvice.@ExceptionHandler

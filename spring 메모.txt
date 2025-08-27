@@ -1019,3 +1019,18 @@ select book_genre title, count(*) value from book group by book_genre;
 select pokemon_type title, count(*) value from pokemon group by pokemon_type;
 
 * Dto : 테이블을 옮겨담기 위한 도구
+
+* 통계를 위한 Value Object
+
+package com.kh.spring09home.vo;
+
+import lombok.Data;
+
+// Value Object
+// 테이블이 아닌 데이터를 내 입맛에 맞게 모아서 사용하고자 할 때 만드는 클래스
+@Data
+public class StatVO 
+{
+	private String title;
+	private double value;
+}

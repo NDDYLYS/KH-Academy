@@ -18,6 +18,8 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 	private AdvencedMemberInterceptor advencedMemberInterceptor;
 	@Autowired
 	private AdminInterceptor adminInterceptor;
+	@Autowired
+	private PreventAdminInterceptor preventAdminInterceptor;
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) // 인터셉터 등록메소드
@@ -33,5 +35,9 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 		
 		registry.addInterceptor(adminInterceptor)
 		.addPathPatterns("/admin/**").order(3);
+		
+		registry.addInterceptor(preventAdminInterceptor)
+		.addPathPatterns("/admin/member/detail", "/admin/crud/edit", "/admin/crud/drop")
+		.order(4);
 	}
 }

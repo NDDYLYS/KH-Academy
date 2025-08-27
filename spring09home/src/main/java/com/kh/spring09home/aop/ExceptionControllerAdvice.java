@@ -39,6 +39,7 @@ public class ExceptionControllerAdvice
 	public String all(Exception e, Model model	) 
 	{
 		// 컨트롤러에서 작성 가능한 코드라면 뭐든지 가능
+		e.printStackTrace();
 		model.addAttribute("title", e.getMessage());
 		return "/WEB-INF/views/error/all.jsp";
 	}

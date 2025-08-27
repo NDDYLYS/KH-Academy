@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.MemberDao;
 import com.kh.spring09home.dto.MemberDto;
+import com.kh.spring09home.error.TargetNotfoundException;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -30,6 +31,9 @@ public class AdminCRUDController
 	@PostMapping("/drop")
 	public String drop(@RequestParam String memberId) 
 	{
+		MemberDto memberDto = memberDao.selectOne(memberId);
+		if (memberDto == null)
+			throw new TargetNotfoundException("존재하지 않는 회원");
 		memberDao.delete(memberId);
 		return "redirect:goodbye";
 	}
@@ -46,6 +50,8 @@ public class AdminCRUDController
 			@RequestParam String memberId)
 	{
 		MemberDto memberDto = memberDao.selectOne(memberId);
+		if (memberDto == null)
+			throw new TargetNotfoundException("존재하지 않는 회원");
 		model.addAttribute("memberDto", memberDto);
 		return "/WEB-INF/views/admin/crud/edit.jsp";
 	}
@@ -53,6 +59,8 @@ public class AdminCRUDController
 	@PostMapping("/edit")
 	public String edit(@ModelAttribute MemberDto memberDto) 
 	{
+		if (memberDto == null)
+			throw new TargetNotfoundException("존재하지 않는 회원");
 		memberDao.updateMember(memberDto);
 		return "redirect:/admin/member/detail?memberId=" + memberDto.getMemberId();
 	}
@@ -62,6 +70,8 @@ public class AdminCRUDController
 			@RequestParam String memberId) 
 	{
 		MemberDto memberDto = memberDao.selectOne(memberId);
+		if (memberDto == null)
+			throw new TargetNotfoundException("존재하지 않는 회원");
 		model.addAttribute("memberDto", memberDto);
 		return "/WEB-INF/views/admin/crud/password.jsp";
 	}
@@ -69,6 +79,8 @@ public class AdminCRUDController
 	@PostMapping("/password")
 	public String password(@ModelAttribute MemberDto memberDto) 
 	{
+		if (memberDto == null)
+			throw new TargetNotfoundException("존재하지 않는 회원");
 		memberDao.updatePassword(memberDto);
 		return "redirect:/admin/member/detail?memberId=" + memberDto.getMemberId();
 	}

@@ -99,13 +99,16 @@ public class MemberController
 			
 			memberDao.loginUser(findDto.getMemberId());
 			
-			Timestamp now = new Timestamp(System.currentTimeMillis());
-			Timestamp lastChange = findDto.getMemberChange();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(lastChange);
-			cal.add(Calendar.DAY_OF_MONTH, 30); // 30일 뒤
-			if (now.after(lastChange))
-				return "redirect:password";
+			if (findDto.getMemberChange() != null) 
+			{				
+				Timestamp now = new Timestamp(System.currentTimeMillis());
+				Timestamp lastChange = findDto.getMemberChange();
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(lastChange);
+				cal.add(Calendar.DAY_OF_MONTH, 30); // 30일 뒤
+				if (now.after(lastChange))
+					return "redirect:password";
+			}
 			return "redirect:/";
 		}
 		else 

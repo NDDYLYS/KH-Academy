@@ -6,6 +6,6 @@
 <h1>needPermission - ${ title }</h1>
     
 <!--     403 -->
-<image src = "/images/error/google-logo.png">
+<image src = "/images/error/401.png" width = "200">
 	
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

@@ -19,10 +19,14 @@
 	value = "${memberDto.memberContact}" required placeholder = "연락처">
 	<input type = "text" name = "memberEmail" 
 	value = "${memberDto.memberEmail}" placeholder = "이메일" inputmode = "email">
-	<input type = "text" name = "memberLevel"
-	value = "${memberDto.memberLevel}" placeholder = "등급">
+<!-- 	<input type = "text" name = "memberLevel" -->
+<%-- 	value = "${memberDto.memberLevel}" placeholder = "등급"> --%>
+	<select name = "memberLevel">
+		<option ${memberDto.memberLevel == '일반회원' ? 'selected' : ''}>일반회원</option>
+		<option ${memberDto.memberLevel == '우수회원' ? 'selected' : ''}>우수회원</option>
+	</select>
 	<input type = "text" name = "memberPoint" 
-	value = "${memberDto.memberPoint}" placeholder = "포인트">
+	value = "${memberDto.memberPoint}" placeholder = "포인트" inputmode = "numeric">
 	<input type = "text" name = "memberPost" 
 	value = "${memberDto.memberPost}" placeholder = "우편번호" inputmode = "numeric">
 	<input type = "text" name = "memberAddress1" 

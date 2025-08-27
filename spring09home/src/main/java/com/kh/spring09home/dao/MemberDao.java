@@ -103,6 +103,25 @@ public class MemberDao
     	return jdbcTemplate.query(sql, memberMapper);
 	}
 	
+	public List<MemberDto> selectListByAdmin(String loginId, String column, String keyword)
+	{
+//		Set<String> allowList = Set.of("member_id");
+//		
+//		if (allowList.contains(column) == false)
+//			return List.of(); // 비어있는 리스트;	
+		
+		String sql = "select * from member where member_level != '관리자' and instr("+column+", ?) > 0"
+				+ " order by "+column+" asc, member_id asc";
+		Object[] params = {keyword};
+		return jdbcTemplate.query(sql, memberMapper, params);
+	}
+	
+	public List<MemberDto> selectListByAdmin(String loginId)
+	{
+		String sql = "select * from member WHERE member_level != '관리자' order by member_id asc";
+    	return jdbcTemplate.query(sql, memberMapper);
+	}
+	
 	public MemberDto selectOne(String memberId) 
 	{
 		String sql = "select * from member where member_id = ?";

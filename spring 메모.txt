@@ -1106,11 +1106,12 @@ BoardDto
 BoardMapper
 BoardController
 
-/board/list
--> /board/detail
--> /board/write
--> /board/edit
--> /board/delete
+/board/list 목록 보기
+/board/detail 상세 보기
+/board/write 글 작성
+/board/edit 글 수정
+/board/delete 글 삭제
+
 글 작성 후 상세로 가는게 일반적이지만 목록으로 가면 난이도 하락
 
 상세보기
@@ -1120,3 +1121,5 @@ BoardController
 -> 목록
 -> 이동(관리자 기능)
 -> 답글(미구현)
+
+referencs 테이블(컬럼명)

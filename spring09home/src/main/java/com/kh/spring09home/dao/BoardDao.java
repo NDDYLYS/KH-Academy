@@ -20,8 +20,8 @@ public class BoardDao
 	
 	public void add(BoardDto boardDto) 
 	{
-		String sql = "insert into board (board_title, board_content) "
-				+ "values (?, ?)";
+		String sql = "insert into board (board_no, board_title, board_content, board_notice) "
+				+ "values (board_seq.nextval, ?, ?, 'N')";
 		Object[] params = 
 			{
 				boardDto.getBoardTitle(),
@@ -43,7 +43,7 @@ public class BoardDao
     	return 0 < jdbcTemplate.update(sql, params);
 	}
 	
-	public boolean delete(int boardNo) 
+	public boolean delete(long boardNo) 
 	{
 		String sql = "delete board where board_no=?";
 		Object[] params = {	boardNo	};
@@ -58,7 +58,7 @@ public class BoardDao
 		if (allowList.contains(column) == false)
 			return List.of(); // 비어있는 리스트;	
 		
-		String sql = "select * from book where instr("+column+", ?) > 0 "
+		String sql = "select * from board where instr("+column+", ?) > 0 "
 				+ "order by "+column+" asc, board_no asc";
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, boardMapper, params);
@@ -70,11 +70,27 @@ public class BoardDao
     	return jdbcTemplate.query(sql, boardMapper);
 	}
 
-	public BoardDto selectOne(int boardNo) 
+	public BoardDto selectOne(long boardNo) 
 	{
 		String sql = "select * from board where book_id = ?";
 		Object[] params = {boardNo};
 		List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
 		return list.isEmpty()? null : list.get(0);
+	}
+	
+	public void read(long boardNo) 
+	{
+		String sql = "update board set board_read=board_read+1"
+				+ " where board_no = ?";
+		Object[] params = {boardNo};
+		jdbcTemplate.update(sql, params);
+	}
+	
+	public void like(long boardNo) 
+	{
+		String sql = "update board set board_like=board_like+1"
+				+ " where board_no = ?";
+		Object[] params = {boardNo};
+		jdbcTemplate.update(sql, params);
 	}
 }

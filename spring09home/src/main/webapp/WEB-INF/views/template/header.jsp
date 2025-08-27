@@ -20,6 +20,7 @@
 		<a href = "/student/list">Student</a>
 		<a href = "/member/mypage">내 정보</a>
 		<a href = "/member/logout">로그아웃</a>
+		<a href = "/board/list" style="float: right;">자유 게시판</a>
 	</c:when>
 	<c:when  test="${sessionScope.loginId != null && sessionScope.loginLevel == '우수회원'}">
 		<a href = "/">Home</a>
@@ -28,6 +29,7 @@
 		<a href = "/book/list">Book</a>
 		<a href = "/member/mypage">내 정보</a>
 		<a href = "/member/logout">로그아웃</a>
+		<a href = "/board/list" style="float: right;">자유 게시판</a>
 	</c:when>
 	<c:when  test="${sessionScope.loginId != null && sessionScope.loginLevel == '관리자'}">
 		<a href = "/">Home</a>
@@ -36,6 +38,7 @@
 		<a href = "/book/list">Book</a>
 		<a href = "/member/logout">로그아웃</a>
 		<a href = "/admin/home">[관리메뉴]</a>
+		<a href = "/board/list" style="float: right;">자유 게시판</a>
 	</c:when>
 	<c:otherwise>
 		<a href = "/">Home</a>

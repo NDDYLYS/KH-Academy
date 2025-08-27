@@ -21,6 +21,13 @@ public class AdminStatController
 		return "/WEB-INF/views/admin/stat/pokemon.jsp";
 	}
 	
+	@RequestMapping("/student")
+	public String student(Model model) 
+	{
+		model.addAttribute("statList", statDao.countByStudentDaily());
+		return "/WEB-INF/views/admin/stat/student.jsp";
+	}
+	
 	@RequestMapping("/book")
 	public String book(Model model) 
 	{

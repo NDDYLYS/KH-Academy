@@ -88,7 +88,7 @@
   }
 </style>
       
-<marquee direction="right" scrollamount="5"><p>이 글자를 <span class="shake">쉐이크!</span></p></marquee>
+<marquee direction="right" scrollamount="25"><p>이 글자를 <span class="shake">쉐이크!</span></p></marquee>
 <div class="move">
 	<div class="center-text">
 		<div class="rotation">날 잡아봐</div>

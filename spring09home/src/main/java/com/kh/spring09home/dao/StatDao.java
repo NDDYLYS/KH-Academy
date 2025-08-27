@@ -25,6 +25,15 @@ public class StatDao
 		return jdbcTemplate.query(sql, statMapper);
 	}
 	
+	public List<StatVO> countByStudentDaily()
+	{
+		String sql = "select to_char(student_reg, 'YYYY-MM-DD')"
+				+ " title, count(*) value from STUDENT group by"
+				+ " to_char(student_reg, 'YYYY-MM-DD') order by"
+				+ " value desc, title asc";
+		return jdbcTemplate.query(sql, statMapper);
+	}
+	
 	public List<StatVO> countByBookGenre()
 	{
 		String sql = "select book_genre title, count(*) value from "

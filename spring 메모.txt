@@ -983,3 +983,39 @@ afterCompletion
 필터 : 요청 전에 간섭할 수 있다
 
 
+통계 작업
+
+테이블의 데이터를 요약해서 새로운 정보를 만들어내기 위한 명령 함수
+소속 되어야 하는 건 메소드
+혼자 있을 수 있는건 함수
+count, sum, avg, min, max
+select * from pokemon;
+
+length(pokemon_name)
+upper(pokemon_name)
+집계함수는 데이터를 요약해서 반환하므려 결과의 데이터 개수가 다르다
+
+select count(*) from pokemon;
+
+single-row는 기존 데이터 불러오기랑 같이 쓸 수 있지만
+aggregage는 단독으로만 쓸 수 있다
+
+그룹을 만들고 싶다면 조회 뒤에 group by를 적어서 묶을 항목을 지정한다
+select book_genre 장르, count(*) 권수, min(book_price) 최저가, max(book_price) 최고가, avg(book_price) 평균가 from book group by BOOK_GENRE ;
+
+select distinct book_genre from book;
+중복 제거 distinct
+
+* 별칭 정하기에서 ""가 있으면 띄어쓰기를 적을 수 있다
+
+별칭을 통일하여 한 번에 처리하도록 변경
+
+select member_level 회원등급, count(*) 등급별인원수, sum(member_point) 포인트합계 from member group by member_level;
+
+>
+
+select member_level title, count(*) value from member group by member_level;
+select book_genre title, count(*) value from book group by book_genre;
+select pokemon_type title, count(*) value from pokemon group by pokemon_type;
+
+* Dto : 테이블을 옮겨담기 위한 도구

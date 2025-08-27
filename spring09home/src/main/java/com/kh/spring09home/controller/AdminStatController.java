@@ -28,10 +28,10 @@ public class AdminStatController
 		return "/WEB-INF/views/admin/stat/book.jsp";
 	}
 	
-	@RequestMapping("/student")
-	public String student(Model model) 
+	@RequestMapping("/member")
+	public String member(Model model) 
 	{
 		model.addAttribute("statList", statDao.countByMemberLevel());
-		return "/WEB-INF/views/admin/stat/student.jsp";
+		return "/WEB-INF/views/admin/stat/member.jsp";
 	}
 }

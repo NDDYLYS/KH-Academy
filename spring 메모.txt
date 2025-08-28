@@ -1123,3 +1123,23 @@ BoardController
 -> 답글(미구현)
 
 referencs 테이블(컬럼명)
+
+
+* 쿼리문 반복문
+BEGIN
+  FOR i IN 50..90 LOOP
+    INSERT INTO "KH16"."BOARD" (
+      "BOARD_NO",
+      "BOARD_TITLE",
+      "BOARD_WRITER",
+      "BOARD_CONTENT",
+      "BOARD_NOTICE"
+    ) VALUES (
+    	board_seq.nextval,
+      '페이징용제목' || i,
+      'testuser' || i,
+      '페이징용내용' || i,
+      'N'
+    );
+  END LOOP;
+END;

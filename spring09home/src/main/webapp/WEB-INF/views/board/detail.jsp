@@ -15,7 +15,9 @@
 
 
 <%-- <a href = "/board/like?boardNo=${boardDto.boardNo}" style="float: left;"> [좋아요] </a> --%>
-<a href = "/board/delete?boardNo=${boardDto.boardNo}" style="float: right;"> [삭제] </a>
-<a href = "/board/update?boardNo=${boardDto.boardNo}" style="float: right;"> [수정] </a>
+<%-- <c:if test="${!buttonShow}"> --%>
+	<a href = "/board/delete?boardNo=${boardDto.boardNo}" style="float: right;"> [삭제] </a>
+	<a href = "/board/update?boardNo=${boardDto.boardNo}" style="float: right;"> [수정] </a>
+<%-- </c:if> --%>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

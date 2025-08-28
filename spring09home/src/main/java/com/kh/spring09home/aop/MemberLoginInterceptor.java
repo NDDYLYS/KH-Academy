@@ -25,7 +25,7 @@ public class MemberLoginInterceptor implements HandlerInterceptor
 		// 세션에 loginId가 존재한다면
 		boolean isMember = loginId != null;
 		
-		System.out.println("멤버 로그인 인터셉터 실행");
+		//System.out.println("멤버 로그인 인터셉터 실행");
 		if (isMember) // 회원이면
 		{
 			return true;			

@@ -26,11 +26,28 @@
 				<td>${ boardDto.boardNo }</td>
 				<td><a href="detail?boardNo=${boardDto.boardNo}">${ boardDto.boardTitle }</a></td>
 				<td>${ boardDto.boardWriter }</td>
-				<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+				<c:choose>
+					<c:when test="${ boardDto.nextDay() }">
+						<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd"/></td>
+					</c:when>				
+					<c:otherwise>
+						<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="HH:mm"/></td>
+					</c:otherwise>
+				</c:choose>
 				<td>${ boardDto.boardRead }</td>
 				<td>${ boardDto.boardLike }</td>
 			</tr>
 		</c:forEach>
+		
+<!-- 		<tfooter align = "center"> -->
+<!-- 			<tr> -->
+<%-- 				<c:forEach var = "i" begin="1" end="${ boardCount / 10 }"> --%>
+<!-- 					<td> -->
+<%-- 						<a href="#">${ i } --%>
+<!-- 					</td> -->
+<%-- 				</c:forEach> --%>
+<!-- 			</tr> -->
+<!-- 		</tfooter> -->
 	</tbody>
 </table>
 

@@ -1,5 +1,8 @@
 package com.kh.spring09home.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.BoardDao;
 import com.kh.spring09home.dto.BoardDto;
-import com.kh.spring09home.dto.BookDto;
 import com.kh.spring09home.error.TargetNotfoundException;
 
 import jakarta.servlet.http.HttpSession;
@@ -25,20 +27,27 @@ public class BoardController {
 	private BoardDao boardDao;
 
 	@RequestMapping("/list")
-	public String list(Model model, @RequestParam(required = false) String column,
+	public String list(Model model, 
+			@RequestParam(required = false) String column,
 			@RequestParam(required = false) String keyword) {
 		boolean isSearch = column != null && keyword != null;
 		model.addAttribute("isSearch", isSearch);
 		model.addAttribute("column", column);
 		model.addAttribute("keyword", keyword);
 
-		if (isSearch) {
-			List<BoardDto> boardList = boardDao.selectList(column, keyword);
-			model.addAttribute("boardList", boardList);
-		} else {
-			List<BoardDto> boardList = boardDao.selectList();
-			model.addAttribute("boardList", boardList);
+		List<BoardDto> boardList = null;
+		if (isSearch) 
+		{
+			boardList = boardDao.selectList(column, keyword);
+		} 
+		else 
+		{
+			boardList = boardDao.selectList();
 		}
+		
+		//int boardCount = boardList.size();
+		//model.addAttribute("boardCount", boardCount);
+		model.addAttribute("boardList", boardList);
 		return "/WEB-INF/views/board/list.jsp";
 	}
 
@@ -63,12 +72,16 @@ public class BoardController {
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
 			throw new TargetNotfoundException("존재하지 않는 게시글 번호");
+		boolean buttonShow = false;
 		String loginId = (String)session.getAttribute("loginId");
 		if (!loginId.equals(boardDto.getBoardWriter())) 
 		{
 			// 게시글의 작성자와 로그인한 세션의 아이디가 달랐을 때만 조회수가 오름
 			boardDao.read(boardNo);
+			buttonShow = true;
 		}
+		
+		model.addAttribute("buttonShow", buttonShow);
 		model.addAttribute("boardDto", boardDto);
 
 		return "/WEB-INF/views/board/detail.jsp";
@@ -112,5 +125,4 @@ public class BoardController {
 		boardDao.delete(boardNo);
 		return "redirect:list";
 	}
-
 }

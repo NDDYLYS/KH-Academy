@@ -1,7 +1,6 @@
 package com.kh.spring09home.error;
 
-public class NeedPermissionException extends RuntimeException
-{
+public class NeedPermissionException extends RuntimeException {
 	private static final long serialVersionUID = 1;
 
 	public NeedPermissionException() {

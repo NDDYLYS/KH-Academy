@@ -14,47 +14,103 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.spring09home.dao.BoardDao;
 import com.kh.spring09home.dto.BoardDto;
 import com.kh.spring09home.dto.BookDto;
+import com.kh.spring09home.error.TargetNotfoundException;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/board")
-public class BoardController 
-{
+public class BoardController {
 	@Autowired
 	private BoardDao boardDao;
-	
+
 	@RequestMapping("/list")
-	public String list(Model model, 
-			@RequestParam(required = false) String column, 
-			@RequestParam(required = false) String keyword) 
-	{
+	public String list(Model model, @RequestParam(required = false) String column,
+			@RequestParam(required = false) String keyword) {
 		boolean isSearch = column != null && keyword != null;
 		model.addAttribute("isSearch", isSearch);
 		model.addAttribute("column", column);
 		model.addAttribute("keyword", keyword);
-		
-		if (isSearch) 
-		{
+
+		if (isSearch) {
 			List<BoardDto> boardList = boardDao.selectList(column, keyword);
-			model.addAttribute("boardList", boardList);			
-		}
-		else 
-		{
+			model.addAttribute("boardList", boardList);
+		} else {
 			List<BoardDto> boardList = boardDao.selectList();
 			model.addAttribute("boardList", boardList);
 		}
 		return "/WEB-INF/views/board/list.jsp";
 	}
-	
-	@GetMapping("/add")
-	public String add() 
-	{
-		return "/WEB-INF/views/board/add.jsp";
+
+	@GetMapping("/insert")
+	public String insert() {
+		return "/WEB-INF/views/board/insert.jsp";
 	}
-	
-	@PostMapping("/add")
-	public String add(@ModelAttribute BoardDto boardDto) 
-	{
-		boardDao.add(boardDto);
+
+	@PostMapping("/insert")
+	public String insert(HttpSession session,
+			@ModelAttribute BoardDto boardDto) {
+		String loginId = (String)session.getAttribute("loginId");
+		boardDto.setBoardWriter(loginId);
+		boardDao.insert(boardDto);
 		return "redirect:/board/list";
 	}
+
+	@RequestMapping("/detail")
+	public String detail(HttpSession session,
+			Model model, 
+			@RequestParam long boardNo) {
+		BoardDto boardDto = boardDao.selectOne(boardNo);
+		if (boardDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 게시글 번호");
+		String loginId = (String)session.getAttribute("loginId");
+		if (!loginId.equals(boardDto.getBoardWriter())) 
+		{
+			// 게시글의 작성자와 로그인한 세션의 아이디가 달랐을 때만 조회수가 오름
+			boardDao.read(boardNo);
+		}
+		model.addAttribute("boardDto", boardDto);
+
+		return "/WEB-INF/views/board/detail.jsp";
+	}
+	
+//	@RequestMapping("/like")
+//	public String like(Model model,
+//			@RequestParam long boardNo) {
+//		BoardDto boardDto = boardDao.selectOne(boardNo);
+//		if (boardDto == null) 
+//			throw new TargetNotfoundException("존재하지 않는 게시글 번호");
+//		model.addAttribute("boardDto", boardDto);
+//		boardDao.like(boardNo);
+//		return "/WEB-INF/views/board/detail.jsp";
+//	}
+	
+	@GetMapping("/update")
+	public String update(Model model,
+			@RequestParam long boardNo)
+	{
+		BoardDto boardDto = boardDao.selectOne(boardNo);
+		if (boardDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 게시글 번호");
+		model.addAttribute("boardDto", boardDto);
+		return "/WEB-INF/views/board/update.jsp";
+	}
+	
+	@PostMapping("/update")
+	public String update(@ModelAttribute BoardDto boardDto) 
+	{
+		boardDao.update(boardDto);
+		return "redirect:detail?boardNo=" + boardDto.getBoardNo();
+	}
+	
+	@RequestMapping("/delete")
+	public String delete(@RequestParam long boardNo)
+	{
+		BoardDto boardDto = boardDao.selectOne(boardNo);
+		if (boardDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 게시글 번호");		
+		boardDao.delete(boardNo);
+		return "redirect:list";
+	}
+
 }

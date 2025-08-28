@@ -3,8 +3,8 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
  
-<h1>unauthorize - ${ title }</h1>
+<h1>미인증 - ${ title }</h1>
     
-<image src = "/images/error/facebook.png">
+//<image src = "/images/error/401.png">
     
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

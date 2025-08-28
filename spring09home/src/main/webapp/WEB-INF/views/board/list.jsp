@@ -7,15 +7,15 @@
 
 <h1 align="center">자유 게시판</h1>
 
-<a href = "/board/add" style="float: right;">글쓰기</a>
+<a href = "/board/insert" style="float: right;">글쓰기</a>
 
 <table border="1" width="1900">
 	<thead>
 		<tr>
 			<th width = "50">번호</th>
-			<th width = "1425">제목</th>
-			<th width = "100">저자</th>
-			<th width = "125">작성일자</th>
+			<th width = "1300">제목</th>
+			<th width = "200">저자</th>
+			<th width = "150">작성일자</th>
 			<th width = "75">조회수</th>
 			<th width = "75">좋아요</th>
 		</tr>
@@ -24,9 +24,9 @@
 		<c:forEach var = "boardDto" items = "${ boardList }">
 			<tr>
 				<td>${ boardDto.boardNo }</td>
-				<td><a href="detail?boardNo=${boardDto.boardNo}">${ boardDto.boradTitle }</a></td>
+				<td><a href="detail?boardNo=${boardDto.boardNo}">${ boardDto.boardTitle }</a></td>
 				<td>${ boardDto.boardWriter }</td>
-				<td>${ boardDto.boardWtime }</td>
+				<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<td>${ boardDto.boardRead }</td>
 				<td>${ boardDto.boardLike }</td>
 			</tr>

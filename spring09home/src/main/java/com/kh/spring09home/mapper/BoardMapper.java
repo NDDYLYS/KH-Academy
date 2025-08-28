@@ -19,7 +19,7 @@ public class BoardMapper implements RowMapper<BoardDto>
 		boardDto.setBoardWriter(rs.getString("board_writer"));
 		boardDto.setBoardWtime(rs.getTimestamp("board_wtime"));
 		boardDto.setBoardEtime(rs.getTimestamp("board_etime"));
-		boardDto.setBoardContent(rs.getString("board_cotent"));
+		boardDto.setBoardContent(rs.getString("board_content"));
 		boardDto.setBoardRead(rs.getLong("board_read"));
 		boardDto.setBoardLike(rs.getLong("board_like"));
 		boardDto.setBoardReply(rs.getInt("board_reply"));

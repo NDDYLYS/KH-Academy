@@ -18,19 +18,20 @@ public class BoardDao
 	@Autowired
 	private BoardMapper boardMapper;
 	
-	public void add(BoardDto boardDto) 
+	public void insert(BoardDto boardDto) 
 	{
-		String sql = "insert into board (board_no, board_title, board_content, board_notice) "
-				+ "values (board_seq.nextval, ?, ?, 'N')";
+		String sql = "insert into board (board_no, board_title, board_writer, board_content, board_notice) "
+				+ "values (board_seq.nextval, ?, ?, ?, 'N')";
 		Object[] params = 
 			{
 				boardDto.getBoardTitle(),
+				boardDto.getBoardWriter(),
 				boardDto.getBoardContent()
 			};
 		jdbcTemplate.update(sql, params);
 	}
 	
-	public boolean edit(BoardDto boardDto) 
+	public boolean update(BoardDto boardDto) 
 	{
 		String sql = "update board set board_title=?, "
 				+ "board_content=? where board_no=?";
@@ -59,20 +60,20 @@ public class BoardDao
 			return List.of(); // 비어있는 리스트;	
 		
 		String sql = "select * from board where instr("+column+", ?) > 0 "
-				+ "order by "+column+" asc, board_no asc";
+				+ "order by board_wtime desc, "+column+" asc, board_no asc";
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, boardMapper, params);
 	}
 	
 	public List<BoardDto> selectList()
 	{
-		String sql = "select * from board order by board_no asc";
+		String sql = "select * from board order by board_wtime desc, board_no asc";
     	return jdbcTemplate.query(sql, boardMapper);
 	}
 
 	public BoardDto selectOne(long boardNo) 
 	{
-		String sql = "select * from board where book_id = ?";
+		String sql = "select * from board where board_no = ?";
 		Object[] params = {boardNo};
 		List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
 		return list.isEmpty()? null : list.get(0);

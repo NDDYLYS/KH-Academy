@@ -18,12 +18,20 @@ public class BoardDao
 	@Autowired
 	private BoardMapper boardMapper;
 	
+	public int insertSequence() 
+	{
+		String sql = "select board_seq.nextval from dual";
+		return jdbcTemplate.queryForObject(sql, int.class);		
+	}
+	
 	public void insert(BoardDto boardDto) 
 	{
-		String sql = "insert into board (board_no, board_title, board_writer, board_content, board_notice) "
-				+ "values (board_seq.nextval, ?, ?, ?, 'N')";
+		String sql = "insert into board (board_no, board_title, "
+				+ "board_writer, board_content, board_notice) "
+				+ "values (?, ?, ?, ?, 'N')";
 		Object[] params = 
 			{
+				boardDto.getBoardNo(),
 				boardDto.getBoardTitle(),
 				boardDto.getBoardWriter(),
 				boardDto.getBoardContent()
@@ -60,14 +68,14 @@ public class BoardDao
 			return List.of(); // 비어있는 리스트;	
 		
 		String sql = "select * from board where instr("+column+", ?) > 0 "
-				+ "order by board_wtime desc, "+column+" asc, board_no asc";
+				+ "order by board_no desc, "+column+" asc, board_no asc";
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, boardMapper, params);
 	}
 	
 	public List<BoardDto> selectList()
 	{
-		String sql = "select * from board order by board_wtime desc, board_no asc";
+		String sql = "select * from board order by board_no desc, board_no asc";
     	return jdbcTemplate.query(sql, boardMapper);
 	}
 

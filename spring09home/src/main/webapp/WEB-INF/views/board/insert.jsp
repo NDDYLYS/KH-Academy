@@ -14,9 +14,9 @@
 
 <form action = "/board/insert" method = "post" align = "center">
 	<br>
-	<textarea name = "boardTitle" rows="2" cols="110" required></textarea>
+	<textarea name = "boardTitle" cols="110" required></textarea>
 	<br><br>
-	<textarea name = "boardContent" rows="30" cols="110" required></textarea>
+	<textarea name = "boardContent" rows="5" cols="110" required></textarea>
 	<br><br><br>
 	<button>글 등록</button>
 </form>

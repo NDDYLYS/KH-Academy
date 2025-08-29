@@ -61,14 +61,17 @@ public class BoardController {
 			@ModelAttribute BoardDto boardDto) {
 		String loginId = (String)session.getAttribute("loginId");
 		boardDto.setBoardWriter(loginId);
+		int boardNo = boardDao.insertSequence();
+		boardDto.setBoardNo(boardNo);
 		boardDao.insert(boardDto);
-		return "redirect:/board/list";
+		return "redirect:/board/detail?boardNo=" + boardNo;
 	}
 
 	@RequestMapping("/detail")
 	public String detail(HttpSession session,
 			Model model, 
 			@RequestParam long boardNo) {
+		
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
 			throw new TargetNotfoundException("존재하지 않는 게시글 번호");

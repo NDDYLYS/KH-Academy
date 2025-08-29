@@ -1212,6 +1212,8 @@ public String getBoardWriteTime()
 
 <textarea name = "boardContent" rows="5" cols="110" required></textarea>
 
+<textarea>는 사이에 공백, 줄바꿈이 있으면 안 된다</textarea>
+
 줄 바꿈과 띄어쓰기를 그대로 적용하기 <pre> 사용
 <pre>
 	<h1>본문 : ${boardDto.boardContent }</h1>

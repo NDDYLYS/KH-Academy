@@ -9,13 +9,13 @@
 <form action = "/board/update" method = "post" align = "center">
 	<input type = "hidden" name = "boardNo" value = "${ boardDto.boardNo }"required>
 	<br>
-	<textarea name = "boardTitle" rows="2" cols="110" required>
-		${ boardDto.boardTitle }
-	</textarea>
+		<textarea name = "boardTitle" cols="110" required>
+			${ boardDto.boardTitle }
+		</textarea>
 	<br><br>
-	<textarea name = "boardContent" rows="30" cols="110" required>
-		${boardDto.boardContent }
-	</textarea>
+		<textarea name = "boardContent" rows="5" cols="110" required>
+			${boardDto.boardContent }
+		</textarea>
 	<br><br><br>
 	<button>글 수정</button>
 </form>

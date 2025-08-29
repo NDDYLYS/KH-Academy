@@ -103,7 +103,7 @@ public class BoardController {
 	
 	@GetMapping("/update")
 	public String update(Model model,
-			@RequestParam long boardNo)
+			@RequestParam int boardNo)
 	{
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
@@ -120,7 +120,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/delete")
-	public String delete(@RequestParam long boardNo)
+	public String delete(@RequestParam int boardNo)
 	{
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 

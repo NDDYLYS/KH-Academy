@@ -1143,3 +1143,100 @@ BEGIN
     );
   END LOOP;
 END;
+
+*** 250829
+
+boardContent가 커서 list가 부담이 되면 Mapper를 하나 더 만든다
+<%-- 페이지 네비게이터 --%>
+<h2>이전 1 2 3 4 5 6 7 8 9 10 다음</h2>
+
+<form action="list">
+	<select name="column">
+		<option value="board_title" ${param.column == 'board_title' ? 'selected' : ''}>제목</option>
+		<option value="board_writer" ${param.column == 'board_writer' ? 'selected' : ''}>작성자</option>
+	</select>
+	<input type="text" name="keyword" value="${param.keyword}" required>
+	<button>검색</button>
+</form>
+
+<c:choose>
+	<c:when test="${ boardDto.nextDay() }">
+		<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd"/></td>
+	</c:when>				
+	<c:otherwise>
+		<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="HH:mm"/></td>
+	</c:otherwise>
+</c:choose>
+
+public boolean nextDay() 
+{
+	LocalDateTime wtime = boardWtime.toLocalDateTime();	
+	LocalDateTime now = LocalDateTime.now();
+	Duration d = Duration.between(wtime, now);
+	return d.toDays() >= 1;
+}
+
+
+게시글의 작성일 = 오늘 날짜
+
+LocalDateTime wtime = boardWtime.toLocalDateTime();	
+
+// 날짜
+return wtime.toLocalData().toString()
+
+// 시간
+return wtime.toLocalTime().toString()
+
+* 날짜비교
+
+public String getBoardWriteTime() 
+{
+	LocalDateTime wtime = boardWtime.toLocalDateTime();//작성시점을 LocalDateTime으로 변환
+	LocalDate today = LocalDate.now();//오늘날짜를 구하고
+	LocalDate wday = wtime.toLocalDate();//작성일자를 구해서
+	
+	if(wday.isBefore(today)) 
+	{	//이전에 작성한 글이라면
+		return wtime.toLocalDate().toString();//날짜 반환
+	}
+	else 
+	{
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm");
+		return wtime.toLocalTime().format(fmt);//시간 반환
+	}
+}
+
+@ExceptionHandler(value = {TargetNotfoundException.class, NoResourceFoundException.class})
+
+* textarea
+
+<textarea name = "boardContent" rows="5" cols="110" required></textarea>
+
+줄 바꿈과 띄어쓰기를 그대로 적용하기 <pre> 사용
+<pre>
+	<h1>본문 : ${boardDto.boardContent }</h1>
+</pre>
+
+
+select max(board_no) from board;
+쓰지 말 것
+
+* 쓰고 번호를 꺼내는게 아니라 번호를 꺼내고 등록한다
+
+select board_seq.nextval from dual;
+
+int처럼 자바의 기본데이터들은 Mapper 없이도 조회 가능
+public int insertSequence() 
+{
+	String sql = "select board_seq.nextval from dual";
+	return jdbcTemplate.queryForObject(sql, int.class);		
+}
+
+return type에 따라 .class가 바뀐다
+
+기존의 board_seq.nextval는 ?로 수정한다.
+
+게시글 작성 후 리스트로 가면 무쓸모, 상세페이지로 가면 insertSequence를 써야 함
+
+* dual 테이블
+아무런 데이터도 안 들어있는 채 조회용 테이블

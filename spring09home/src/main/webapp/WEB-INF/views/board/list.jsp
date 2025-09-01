@@ -7,7 +7,15 @@
 
 <h1 align="center">자유 게시판</h1>
 
-<a href = "/board/insert" style="float: right;">글쓰기</a>
+<c:choose>
+	<c:when test = "${ sessionScope.loginId != null }">
+		<a href = "/board/insert" style="float: right;">글쓰기</a>
+	</c:when>
+	<c:otherwise>
+		<a href = "/member/login" style="float: right;">로그인</a>을 해야 글을 작성할 수 있습니다
+<!-- 		../member/login -->
+	</c:otherwise>
+</c:choose>
 
 <table border="1" width="1900">
 	<thead>
@@ -51,7 +59,15 @@
 	</tbody>
 </table>
 
-<a href = "/board/insert" style="float: right;">글쓰기</a>
+<c:choose>
+	<c:when test = "${ sessionScope.loginId != null }">
+		<a href = "/board/insert" style="float: right;">글쓰기</a>
+	</c:when>
+	<c:otherwise>
+		<a href = "/member/login" style="float: right;">로그인</a>을 해야 글을 작성할 수 있습니다
+<!-- 		../member/login -->
+	</c:otherwise>
+</c:choose>
 
 <%-- 페이지 네비게이터 --%>
 <h2>이전 1 2 3 4 5 6 7 8 9 10 다음</h2>

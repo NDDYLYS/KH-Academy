@@ -45,6 +45,7 @@
 		<a href = "/pokemon/list">Pokemon</a>
 		<a href = "/member/join">회원가입</a>
 		<a href = "/member/login">로그인</a>
+		<a href = "/board/list" style="float: right;">자유 게시판</a>
 	</c:otherwise>
 </c:choose>
 

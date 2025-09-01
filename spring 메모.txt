@@ -1242,3 +1242,25 @@ return type에 따라 .class가 바뀐다
 
 * dual 테이블
 아무런 데이터도 안 들어있는 채 조회용 테이블
+
+** 250901
+
+
+* sessionScope
+
+<c:choose>
+	<c:when test = "${ sessionScope.loginId != null }"></c:when>
+	<c:otherwise></c:otherwise>
+</c:choose>
+*  JSP에서 로그인 여부
+
+
+@Service // 복합적인 기능을 수행하는 도구
+
+* getRequestURI()
+-> localhost:8080/ 제외
+-> 현재 가려는 페이지를 알 수 있다
+
+String uri = request.getRequestURI();
+if (loginLevel.equals("관리자") && uri.equals("/board/delete"))
+	return true;

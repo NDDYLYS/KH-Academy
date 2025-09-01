@@ -1264,3 +1264,96 @@ return type에 따라 .class가 바뀐다
 String uri = request.getRequestURI();
 if (loginLevel.equals("관리자") && uri.equals("/board/delete"))
 	return true;
+
+조회수 중복 증가 방지
+ - 평생에 1번		DB필요	(아이디, 글 번호)			-> 가벼운 DB(NoSQL - MongoDB)
+ - PC마다 1번		DB필요	(IP, GPS, 글 번호)			-> 가벼운 DB(NoSQL - MongoDB)
+ - 브라우저마다 1번	DB필요	(브라우저 시리얼번호, 글번호)	-> 가벼운 DB(NoSQL - MongoDB)
+ - 일정시간마다 1번	세션, 쿠키
+
+
+HttpSession session = request.getSession();
+String loginId = (String) session.getAttribute("loginId");
+int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+
+BoardDto boardDto = boardDao.selectOne(boardNo);
+if (boardDto == null)
+		throw new TargetNotfoundException("존재하지 않는 게시글");
+if (loginId != null && boardDto.getBoardWriter() != null) 
+{
+	if (loginId.equals(boardDto.getBoardWriter())) 
+	{
+		return true; // 내 글일 때는 그냥 통과
+	}
+}
+
+String loginLevel = (String)session.getAttribute("loginLevel");
+if (loginLevel != null && loginLevel.equals("관리자")) 
+{
+	return true; // 관리자는 조회수가 오르지 않는다
+}
+
+Set<Integer> history = (Set<Integer>)session.getAttribute("history");
+if (history.contains(boardNo))
+	return true;
+else
+	history.add(boardNo);
+session.setAttribute("history", history);
+
+
+* jsp에서 equals 대신하는 구문
+<c:when test="${ sessionScope.loginLevel eq '관리자' }">
+
+* DB 최적화 기술 dbcp(database connection pool)
+spring.datasource.dbcp2.max-total=20 // 최대 연결 수
+#spring.datasource.dbcp2.min-idle=5 // 항상 켜놓는 최소 연결 수
+spring.datasource.dbcp2.max-idle=5 // max는 반드시 켜놔야 한다
+
+application.properties에서 설정한다
+
+* 서브쿼리, rownum
+
+-- Top N Query
+-- 일반 구문인데 유일하게 이름이 붙은 구문
+-- 서브쿼리(sub query)라는 것을 선행식으로 알아야 함
+
+
+-- 가장 비싼 도서의 이름?
+-- max(book_price) 그룹 함수
+select book_title from book where book_price = (select max(book_price) from book);
+서브쿼리는 구문을 중첩시켜서 순차적으로 실행. 한 번에 작업을 완료할 수 없는 경우
+
+Top N Query는 Top3, Top5, Top10처럼 데이터를 특정 개수만큼 잘라서 조회하는 구문
+오라클에서는 데이터의 순서를 알려주기 위해 rowNum이라는 항목을 제공한다
+rowNum은 구멍이 없이 연속적으로 채워진다
+
+select rowNum, board_no, board_title from board where rowNum between 1 and 10;
+select rownum, board.* from board where rownum between 1 and 10 order BY  board_no desc;
+> 
+select rownum, board.* from board where rownum between 11 and 20 order by board_no desc;
+rownum은 반드시 1부터 시작해야 한다
+조건과 동시에 사용하기가 어려우므로 순서를 나눈다
+서브쿼리로 순서를 붙여두고 나중에 조건으로 검사한다
+
+select rownum, board.* from board order by board_no desc;
+select * from (select rownum rn, board.* from board order by board_no desc) where rn between 11 and 20;
+
+// 최근 가입한 회원 10명 조회
+
+select * from member order by membr_join desc;
+select * from (select rownum rn, member.* from member order by member_join desc) where rn between 1 and 10;
+
+기존에 사용하던 구문을 넣으면 자동으로 잘릴 수 있도록 번호 생성 및 조건 부분을 분리
+
+***** select 조회 구문 최종
+
+select * from ( 
+	select rownum rn, tmp.* from (
+		select * from board order by board_no desc
+	) tmp
+) where rn between 11 and 20;
+
+* JUnit
+adapter lib : spring-test
+
+junit-jupiter, spring-test

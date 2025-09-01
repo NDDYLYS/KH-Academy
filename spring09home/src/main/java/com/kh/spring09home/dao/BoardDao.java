@@ -27,8 +27,8 @@ public class BoardDao
 	public void insert(BoardDto boardDto) 
 	{
 		String sql = "insert into board (board_no, board_title, "
-				+ "board_writer, board_content, board_notice) "
-				+ "values (?, ?, ?, ?, 'N')";
+				+ "board_writer, board_content) "
+				+ "values (?, ?, ?, ?)";
 		Object[] params = 
 			{
 				boardDto.getBoardNo(),
@@ -79,7 +79,7 @@ public class BoardDao
     	return jdbcTemplate.query(sql, boardMapper);
 	}
 
-	public BoardDto selectOne(long boardNo) 
+	public BoardDto selectOne(int boardNo) 
 	{
 		String sql = "select * from board where board_no = ?";
 		Object[] params = {boardNo};
@@ -87,7 +87,7 @@ public class BoardDao
 		return list.isEmpty()? null : list.get(0);
 	}
 	
-	public void read(long boardNo) 
+	public void read(int boardNo) 
 	{
 		String sql = "update board set board_read=board_read+1"
 				+ " where board_no = ?";
@@ -95,7 +95,7 @@ public class BoardDao
 		jdbcTemplate.update(sql, params);
 	}
 	
-	public void like(long boardNo) 
+	public void like(int boardNo) 
 	{
 		String sql = "update board set board_like=board_like+1"
 				+ " where board_no = ?";

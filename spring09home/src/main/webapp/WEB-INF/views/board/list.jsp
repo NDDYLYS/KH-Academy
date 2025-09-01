@@ -33,7 +33,7 @@
 			<tr>
 				<td>${ boardDto.boardNo }</td>
 				<td><a href="detail?boardNo=${boardDto.boardNo}">${ boardDto.boardTitle }</a></td>
-				<td>${ boardDto.boardWriter }</td>
+				<td>${ boardDto.boardWriter == null ? '탈퇴한 사용자' : boardDto.boardWriter }</td>
 				<c:choose>
 					<c:when test="${ boardDto.nextDay() }">
 						<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd"/></td>

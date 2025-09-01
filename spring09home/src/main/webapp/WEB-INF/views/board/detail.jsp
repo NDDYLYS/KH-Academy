@@ -15,12 +15,19 @@
 <h3>조회수 : ${boardDto.boardRead }, 좋아요 : ${boardDto.boardLike }</h3>
 <h5>작성일 : <fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd HH:mm:ss"/>, 수정일 : <fmt:formatDate value="${boardDto.boardEtime}" pattern="yyyy-MM-dd HH:mm:ss"/></h5>
 
+<c:if test = "${ sessionScope.loginId != null }">
+	<c:choose>
+		<c:when test="${ sessionScope.loginId == boardDto.boardWriter }">
+			<a href = "/board/delete?boardNo=${boardDto.boardNo}" style="float: right;"> [삭제] </a>
+			<a href = "/board/update?boardNo=${boardDto.boardNo}" style="float: right;"> [수정] </a>
+		</c:when>
+		<c:when test="${ sessionScope.loginLevel eq '관리자' }">
+			<a href = "/board/delete?boardNo=${boardDto.boardNo}" style="float: right;"> [삭제] </a>
+		</c:when>
+	</c:choose>
+</c:if>
 
-<%-- <a href = "/board/like?boardNo=${boardDto.boardNo}" style="float: left;"> [좋아요] </a> --%>
-<%-- <c:if test="${!buttonShow}"> --%>
-	<a href = "/board/delete?boardNo=${boardDto.boardNo}" style="float: right;"> [삭제] </a>
-	<a href = "/board/update?boardNo=${boardDto.boardNo}" style="float: right;"> [수정] </a>
-	<a href = "/board/insert" style="float: right;"> [글 쓰기] </a>
+<a href = "/board/insert" style="float: right;"> [글 쓰기] </a>
 	
 <%-- </c:if> --%>
 

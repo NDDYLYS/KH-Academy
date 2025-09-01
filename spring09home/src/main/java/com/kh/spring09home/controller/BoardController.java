@@ -70,21 +70,14 @@ public class BoardController {
 	@RequestMapping("/detail")
 	public String detail(HttpSession session,
 			Model model, 
-			@RequestParam long boardNo) {
-		
+			@RequestParam int boardNo) {
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
 			throw new TargetNotfoundException("존재하지 않는 게시글 번호");
-		boolean buttonShow = false;
 		String loginId = (String)session.getAttribute("loginId");
-		if (!loginId.equals(boardDto.getBoardWriter())) 
-		{
-			// 게시글의 작성자와 로그인한 세션의 아이디가 달랐을 때만 조회수가 오름
-			boardDao.read(boardNo);
-			buttonShow = true;
-		}
+		if (loginId == null)
+			throw new TargetNotfoundException("존재하지 않는 회원입니다");
 		
-		model.addAttribute("buttonShow", buttonShow);
 		model.addAttribute("boardDto", boardDto);
 
 		return "/WEB-INF/views/board/detail.jsp";

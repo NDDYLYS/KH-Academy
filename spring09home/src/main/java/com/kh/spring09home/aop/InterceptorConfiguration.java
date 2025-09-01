@@ -22,6 +22,9 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 	private PreventAdminInterceptor preventAdminInterceptor;
 	@Autowired
 	private BoardOwnerInterceptor boardOwnerInterceptor;
+	@Autowired
+	private BoardReadIntercepter boardReadIntercepter;
+	
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) // 인터셉터 등록메소드
@@ -45,6 +48,11 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 		.order(4);
 		
 		registry.addInterceptor(boardOwnerInterceptor)
-		.addPathPatterns("/board/update", "/board/delete");
+		.addPathPatterns("/board/update", "/board/delete")
+		.order(5);
+		
+		registry.addInterceptor(boardReadIntercepter)
+		.addPathPatterns("/board/detail")
+		.order(6);
 	}
 }

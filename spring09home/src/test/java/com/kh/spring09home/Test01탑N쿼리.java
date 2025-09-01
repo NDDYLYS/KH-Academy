@@ -32,7 +32,7 @@ public class Test01탑N쿼리
 				+ "	select rownum rn, TMP.* from ("
 				+ "		select * from board order by board_no desc"
 				+ "	) TMP"
-				+ ") where rn between ? and ?";
+				+ ") where rn between ? and ?";///
 		Object[] params = {begin, end};
 		
 		List<BoardDto> boardList =jdbcTemplate.query(sql, boardMapper, params);

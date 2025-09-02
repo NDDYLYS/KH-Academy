@@ -3,6 +3,7 @@ package com.kh.spring09home.dto;
 import java.sql.Timestamp;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 

@@ -1355,5 +1355,21 @@ select * from (
 
 * JUnit
 adapter lib : spring-test
-
 junit-jupiter, spring-test
+
+public List<BoardDto> selectListWithPaging(int page, int size)
+{
+	int begin = page * size - (size - 1);
+	int end = page * size;
+	
+	String sql = "select * from ("
+			+ "select rownum rn TMP.* from ("
+			+ "select board_no, board_title, board_writer,"
+			+ "select * from board"
+			+ ")TMP"
+			+ ") where rn between? and ?";
+	
+	//String sql = "select * from board order by board_no desc, board_no asc";
+	Object[] params = { begin, end};
+	return jdbcTemplate.query(sql, boardMapper, params);
+}

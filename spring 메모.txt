@@ -1479,3 +1479,26 @@ public int count(String column, String keyword)
 
 int totalCount = (isSearch) ? boardDao.count(column, keyword) : boardDao.count();
 int totalPages = ((totalCount - 1) / size) + 1;
+
+MVC
+Model
+View JSP
+Controller
+
+꼭 필요하지 않더라도 가독성을 올릴 수 있는 메소드들을 추가
+
+
+@RequestMapping("/list")
+public String list(Model model, 
+		@ModelAttribute PageVO pageVO) {
+	
+	List<BoardDto> boardList = boardDao.selectListWithPaging(pageVO);
+	model.addAttribute("boardList", boardList);		
+
+	int dataCount = boardDao.count(pageVO);
+	pageVO.setDataCount(dataCount);
+	
+	model.addAttribute("pageVO", pageVO);
+	
+	return "/WEB-INF/views/board/list.jsp";
+}

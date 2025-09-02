@@ -58,25 +58,61 @@ public class BoardDao
 		Object[] params = {	boardNo	};
 		return 0 < jdbcTemplate.update(sql, params);
 	}
-	
-	public List<BoardDto> selectList(String column, String keyword)
+//	
+//	public List<BoardDto> selectList(String column, String keyword)
+//	{
+//		Set<String> allowList = Set.of("board_title", "board_writer", 
+//				"board_content");
+//		
+//		if (allowList.contains(column) == false)
+//			return List.of(); // 비어있는 리스트;	
+//		
+//		String sql = "select * from board where instr("+column+", ?) > 0 "
+//				+ "order by board_no desc, "+column+" asc, board_no asc";
+//		Object[] params = {keyword};
+//		return jdbcTemplate.query(sql, boardMapper, params);
+//	}
+//	
+	public List<BoardDto> selectListWithPaging(String column, String keyword, int page, int size)
 	{
+		int begin = page * size - (size - 1);
+		int end = page * size;
+		
 		Set<String> allowList = Set.of("board_title", "board_writer", 
 				"board_content");
 		
 		if (allowList.contains(column) == false)
 			return List.of(); // 비어있는 리스트;	
 		
-		String sql = "select * from board where instr("+column+", ?) > 0 "
-				+ "order by board_no desc, "+column+" asc, board_no asc";
-		Object[] params = {keyword};
+		String sql = "select * from ("
+				+ "select rownum rn TMP.* from ("
+				+ "select * from board where instr("+column+", ?) > 0 "
+				+ "order by board_no desc, "+column+" asc, board_no asc"
+				+ "select * from board"
+				+ ")TMP"
+				+ ") where rn between? and ?";
+		
+		//String sql = "select * from board where instr("+column+", ?) > 0 "
+		//		+ "order by board_no desc, "+column+" asc, board_no asc";
+		Object[] params = {keyword,  begin, end};
 		return jdbcTemplate.query(sql, boardMapper, params);
 	}
 	
-	public List<BoardDto> selectList()
+	public List<BoardDto> selectListWithPaging(int page, int size)
 	{
-		String sql = "select * from board order by board_no desc, board_no asc";
-    	return jdbcTemplate.query(sql, boardMapper);
+		int begin = page * size - (size - 1);
+		int end = page * size;
+		
+		String sql = "select * from ("
+				+ "select rownum rn TMP.* from ("
+				+ "select board_no, board_title, board_writer,"
+				+ "select * from board"
+				+ ")TMP"
+				+ ") where rn between? and ?";
+		
+		//String sql = "select * from board order by board_no desc, board_no asc";
+    	Object[] params = { begin, end};
+		return jdbcTemplate.query(sql, boardMapper, params);
 	}
 
 	public BoardDto selectOne(int boardNo) 

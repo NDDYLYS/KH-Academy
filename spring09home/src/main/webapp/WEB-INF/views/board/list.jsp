@@ -70,14 +70,27 @@
 </c:choose>
 
 <%-- 페이지 네비게이터 --%>
-<h2>이전 1 2 3 4 5 6 7 8 9 10 다음</h2>
+<h2>
+<a href = "#">이전</a>
+<c:forEach var = "i" begin = "${ start }" end = "${ finish }" step = "1">
+	<c:choose>
+		<c:when test="${ page == i }">
+			<a>${ i }</a>
+		</c:when>
+		<c:otherwise>
+			<a href = "list?page=${ i }&size=${ size }${ searchParams }">${ i }</a>
+		</c:otherwise>
+	</c:choose>
+</c:forEach>
+<a href = "#">다음</a>
+</h2>
 
 <form action="list">
 	<select name="column">
-		<option value="board_title" ${param.column == 'board_title' ? 'selected' : ''}>제목</option>
-		<option value="board_writer" ${param.column == 'board_writer' ? 'selected' : ''}>작성자</option>
+		<option value="board_title" ${column == 'board_title' ? 'selected' : ''}>제목</option>
+		<option value="board_writer" ${column == 'board_writer' ? 'selected' : ''}>작성자</option>
 	</select>
-	<input type="text" name="keyword" value="${param.keyword}" required>
+	<input type="text" name="keyword" value="${keyword}" required>
 	<button>검색</button>
 </form>
 

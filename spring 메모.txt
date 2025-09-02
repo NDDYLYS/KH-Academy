@@ -248,10 +248,14 @@ Maven Update -> alt + f5
 
 src/main/webapp/WEB-INF(이름 중요, 다른 이름 허용 안함)/views
 
+
+**
 new > other > jsp 없음
+
 **
 help -> eclipse marketplace -> web -> eclipse enterprise java and web developer tools 3.37
 다운 중 신뢰하냐고 묻는 말에 모두 동의. 동의 안하면 다운이 안됨
+
 **
 new > other > jsp 생김
 
@@ -1357,19 +1361,79 @@ select * from (
 adapter lib : spring-test
 junit-jupiter, spring-test
 
-public List<BoardDto> selectListWithPaging(int page, int size)
-{
-	int begin = page * size - (size - 1);
+** 250902
+
+public List<BoardDto> selectListWithPaging(int page, int size, String column, String keyword) {
+	int begin = page * size - (size-1);
 	int end = page * size;
-	
 	String sql = "select * from ("
-			+ "select rownum rn TMP.* from ("
-			+ "select board_no, board_title, board_writer,"
-			+ "select * from board"
+		+ "select rownum rn, TMP.* from ("
+			+ "select "
+				+ "board_no, board_title, board_writer, board_notice,"
+				+ "board_wtime, board_etime, board_read, board_like, board_reply "
+				+ "from board "
+				+ "where instr(#1, ?) > 0 "
+				+ "order by board_no desc"
 			+ ")TMP"
-			+ ") where rn between? and ?";
-	
-	//String sql = "select * from board order by board_no desc, board_no asc";
-	Object[] params = { begin, end};
-	return jdbcTemplate.query(sql, boardMapper, params);
+		+ ") where rn between ? and ?";
+	sql = sql.replace("#1", column);
+	Object[] params = {keyword, begin, end};
+	return jdbcTemplate.query(sql, boardListMapper, params);
 }
+
+오브로딩에서 같은 파라미터를 먼저 쓴다
+
+import static
+클래스.함수에서 함수만 선언해도 된다
+
+이전 1 2 3 4 5 6 7 8 9 10 다음
+// 페이지 네비게이터
+
+
+@RequestParam(required = false, defaultValue = "1") int page,
+@RequestParam(required = false, defaultValue = "10") int size,
+
+목록이든 검색이든 페이징으로 분할디므로 하단 네비게이터에 표시해야 한다
+MVC 패턴
+주소의 파라미터 부분은 검색일 때와 목록일 때가 다르다
+목록 : list?page=1&size=10
+검색 : list?page=1&size=10&column=board_title&keyword=공부
+
+* JSP에서 for 돌리기
+<c:forEach var = "i" begin = "1" end = "10" step = "1">
+</c:forEach>
+
+<c:forEach var = "i" begin = "1" end = "11" step = "1">
+	<a href = "list?page=${ i }&size=${ size }${ searchParams }">${ i }</a>
+</c:forEach>
+
+start +1 || (page - 1) / blockCount * blockCount + 1
+finish +10 || (page - 1) / blockCount * blockCount + blockCount
+
+block -> 페이지 네비게이터
+
+int blockCount = 10;
+int start = (page - 1) / blockCount * blockCount + 1;
+int finish = (page - 1) / blockCount * blockCount + blockCount;
+
+<c:forEach var = "i" begin = "${ start }" end = "${ finish }" step = "1">
+	<a href = "list?page=${ i }&size=${ size }${ searchParams }">${ i }</a>
+</c:forEach>
+
+1. 현재 페이지는 구분하여 표시 -> 현재 페이지 ${ page == i }
+2. 총 페이지 개수만큼 표시
+3. 이전과 다음을 표시한다
+ -> 이전과 다음은 다르다
+
+
+<c:forEach var = "i" begin = "${ start }" end = "${ finish }" step = "1">
+	<c:choose>
+		<c:when test="${ page == i }">
+			<a>${ i }</a>
+		</c:when>
+		<c:otherwise>
+			<a href = "list?page=${ i }&size=${ size }${ searchParams }">${ i }</a>
+		</c:otherwise>
+	</c:choose>
+</c:forEach>
+

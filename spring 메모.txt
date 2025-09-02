@@ -1437,3 +1437,45 @@ int finish = (page - 1) / blockCount * blockCount + blockCount;
 	</c:choose>
 </c:forEach>
 
+이전 : start - 1
+<a href = "list?page=${ start - 1 }&size=${ size }${ searchParams }">이전</a>
+
+다음 : finish + 1
+<a href = "list?page=${ finish + 1 }&size=${ size }${ searchParams }">다음</a>
+
+start > 1 첫 구간. 이전이 없어야 한다
+<c:if test="${ start > 1 }">
+	<a href = "list?page=${ start - 1 }&size=${ size }${ searchParams }">이전</a>
+</c:if>
+
+finish < totalPage 마지막 구간. 다음이 없어야 한다
+<c:if test="${ finish < totalPage }">
+	<a href = "list?page=${ finish + 1 }&size=${ size }${ searchParams }">다음</a>
+</c:if>
+
+
+
+페이지 수 : 검색/목록에 맞는 전체 게시글 수가 필요하다
+
+페이지 수 = (글수 + size - 1) / size + 1
+
+select count(*) from board;
+select count(*) from board where instr(board_title, '공부') > 0;
+
+// 페이지 네비게이터를 위한 카운터 구하는 메소드. 검색과 목록 따로.
+public int count() 
+{
+	String sql = "select count(*) from board";
+	return jdbcTemplate.queryForObject(sql, int.class);
+}
+
+public int count(String column, String keyword) 
+{
+	String sql = "select count(*) from board where instr(#1, ?) > 0";
+	sql = sql.replace("#1", column);
+	Object[] params = {keyword};
+	return jdbcTemplate.queryForObject(sql, int.class, params);
+}
+
+int totalCount = (isSearch) ? boardDao.count(column, keyword) : boardDao.count();
+int totalPages = ((totalCount - 1) / size) + 1;

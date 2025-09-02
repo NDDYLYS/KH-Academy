@@ -1,8 +1,5 @@
 package com.kh.spring09home.controller;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +35,11 @@ public class BoardController {
 		List<BoardDto> boardList = null;
 		if (isSearch) 
 		{
-			boardList = boardDao.selectList(column, keyword);
+			boardList = boardDao.selectListWithPaging(1, 10, column, keyword);
 		} 
 		else 
 		{
-			boardList = boardDao.selectList();
+			boardList = boardDao.selectListWithPaging(1, 10);
 		}
 		
 		//int boardCount = boardList.size();
@@ -61,8 +58,8 @@ public class BoardController {
 			@ModelAttribute BoardDto boardDto) {
 		String loginId = (String)session.getAttribute("loginId");
 		boardDto.setBoardWriter(loginId);
-		int boardNo = boardDao.insertSequence();
-		boardDto.setBoardNo(boardNo);
+		int boardNo = boardDao.sequence();//번호를 생성해서
+		boardDto.setBoardNo(boardNo);//게시글 정보에 합친다
 		boardDao.insert(boardDto);
 		return "redirect:/board/detail?boardNo=" + boardNo;
 	}

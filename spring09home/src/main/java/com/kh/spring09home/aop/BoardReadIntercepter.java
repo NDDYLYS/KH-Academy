@@ -57,7 +57,7 @@ public class BoardReadIntercepter implements HandlerInterceptor
 			history.add(boardNo);
 		session.setAttribute("history", history);
 		
-		boardDao.read(boardDto.getBoardNo());
+		boardDao.updateBoardRead(boardDto.getBoardNo());
 		return true;		
 	}
 }

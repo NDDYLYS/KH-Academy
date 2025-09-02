@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.spring09home.dto.BoardDto;
 import com.kh.spring09home.mapper.BoardListMapper;
 import com.kh.spring09home.mapper.BoardMapper;
+import com.kh.spring09home.vo.PageVO;
 
 @Repository
 public class BoardDao 
@@ -85,52 +86,102 @@ public class BoardDao
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
-	//목록+페이징
-	public List<BoardDto> selectListWithPaging(int page, int size) {
-		int begin = page * size - (size-1);
-		int end = page * size;
-		String sql = "select * from ("
-							+ "select rownum rn, TMP.* from ("
-								+ "select "
-									+ "board_no, board_title, board_writer, board_notice,"
-									+ "board_wtime, board_etime, board_read, board_like, board_reply "
-								+ "from board order by board_no desc"
-							+ ")TMP"
-						+ ") where rn between ? and ?";
-		Object[] params = {begin, end};
-		return jdbcTemplate.query(sql, boardListMapper, params);
-	}
-	//검색+페이징
-	public List<BoardDto> selectListWithPaging(int page, int size, String column, String keyword) {
-		int begin = page * size - (size-1);
-		int end = page * size;
-		String sql = "select * from ("
-							+ "select rownum rn, TMP.* from ("
-								+ "select "
-									+ "board_no, board_title, board_writer, board_notice,"
-									+ "board_wtime, board_etime, board_read, board_like, board_reply "
-								+ "from board "
-								+ "where instr(#1, ?) > 0 "
-								+ "order by board_no desc"
-							+ ")TMP"
-					+ ") where rn between ? and ?";
-		sql = sql.replace("#1", column);
-		Object[] params = {keyword, begin, end};
-		return jdbcTemplate.query(sql, boardListMapper, params);
+//	//목록+페이징
+//	public List<BoardDto> selectListWithPaging(int page, int size) {
+//		int begin = page * size - (size-1);
+//		int end = page * size;
+//		String sql = "select * from ("
+//							+ "select rownum rn, TMP.* from ("
+//								+ "select "
+//									+ "board_no, board_title, board_writer, board_notice,"
+//									+ "board_wtime, board_etime, board_read, board_like, board_reply "
+//								+ "from board order by board_no desc"
+//							+ ")TMP"
+//						+ ") where rn between ? and ?";
+//		Object[] params = {begin, end};
+//		return jdbcTemplate.query(sql, boardListMapper, params);
+//	}
+//	//검색+페이징
+//	public List<BoardDto> selectListWithPaging(int page, int size, String column, String keyword) {
+//		int begin = page * size - (size-1);
+//		int end = page * size;
+//		String sql = "select * from ("
+//							+ "select rownum rn, TMP.* from ("
+//								+ "select "
+//									+ "board_no, board_title, board_writer, board_notice,"
+//									+ "board_wtime, board_etime, board_read, board_like, board_reply "
+//								+ "from board "
+//								+ "where instr(#1, ?) > 0 "
+//								+ "order by board_no desc"
+//							+ ")TMP"
+//					+ ") where rn between ? and ?";
+//		sql = sql.replace("#1", column);
+//		Object[] params = {keyword, begin, end};
+//		return jdbcTemplate.query(sql, boardListMapper, params);
+//	}
+	public List<BoardDto> selectListWithPaging(PageVO pageVO) 
+	{
+		if (pageVO.isList()) 
+		{
+			String sql = "select * from ("
+					+ "select rownum rn, TMP.* from ("
+						+ "select "
+							+ "board_no, board_title, board_writer, board_notice,"
+							+ "board_wtime, board_etime, board_read, board_like, board_reply "
+						+ "from board order by board_no desc"
+					+ ")TMP"
+				+ ") where rn between ? and ?";
+			Object[] params = {pageVO.getBegin(), pageVO.getEnd()};
+			return jdbcTemplate.query(sql, boardListMapper, params);
+		}
+		else 
+		{
+			String sql = "select * from ("
+					+ "select rownum rn, TMP.* from ("
+						+ "select "
+							+ "board_no, board_title, board_writer, board_notice,"
+							+ "board_wtime, board_etime, board_read, board_like, board_reply "
+						+ "from board "
+						+ "where instr(#1, ?) > 0 "
+						+ "order by board_no desc"
+					+ ")TMP"
+			+ ") where rn between ? and ?";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {pageVO.getKeyword(), pageVO.getBegin(), pageVO.getEnd()};
+			return jdbcTemplate.query(sql, boardListMapper, params);
+		}
 	}
 	
 	// 페이지 네비게이터를 위한 카운터 구하는 메소드. 검색과 목록 따로.
-	public int count() 
+	public int count(PageVO pageVO) 
 	{
-		String sql = "select count(*) from board";
-		return jdbcTemplate.queryForObject(sql, int.class);
+		if (pageVO.isList()) 
+		{
+			String sql = "select count(*) from board";
+			return jdbcTemplate.queryForObject(sql, int.class);			
+		}
+		else 
+		{
+			String sql = "select count(*) from board where instr(#1, ?) > 0";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {pageVO.getKeyword()};
+			return jdbcTemplate.queryForObject(sql, int.class, params);
+		}
 	}
 	
-	public int count(String column, String keyword) 
-	{
-		String sql = "select count(*) from board where instr(#1, ?) > 0";
-		sql = sql.replace("#1", column);
-		Object[] params = {keyword};
-		return jdbcTemplate.queryForObject(sql, int.class, params);
-	}
+//	public int count(String column, String keyword) 
+//	{
+//		String sql = "select count(*) from board where instr(#1, ?) > 0";
+//		sql = sql.replace("#1", column);
+//		Object[] params = {keyword};
+//		return jdbcTemplate.queryForObject(sql, int.class, params);
+//	}
+//	
+//	public int count(PageVO pageVO) 
+//	{
+//		String sql = "select count(*) from board where instr(#1, ?) > 0";
+//		sql = sql.replace("#1", pageVO.getColumn());
+//		Object[] params = {pageVO.getKeyword()};
+//		return jdbcTemplate.queryForObject(sql, int.class, params);
+//	}
 }

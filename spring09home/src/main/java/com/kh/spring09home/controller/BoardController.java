@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.spring09home.dao.BoardDao;
 import com.kh.spring09home.dto.BoardDto;
 import com.kh.spring09home.error.TargetNotfoundException;
+import com.kh.spring09home.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -25,42 +26,15 @@ public class BoardController {
 
 	@RequestMapping("/list")
 	public String list(Model model, 
-			@RequestParam(required = false, defaultValue = "1") int page,
-			@RequestParam(required = false, defaultValue = "11") int size,
-			@RequestParam(required = false) String column,
-			@RequestParam(required = false) String keyword) {
-		boolean isSearch = column != null && keyword != null;
-		model.addAttribute("isSearch", isSearch);
-		model.addAttribute("column", column);
-		model.addAttribute("keyword", keyword);
+			@ModelAttribute PageVO pageVO) {
 		
-		model.addAttribute("page", page);
-		model.addAttribute("size", size);
-		
-		List<BoardDto> boardList = null;
-		if (isSearch) 
-		{			
-			boardList = boardDao.selectListWithPaging(page, size, column, keyword);
-			model.addAttribute("searchParams", "&column=" + column + "&keyword=" + keyword);
-		} 
-		else 
-		{
-			boardList = boardDao.selectListWithPaging(page, size);
-			model.addAttribute("searchParams", "");
-		}
-		
+		List<BoardDto> boardList = boardDao.selectListWithPaging(pageVO);
 		model.addAttribute("boardList", boardList);		
+	
+		int dataCount = boardDao.count(pageVO);
+		pageVO.setDataCount(dataCount);
 		
-		int blockCount = 10;
-		int start = (page - 1) / blockCount * blockCount + 1;
-		int finish = (page - 1) / blockCount * blockCount + blockCount;
-
-		model.addAttribute("start", start); // 시작번호
-		model.addAttribute("finish", finish); // 종료번호
-		int totalCount = (isSearch) ? boardDao.count(column, keyword) : boardDao.count();
-		int totalPage = (totalCount - 1) / size + 1;
-		model.addAttribute("totalCount", totalCount); // 총 게시글 수
-		model.addAttribute("totalPage", totalPage); // 총 페이지 수
+		model.addAttribute("pageVO", pageVO);
 		
 		return "/WEB-INF/views/board/list.jsp";
 	}

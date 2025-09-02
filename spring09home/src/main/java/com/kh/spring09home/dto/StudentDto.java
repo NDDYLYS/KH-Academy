@@ -20,6 +20,11 @@ public class StudentDto
 	
 	public double getStudentAverage() 
 	{
-		return (getStudentKor() + getStudentEng() + getStudentMat()) / 3d;
+		return getTotal() / 3d;
+	}
+	
+	public double getTotal() 
+	{
+		return (getStudentKor() + getStudentEng() + getStudentMat());
 	}
 }

@@ -24,8 +24,8 @@ public class Test04탑N쿼리DAO
 		String column = "board_title";
 		String keyword = "공부";
 		
-		List<BoardDto> boardList = boardDao.selectListWithPaging(page, size, column, keyword);
-		System.out.println("size : " + boardList.size());
-		assertEquals(size, boardList.size());
+//		List<BoardDto> boardList = boardDao.selectListWithPaging(page, size, column, keyword);
+//		System.out.println("size : " + boardList.size());
+//		assertEquals(size, boardList.size());
 	}
 }

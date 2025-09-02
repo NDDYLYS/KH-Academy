@@ -59,6 +59,18 @@
 	</tbody>
 </table>
 
+<!-- 검색창 -->
+<form action="list">
+	<select name="column">
+		<option value="board_title" ${pageVO.column == 'board_title' ? 'selected' : ''}>제목</option>
+		<option value="board_writer" ${pageVO.column == 'board_writer' ? 'selected' : ''}>작성자</option>
+	</select>
+	<input type="text" name="keyword" value="${pageVO.keyword}" required>
+	<button>검색</button>
+</form>
+
+<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
+
 <c:choose>
 	<c:when test = "${ sessionScope.loginId != null }">
 		<a href = "/board/insert" style="float: right;">글쓰기</a>
@@ -68,34 +80,5 @@
 <!-- 		../member/login -->
 	</c:otherwise>
 </c:choose>
-
-<%-- 페이지 네비게이터 (PageVO의 내용을 토대로 작성) --%>
-<h2 align = "center">
-<c:if test="${ pageVO.firstBlock == false }">
-	<a href = "list?page=${ pageVO.prevPage }&${ pageVO.searchParams }">이전</a>
-</c:if>
-<c:forEach var = "i" begin = "${ pageVO.blockStart }" end = "${ pageVO.blockFinish }" step = "1">
-	<c:choose>
-		<c:when test="${ pageVO.page == i }">
-			<a>${ i }</a>
-		</c:when>
-		<c:otherwise>
-			<a href = "list?page=${ i }&${ pageVO.searchParams }">${ i }</a>
-		</c:otherwise>
-	</c:choose>
-</c:forEach>
-<c:if test="${ pageVO.lastBlock == false }">
-	<a href = "list?page=${ pageVO.nextPage }&${ pageVO.searchParams }">다음</a>
-</c:if>
-</h2>
-
-<form action="list">
-	<select name="column">
-		<option value="board_title" ${pageVO.column == 'board_title' ? 'selected' : ''}>제목</option>
-		<option value="board_writer" ${pageVO.column == 'board_writer' ? 'selected' : ''}>작성자</option>
-	</select>
-	<input type="text" name="keyword" value="${pageVO.keyword}" required>
-	<button>검색</button>
-</form>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

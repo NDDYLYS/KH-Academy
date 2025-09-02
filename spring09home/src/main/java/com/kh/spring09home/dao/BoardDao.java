@@ -118,4 +118,19 @@ public class BoardDao
 		Object[] params = {keyword, begin, end};
 		return jdbcTemplate.query(sql, boardListMapper, params);
 	}
+	
+	// 페이지 네비게이터를 위한 카운터 구하는 메소드. 검색과 목록 따로.
+	public int count() 
+	{
+		String sql = "select count(*) from board";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	
+	public int count(String column, String keyword) 
+	{
+		String sql = "select count(*) from board where instr(#1, ?) > 0";
+		sql = sql.replace("#1", column);
+		Object[] params = {keyword};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
 }

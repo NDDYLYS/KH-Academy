@@ -71,8 +71,10 @@
 
 <%-- 페이지 네비게이터 --%>
 <h2>
-<a href = "#">이전</a>
-<c:forEach var = "i" begin = "${ start }" end = "${ finish }" step = "1">
+<c:if test="${ start > 1 }">
+	<a href = "list?page=${ start - 1 }&size=${ size }${ searchParams }">이전</a>
+</c:if>
+<c:forEach var = "i" begin = "${ start }" end = "${ Math.min(finish, totalPage) }" step = "1">
 	<c:choose>
 		<c:when test="${ page == i }">
 			<a>${ i }</a>
@@ -82,7 +84,9 @@
 		</c:otherwise>
 	</c:choose>
 </c:forEach>
-<a href = "#">다음</a>
+<c:if test="${ finish < totalPage }">
+	<a href = "list?page=${ finish + 1 }&size=${ size }${ searchParams }">다음</a>
+</c:if>
 </h2>
 
 <form action="list">

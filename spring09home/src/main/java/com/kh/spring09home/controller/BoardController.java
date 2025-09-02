@@ -57,6 +57,10 @@ public class BoardController {
 
 		model.addAttribute("start", start); // 시작번호
 		model.addAttribute("finish", finish); // 종료번호
+		int totalCount = (isSearch) ? boardDao.count(column, keyword) : boardDao.count();
+		int totalPage = (totalCount - 1) / size + 1;
+		model.addAttribute("totalCount", totalCount); // 총 게시글 수
+		model.addAttribute("totalPage", totalPage); // 총 페이지 수
 		
 		return "/WEB-INF/views/board/list.jsp";
 	}

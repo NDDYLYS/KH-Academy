@@ -26,41 +26,42 @@
 			<th width = "150">작성일자</th>
 			<th width = "75">조회수</th>
 			<th width = "75">좋아요</th>
+			<th width = "50">그룹</th>
+			<th width = "50">상위글</th>
+			<th width = "50">차수</th>
 		</tr>
 	</thead>
-	<tbody align = "center">
-		<c:forEach var = "boardDto" items = "${ boardList }" varStatus = "status">
-			<tr bgcolor = "${ status.index < noticeCount ? '#ffeaa7' : ''}">
-				<td>${ boardDto.boardNo } (${ status.index })</td>
-			
-				<td><a href="detail?boardNo=${boardDto.boardNo}">
-				<c:if test = "${ boardDto.boardNotice == 'Y' }">
-					(공지)
+	<tbody align="center">
+		<c:forEach var="boardDto" items="${boardList}" varStatus="status">
+		<tr bgcolor="${status.index < noticeCount ? '#ffeaa7' : ''}">
+			<td>${boardDto.boardNo} (${status.index})</td>
+			<td align="left">
+				<%--차수만큼 띄어쓰기(공지로 표시되는 경우가 아니라면) --%>
+				<c:if test="${status.index >= noticeCount}">
+					<c:forEach var="i" begin="1" end="${boardDto.boardDepth}" step="1">
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					</c:forEach>
+					<c:if test="${boardDto.boardDepth > 0}">
+						<img src="/images/test/arrow.png" width="16" height="16">
+					</c:if>
 				</c:if>
-				${ boardDto.boardTitle }</a></td>
-				<td>${ boardDto.boardWriter == null ? '탈퇴한 사용자' : boardDto.boardWriter }</td>
-				<c:choose>
-					<c:when test="${ boardDto.nextDay() }">
-						<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd"/></td>
-					</c:when>				
-					<c:otherwise>
-						<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="HH:mm"/></td>
-					</c:otherwise>
-				</c:choose>
-				<td>${ boardDto.boardRead }</td>
-				<td>${ boardDto.boardLike }</td>
-			</tr>
+			
+				<%-- 공지사항인 경우는 제목앞에 (공지) 추가 --%>
+				<c:if test="${boardDto.boardNotice == 'Y'}">(공지)</c:if>
+				
+				<a href="detail?boardNo=${boardDto.boardNo}">
+					${boardDto.boardTitle}
+				</a>
+			</td>
+			<td>${boardDto.boardWriter == null ? '(탈퇴한사용자)' : boardDto.boardWriter}</td>
+			<td>${boardDto.boardWtime}</td>
+			<td>${boardDto.boardRead}</td>
+			<td>${boardDto.boardLike}</td>
+			<td>${boardDto.boardGroup}</td>
+			<td>${boardDto.boardOrigin}</td>
+			<td>${boardDto.boardDepth}</td>
+		</tr>
 		</c:forEach>
-		
-<!-- 		<tfooter align = "center"> -->
-<!-- 			<tr> -->
-<%-- 				<c:forEach var = "i" begin="1" end="${ boardCount / 10 }"> --%>
-<!-- 					<td> -->
-<%-- 						<a href="#">${ i } --%>
-<!-- 					</td> -->
-<%-- 				</c:forEach> --%>
-<!-- 			</tr> -->
-<!-- 		</tfooter> -->
 	</tbody>
 </table>
 

@@ -52,6 +52,10 @@ public class BoardController {
 		return "/WEB-INF/views/board/insert.jsp";
 	}
 
+	// 새글은 boardOrigin이 null이다
+	// -> 그룹번호는 글번호, 상위글은 null,차수는 0
+	// 답글은 boardOrigin이 null이 아니다
+	// -> 그룹번호는 대상글의 글번호, 
 	@PostMapping("/insert")
 	public String insert(HttpSession session,
 			@ModelAttribute BoardDto boardDto) {
@@ -65,6 +69,21 @@ public class BoardController {
 		
 		int boardNo = boardDao.sequence();//번호를 생성해서
 		boardDto.setBoardNo(boardNo);//게시글 정보에 합친다
+		
+		if (boardDto.getBoardOrigin() == null) 
+		{
+			boardDto.setBoardGroup(boardNo);
+			//boardDto.setBoardOrigin(null);
+			//boardDto.setBoardDepth(0);
+		}
+		else 
+		{
+			BoardDto findDto = boardDao.selectOne(boardDto.getBoardOrigin());
+			boardDto.setBoardGroup(findDto.getBoardGroup());
+			// boardDto.setBoardOrigin(findDto.getBoardNo()); // 생략 가능
+			boardDto.setBoardDepth(findDto.getBoardDepth() + 1);
+		}
+		
 		boardDao.insert(boardDto);
 		return "redirect:/board/detail?boardNo=" + boardNo;
 	}

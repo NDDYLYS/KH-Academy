@@ -99,7 +99,7 @@ public class PokemonDao
 			String sql = "select * from ("
 					+ "select rownum rn, TMP.* from ("
 						+ "select * from pokemon "
-						+ "order by pokemon_no asc"
+						+ "order by pokemon_no desc"
 					+ ")TMP"
 				+ ") where rn between ? and ?";
 
@@ -114,7 +114,7 @@ public class PokemonDao
 								+ "select rownum rn, TMP.* from ("
 									+ "select * from pokemon "
 									+ "where instr(#1, ?) > 0"
-									+ "order by #1 asc, pokemon_no asc"
+									+ "order by #1 asc, pokemon_no desc"
 								+ ")TMP"
 							+ ") where rn between ? and ?";
 			sql = sql.replace("#1", pageVO.getColumn());

@@ -1661,3 +1661,128 @@ result.addAll(boardList);
 		<td>${ boardDto.boardLike }</td>
 	</tr>
 </c:forEach>
+
+<input type = "checkbox" name = "boardNotice" value = "Y" ${ boardDto.boardNotice == 'Y' ?
+		'checked' : ''>
+
+답변형 게시판
+그룹 : 원본 글의 번호
+순서 : 누구의 답글인지
+차수 : 띄어쓰기를 얼마나 할 지
+
+새글
+ - 그룹 : 자기의 번호
+ - 상위글 : null
+ - 차수 : 0
+
+답글
+ - 그룹 : 대상글의 그룹 번호
+ - 상위글 : 대상의 글 번호
+ - 차수 : 대상글의 차수 ++
+
+ - 그룹 : board_group
+ - 상위글 : board_origin
+ - 차수 : board_depth
+
+
+* alter table
+alter table board add 
+(
+board_group number not null,
+board_origin references board(board_no) on delete cascade,
+board_depth number default 0 not null
+)
+
+데이터가 있는 테이블은 not null을 쓸 수 없다
+
+update board set board_group = board_no;
+
+alter table board modify board_group not null;
+alter table board modify board_depth not null;
+
+* Integer는 Mapper에서 아래와 같이 쓴다
+boardDto.setBoardOrigin(rs.getObject("board_origin", Integer.class));
+
+
+@PostMapping("/insert")
+public String insert(HttpSession session,
+		@ModelAttribute BoardDto boardDto) {
+	String loginId = (String)session.getAttribute("loginId");
+	boardDto.setBoardWriter(loginId);
+	
+	// 검사를 통해 관리자가 아닌데 공지사항을 쓰려고 하면 차단한다
+	String loginLevel = (String)session.getAttribute("loginLevel");
+	if (loginLevel.equals("관리자") == false && boardDto.getBoardNotice().equals("Y"))
+		throw new NeedPermissionException("공지글을 작성할 권한이 없습니다");
+	
+	int boardNo = boardDao.sequence();//번호를 생성해서
+	boardDto.setBoardNo(boardNo);//게시글 정보에 합친다
+	
+	if (boardDto.getBoardOrigin() == null) 
+	{
+		boardDto.setBoardGroup(boardNo);
+		//boardDto.setBoardOrigin(null);
+		//boardDto.setBoardDepth(0);
+	}
+	else 
+	{
+		BoardDto findDto = boardDao.selectOne(boardDto.getBoardOrigin());
+		boardDto.setBoardGroup(findDto.getBoardGroup());
+		// boardDto.setBoardOrigin(findDto.getBoardNo()); // 생략 가능
+		boardDto.setBoardDepth(findDto.getBoardDepth() + 1);
+	}
+	
+	boardDao.insert(boardDto);
+	return "redirect:/board/detail?boardNo=" + boardNo;
+}
+
+게시글은 상하관계가 있다
+
+
+connect by prior board_no = board_origin
+왼쪽 위, 오른쪽 아래
+
+각 그룹의 시작점은 상위글이 없거나 차수가 0인 글이다
+start with board_origin is null
+
+정렬할 떄는 연결된 항목을 기준으로 조회하시고 
+order siblings by
+
+그룹이 큰 순서부터 나오게 한다
+board_group desc
+
+그룹이 같다면 번호를 오름차순으로 정렬한다
+board_no asc
+
+String sql = "select * from ("
+					+ "select rownum rn, TMP.* from ("
+						+ "select "
+							+ "board_no, board_title, board_writer, board_notice,"
+							+ "board_wtime, board_etime, board_read, board_like, board_reply "
+							+ "board_group, board_origin, board_depth "
+						+ "from board "
+						+ "where instr(#1, ?) > 0 "
+						//+ "order by board_no desc"
+						+ "connect by prior board_no = board_origin "
+						+ "start with board_origin is null "
+						+ "order siblings by board_group desc, board_no asc"
+
++ "order by board_no desc"
+
+를 지우고 아래로 대체한다
+
++ "connect by prior board_no = board_origin "
++ "start with board_origin is null "
++ "order siblings by board_group desc, board_no asc"
+
+
+* html 특수문자 코드
+&nbsp;
+
+<c:forEach var = "i" begin = "1" end = "${ boardDto.boardDepth }" step = "1">
+	&nbsp;&nbsp;
+</c:forEach>
+
+* JSP에서 forEach 쓰기
+<c:forEach var = "i" begin = "시작" end = "끝" step = "i 증가폭">
+</c:forEach>

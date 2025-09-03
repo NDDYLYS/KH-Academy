@@ -106,7 +106,7 @@ public class BookDao
 			String sql = "select * from ("
 					+ "select rownum rn, TMP.* from ("
 						+ "select * from book "
-						+ "order by book_id asc"
+						+ "order by book_id desc"
 					+ ")TMP"
 				+ ") where rn between ? and ?";
 			Object[] params = {
@@ -120,7 +120,7 @@ public class BookDao
 								+ "select rownum rn, TMP.* from ("
 									+ "select * from book "
 									+ "where instr(#1, ?) > 0 "
-									+ "order by #1 asc, book_id asc"
+									+ "order by #1 asc, book_id desc"
 								+ ")TMP"
 							+ ") where rn between ? and ?";
 			sql = sql.replace("#1", pageVO.getColumn());

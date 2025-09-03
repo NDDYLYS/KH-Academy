@@ -25,6 +25,10 @@ public class BoardMapper implements RowMapper<BoardDto>
 		boardDto.setBoardReply(rs.getInt("board_reply"));
 		boardDto.setBoardNotice(rs.getString("board_notice"));
 		
+		boardDto.setBoardGroup(rs.getInt("board_group"));
+		boardDto.setBoardOrigin(rs.getObject("board_origin", Integer.class));
+		boardDto.setBoardDepth(rs.getInt("board_depth"));
+		
 		// TODO Auto-generated method stub
 		return boardDto;
 	}

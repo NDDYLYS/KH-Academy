@@ -7,6 +7,11 @@
 
 
 <form action = "/board/update" method = "post" align = "center">
+	<c:if test = "${ sessionScope.loginLevel == '관리자' }">
+		<input type = "checkbox" name = "boardNotice" value = "Y" ${ boardDto.boardNotice == 'Y' ?
+		'checked' : '' }>공지사항으로 등록<br>
+	</c:if>
+	
 	<input type = "hidden" name = "boardNo" value = "${ boardDto.boardNo }"required>
 	<br>
 		<textarea name = "boardTitle" cols="110" required>${ boardDto.boardTitle }</textarea>

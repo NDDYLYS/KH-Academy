@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+\<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -21,14 +21,15 @@
 			<a href = "/board/delete?boardNo=${boardDto.boardNo}" style="float: right;"> [삭제] </a>
 			<a href = "/board/update?boardNo=${boardDto.boardNo}" style="float: right;"> [수정] </a>
 		</c:when>
-		<c:when test="${ sessionScope.loginLevel eq '관리자' }">
+		<c:when test="${ sessionScope.loginLevel == '관리자' }">
 			<a href = "/board/delete?boardNo=${boardDto.boardNo}" style="float: right;"> [삭제] </a>
 		</c:when>
 	</c:choose>
 </c:if>
 
-<a href = "/board/insert" style="float: right;"> [글 쓰기] </a>
-	
+<a href = "insert?boardOrigin=${boardDto.boardNo}" style="float: right;"> [답글] </a>
+<a href = "insert" style="float: right;"> [글쓰기] </a>
+<%-- 	<a href="write?boardOrigin=${boardDto.boardNo}">답글쓰기</a>  --%>
 <%-- </c:if> --%>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

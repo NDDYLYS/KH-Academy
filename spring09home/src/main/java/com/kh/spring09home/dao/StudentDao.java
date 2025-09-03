@@ -97,7 +97,7 @@ public class StudentDao
 			String sql = "select * from ("
 					+ "select rownum rn, TMP.* from ("
 						+ "select * from student "
-						+ "order by student_no asc"
+						+ "order by student_no desc"
 					+ ")TMP"
 				+ ") where rn between ? and ?";
 			Object[] params = {
@@ -111,7 +111,7 @@ public class StudentDao
 								+ "select rownum rn, TMP.* from ("
 									+ "select * from student "
 									+ "where instr(#1, ?) > 0 "
-									+ "order by #1 asc, student_no asc"
+									+ "order by #1 asc, student_no desc"
 								+ ")TMP"
 							+ ") where rn between ? and ?";
 			sql = sql.replace("#1", pageVO.getColumn());

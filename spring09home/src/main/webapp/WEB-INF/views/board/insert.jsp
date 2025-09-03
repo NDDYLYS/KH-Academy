@@ -12,7 +12,12 @@
 <!-- <button>글 등록</button> -->
 <!-- </form> -->
 
-<form action = "/board/insert" method = "post" align = "center">
+<form action = "insert" method = "post" align = "center">
+
+	<c:if test = "${ param.boardOrigin != null }">
+		<input type = "hidden" name = "boardOrigin" value = "${ param.boardOrigin }">
+	</c:if>
+
 	<c:if test = "${ sessionScope.loginLevel == '관리자' }">
 		<input type = "checkbox" name = "boardNotice" value = "Y">공지사항으로 등록<br>
 	</c:if>

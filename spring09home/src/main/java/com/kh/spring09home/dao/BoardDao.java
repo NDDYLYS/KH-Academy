@@ -26,6 +26,7 @@ public class BoardDao
 		String sql = "select "
 							+ "board_no, board_title, board_writer, board_notice,"
 							+ "board_wtime, board_etime, board_read, board_like, board_reply "
+							+ "board_group, board_origin, board_depth "
 						+ "from board order by board_no desc";
 		return jdbcTemplate.query(sql, boardListMapper);
 	}
@@ -37,6 +38,7 @@ public class BoardDao
 		String sql = "select "
 							+ "board_no, board_title, board_writer, board_notice,"
 							+ "board_wtime, board_etime, board_read, board_like, board_reply "
+							+ "board_group, board_origin, board_depth "
 						+ "from board "
 						+ "where instr(#1, ?) > 0 "
 						+ "order by board_no desc";
@@ -63,12 +65,14 @@ public class BoardDao
 	}
 	public void insert(BoardDto boardDto) {
 		String sql = "insert into board(board_no, board_title, board_content, "
-				+ "board_writer, board_notice) "
-						+ "values(?, ?, ?, ?, nvl(?, 'N'))";
+				+ "board_writer, board_notice, "
+				+ "board_group, board_origin, board_depth) "
+						+ "values(?, ?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = {
 			boardDto.getBoardNo(), boardDto.getBoardTitle(), 
 			boardDto.getBoardContent(), boardDto.getBoardWriter(),
-			boardDto.getBoardNotice()
+			boardDto.getBoardNotice(),
+			boardDto.getBoardGroup(), boardDto.getBoardOrigin(), boardDto.getBoardDepth()
 		};
 		jdbcTemplate.update(sql, params);
 	}
@@ -79,10 +83,11 @@ public class BoardDao
 	}
 	public boolean update(BoardDto boardDto) {
 		String sql = "update board "
-						+ "set board_title=?, board_content=?, board_etime=systimestamp "
+						+ "set board_title=?, board_content=?, "
+						+ "board_etime=systimestamp, board_notice=? "
 						+ "where board_no=?";
 		Object[] params = {
-			boardDto.getBoardTitle(), boardDto.getBoardContent(),
+			boardDto.getBoardTitle(), boardDto.getBoardContent(), boardDto.getBoardNotice(),
 			boardDto.getBoardNo()
 		};
 		return jdbcTemplate.update(sql, params) > 0;
@@ -129,8 +134,13 @@ public class BoardDao
 					+ "select rownum rn, TMP.* from ("
 						+ "select "
 							+ "board_no, board_title, board_writer, board_notice,"
-							+ "board_wtime, board_etime, board_read, board_like, board_reply "
-						+ "from board order by board_no desc"
+							+ "board_wtime, board_etime, board_read, board_like, board_reply,"
+							+ "board_group, board_origin, board_depth "
+						+ "from board "
+						//+ "order by board_no desc"
+						+ "connect by prior board_no = board_origin "
+						+ "start with board_origin is null "
+						+ "order siblings by board_group desc, board_no asc"
 					+ ")TMP"
 				+ ") where rn between ? and ?";
 			Object[] params = {pageVO.getBegin(), pageVO.getEnd()};
@@ -143,9 +153,13 @@ public class BoardDao
 						+ "select "
 							+ "board_no, board_title, board_writer, board_notice,"
 							+ "board_wtime, board_etime, board_read, board_like, board_reply "
+							+ "board_group, board_origin, board_depth "
 						+ "from board "
 						+ "where instr(#1, ?) > 0 "
-						+ "order by board_no desc"
+						//+ "order by board_no desc"
+						+ "connect by prior board_no = board_origin "
+						+ "start with board_origin is null "
+						+ "order siblings by board_group desc, board_no asc"
 					+ ")TMP"
 			+ ") where rn between ? and ?";
 			sql = sql.replace("#1", pageVO.getColumn());
@@ -177,7 +191,8 @@ public class BoardDao
 		{
 			String sql = "select "
 					+ "board_no, board_title, board_writer, board_wtime, board_etime,"
-					+ "board_read, board_like, board_reply, board_notice "
+					+ "board_read, board_like, board_reply, board_notice, "
+					+ "board_group, board_origin, board_depth "
 					+ "from board where board_notice = 'Y' order by board_no desc";
 			return jdbcTemplate.query(sql, boardListMapper);
 		}
@@ -185,7 +200,8 @@ public class BoardDao
 		{
 			String sql = "select "
 					+ "board_no, board_title, board_writer, board_wtime, board_etime,"
-					+ "board_read, board_like, board_reply, board_notice "
+					+ "board_read, board_like, board_reply, board_notice, "
+					+ "board_group, board_origin, board_depth "
 					+ "from board "
 					+ "where board_notice = 'Y' and instr(#1, ?) > 0 "
 					+ "order by board_no desc";

@@ -21,6 +21,10 @@ public class BoardDto
 	private int boardReply;
 	private String boardNotice = "N";
 	
+	private int boardGroup;
+	private Integer boardOrigin;
+	private int boardDepth;
+	
 	public boolean nextDay() 
 	{
 		LocalDateTime wtime = boardWtime.toLocalDateTime();	

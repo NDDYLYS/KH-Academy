@@ -7,7 +7,7 @@
 
 
 
-<h3>글 번호 : ${boardDto.boardNo }, 작성자 : ${boardDto.boardWriter }</h3>
+<h3>글 번호 : ${boardDto.boardNo }, 아이디 : ${boardDto.boardWriter }, 닉네임 : ${ memberDto.memberNickname }</h3>
 <h1>글 제목 : ${boardDto.boardTitle }</h1>
 <pre>
 	<h1>본문 : ${boardDto.boardContent }</h1>

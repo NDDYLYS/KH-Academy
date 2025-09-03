@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.BoardDao;
+import com.kh.spring09home.dao.MemberDao;
 import com.kh.spring09home.dto.BoardDto;
+import com.kh.spring09home.dto.MemberDto;
 import com.kh.spring09home.error.NeedPermissionException;
 import com.kh.spring09home.error.TargetNotfoundException;
 import com.kh.spring09home.vo.PageVO;
@@ -25,6 +27,8 @@ import jakarta.servlet.http.HttpSession;
 public class BoardController {
 	@Autowired
 	private BoardDao boardDao;
+	@Autowired
+	private MemberDao memberDao;
 
 	@RequestMapping("/list")
 	public String list(Model model, 
@@ -95,11 +99,11 @@ public class BoardController {
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
 			throw new TargetNotfoundException("존재하지 않는 게시글 번호");
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null)
-			throw new TargetNotfoundException("존재하지 않는 회원입니다");
-		
+		MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
+		if (memberDto == null)
+			throw new TargetNotfoundException("존재하지 않는 글쓴이입니다");
 		model.addAttribute("boardDto", boardDto);
+		model.addAttribute("memberDto", memberDto);
 
 		return "/WEB-INF/views/board/detail.jsp";
 	}

@@ -22,13 +22,13 @@
 		<tr>
 			<th width = "50">번호</th>
 			<th width = "1300">제목</th>
-			<th width = "200">저자</th>
+			<th width = "200">아이디</th>
 			<th width = "150">작성일자</th>
 			<th width = "75">조회수</th>
 			<th width = "75">좋아요</th>
-			<th width = "50">그룹</th>
-			<th width = "50">상위글</th>
-			<th width = "50">차수</th>
+<!-- 			<th width = "50">그룹</th> -->
+<!-- 			<th width = "50">상위글</th> -->
+<!-- 			<th width = "50">차수</th> -->
 		</tr>
 	</thead>
 	<tbody align="center">
@@ -57,9 +57,9 @@
 			<td>${boardDto.boardWtime}</td>
 			<td>${boardDto.boardRead}</td>
 			<td>${boardDto.boardLike}</td>
-			<td>${boardDto.boardGroup}</td>
-			<td>${boardDto.boardOrigin}</td>
-			<td>${boardDto.boardDepth}</td>
+<%-- 			<td>${boardDto.boardGroup}</td> --%>
+<%-- 			<td>${boardDto.boardOrigin}</td> --%>
+<%-- 			<td>${boardDto.boardDepth}</td> --%>
 		</tr>
 		</c:forEach>
 	</tbody>

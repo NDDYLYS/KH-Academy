@@ -438,7 +438,7 @@ redirect : 화면을 튕겨낼 때 URL이 바뀜
     <table>
     <thead>번호</thead> 제목
     <tbody>1</tbody> 내용
-    <tfoot><tfoot> 태그로 하단 정보 영역을 지정
+    <tfoot></tfoot> 태그로 하단 정보 영역을 지정
     <tr></tr> 한 줄을 생성
     <th> 태그로 칸을 생성 (제목, 가운데 정렬, 굵은 글씨)
     <td> 태그로 칸을 생성 (내용, 왼쪽 정렬 , 일반 글씨)
@@ -519,6 +519,25 @@ boolean isSearch = column != null && keyword != null;
 <!-- <input type = "hidden" name = "component"> -->
 	<select name = "component">
 		<option value = "">전체</option>
+
+* 페이징 나눈 후 테이블에 검색 결과 조회
+
+<tfoot>
+	<tr>
+		<td colspan="7">
+			검색결과 : 
+			${pageVO.begin} - ${pageVO.end}
+			/
+			${pageVO.dataCount}개
+		</td>
+	</tr>
+	<tr>
+		<td colspan="7">
+			검색결과 : 
+			${pageVO.page} / ${pageVO.totalPage} 페이지
+		</td>
+	</tr>
+</tfoot>	
 		<option value = "564553">패션의류/잡화</option>
 		<option value = "176422">뷰티</option>
 		<option value = "194176">식품</option>

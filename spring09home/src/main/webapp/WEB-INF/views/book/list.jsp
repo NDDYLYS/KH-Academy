@@ -10,15 +10,13 @@
 <h2><a href = "save">신규 등록</a></h2>
 <h2><a href = "list">목록 보기</a></h2>
 
-<h2>도서 수 : ${ bookList.size() }명</h2>
-
 <form action="list" method="get">
 	<select name="column">
-		<option value="book_title" ${column == "book_title" ? "selected" : ""}>책 제목</option>
-		<option value="book_author" ${column == "book_author" ? "selected" : ""}>저자</option>
-		<option value="book_publisher" ${column == "book_publisher" ? "selected" : ""}>출판사</option>
+		<option value="book_title" ${param.column == "book_title" ? "selected" : ""}>책 제목</option>
+		<option value="book_author" ${param.column == "book_author" ? "selected" : ""}>저자</option>
+		<option value="book_publisher" ${param.column == "book_publisher" ? "selected" : ""}>출판사</option>
 	</select>
-	<input type ="text" name="keyword" value = "${keyword}" required="required">
+	<input type ="text" name="keyword" value = "${param.keyword}" required="required">
 	<button>검색</button>
 </form>
 
@@ -49,6 +47,19 @@
 			</tr>
 		</c:forEach>
 	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="7">
+				검색결과 : 
+				${pageVO.begin} - ${pageVO.end}
+				/
+				${pageVO.dataCount}개
+			</td>
+		</tr>
+	</tfoot>	
 </table>
+
+<%-- 페이지 네비게이터 출력 --%>
+<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

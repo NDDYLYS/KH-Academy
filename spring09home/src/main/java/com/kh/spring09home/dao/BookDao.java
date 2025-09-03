@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.spring09home.dto.BookDto;
 import com.kh.spring09home.mapper.BookMapper;
+import com.kh.spring09home.vo.PageVO;
 
 @Repository
 public class BookDao 
@@ -79,5 +80,54 @@ public class BookDao
 		Object[] params = {bookId};
 		List<BookDto> list = jdbcTemplate.query(sql, bookMapper, params);
 		return list.isEmpty()? null : list.get(0);
+	}
+	
+	public int count(PageVO pageVO) 
+	{
+		if(pageVO.isList()) 
+		{
+			String sql ="select count(*) from book";
+			return jdbcTemplate.queryForObject(sql, int.class);
+		}
+		else 
+		{
+			String sql ="select count(*) from book "
+					+ "where instr(#1, ?) > 0";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {pageVO.getKeyword()};
+			return jdbcTemplate.queryForObject(sql, int.class, params);
+		}
+	}
+
+	public List<BookDto> selectListWithPaging(PageVO pageVO) 
+	{
+		if(pageVO.isList()) 
+		{//목록이라면
+			String sql = "select * from ("
+					+ "select rownum rn, TMP.* from ("
+						+ "select * from book "
+						+ "order by book_id asc"
+					+ ")TMP"
+				+ ") where rn between ? and ?";
+			Object[] params = {
+					pageVO.getBegin(), pageVO.getEnd()
+			};//동적할당
+			return jdbcTemplate.query(sql, bookMapper, params);
+		}
+		else 
+		{//검색이라면
+			String sql = "select * from ("
+								+ "select rownum rn, TMP.* from ("
+									+ "select * from book "
+									+ "where instr(#1, ?) > 0 "
+									+ "order by #1 asc, book_id asc"
+								+ ")TMP"
+							+ ") where rn between ? and ?";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {
+					pageVO.getKeyword(), pageVO.getBegin(), pageVO.getEnd()
+			};//동적할당
+			return jdbcTemplate.query(sql, bookMapper, params);
+		}
 	}
 }

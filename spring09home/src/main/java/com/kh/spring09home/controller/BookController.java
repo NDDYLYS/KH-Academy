@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.spring09home.dao.BookDao;
 import com.kh.spring09home.dto.BookDto;
 import com.kh.spring09home.error.TargetNotfoundException;
+import com.kh.spring09home.vo.PageVO;
 
 @Controller
 @RequestMapping("/book") //
@@ -50,25 +51,12 @@ public class BookController
 	}
 	
 	@RequestMapping("/list")
-	public String list(Model model, 
-			@RequestParam(required = false) String column, 
-			@RequestParam(required = false) String keyword) 
+	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
 	{
-		boolean isSearch = column != null && keyword != null;
-		model.addAttribute("isSearch", isSearch);
-		model.addAttribute("column", column);
-		model.addAttribute("keyword", keyword);
+		model.addAttribute("bookList", bookDao.selectListWithPaging(pageVO));
+		pageVO.setDataCount(bookDao.count(pageVO));
+		model.addAttribute("pageVO", pageVO); // @ModelAttribute에 value 설정시 생략 가능
 		
-		if (isSearch) 
-		{
-			List<BookDto> bookList = bookDao.selectList(column, keyword);
-			model.addAttribute("bookList", bookList);			
-		}
-		else 
-		{
-			List<BookDto> bookList = bookDao.selectList();
-			model.addAttribute("bookList", bookList);
-		}
 		return "/WEB-INF/views/book/list.jsp";
 	}
 	

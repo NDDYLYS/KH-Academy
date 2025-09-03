@@ -10,16 +10,14 @@
 <h2><a href = "add">신규 등록</a></h2>
 <h2><a href = "list">목록 보기</a></h2>
 
-<h2>학생 수 : ${ studentList.size() }명</h2>
-
 <form action="list" method="get">
 	<select name="column">
-		<option value="student_name">이름</option>
-		<option value="student_kor">국어점수</option>
-		<option value="student_eng">영어점수</option>
-		<option value="student_mat">수학점수</option>
+		<option value="student_name" ${param.column == "student_name" ? "selected" : ""}>이름</option>
+		<option value="student_kor" ${param.column == "student_kor" ? "selected" : ""}>국어점수</option>
+		<option value="student_eng" ${param.column == "student_eng" ? "selected" : ""}>영어점수</option>
+		<option value="student_mat" ${param.column == "student_mat" ? "selected" : ""}>수학점수</option>
 	</select>
-	<input type ="search" name="keyword" value = "${keyword}" required>
+	<input type ="search" name="keyword" value = "${param.keyword}" required>
 	<Button>찾기</Button>
 </form>
 
@@ -44,12 +42,15 @@
 				<td>${ studentDto.getStudentEng() }</td>
 				<td>${ studentDto.getStudentMat() }</td>
 <%-- 				<td>${ studentDto.getStudentAverage() }</td> --%>
-<td><fmt:formatNumber value="${studentDto.getStudentAverage()}" pattern="#,##0.00"/></td>
+<td><fmt:formatNumber value="${studentDto.getStudentAverage()}" pattern="#,##0"/></td>
 <%-- 				<td>${ studentDto.getStudentReg() }</td> --%>
 <td><fmt:formatDate value="${studentDto.getStudentReg()}" pattern="y년 M월 d일"/></td>
 			</tr>
 		</c:forEach>
 	</tbody>
 </table>
+
+<%-- 페이지 네비게이터 출력 --%>
+<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

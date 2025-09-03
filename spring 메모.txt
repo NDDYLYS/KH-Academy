@@ -1583,3 +1583,17 @@ public List<MemberDto> selectListWithPaging(PageVO pageVO)
 		return jdbcTemplate.query(sql, memberMapper, params);
 	}
 }
+
+* JSP 검색창에서 이전 값 유지하기
+
+<form action="list" method="get">
+	<select name="column">
+		<option value="member_id" ${param.column == "member_id" ? "selected" : ""}>아이디</option>
+	</select>	
+	<%-- param이라는 도구를 이용하면 파라미터를 직접 불러올 수 있다 --%>
+	<input type="text" name="keyword" value="${param.keyword}" required>
+	<button>검색</button>
+</form>
+
+		<%-- 페이지 네비게이터 출력 --%>
+		<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>

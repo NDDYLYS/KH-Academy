@@ -26,7 +26,7 @@ public class PageVO
 	public String getSearchParams() 
 	{
 		if (isSearch())
-			return "size=" + size + "&column" + column + "&keyword" + keyword;
+			return "size=" + size + "&column=" + column + "&keyword=" + keyword;
 		else
 			return "size=" + size;
 	}

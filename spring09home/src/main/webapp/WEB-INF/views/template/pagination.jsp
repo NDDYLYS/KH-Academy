@@ -6,6 +6,8 @@
 
 
 <%-- 페이지 네비게이터 (PageVO의 내용을 토대로 작성) --%>
+<c:if test = "${ pageVO != null && pageVO.dataCount > 0 }">
+
 <h2 align = "center">
 <c:if test="${ pageVO.firstBlock == false }">
 	<a href = "list?page=${ pageVO.prevPage }&${ pageVO.searchParams }">이전</a>
@@ -24,3 +26,5 @@
 	<a href = "list?page=${ pageVO.nextPage }&${ pageVO.searchParams }">다음</a>
 </c:if>
 </h2>
+
+</c:if>

@@ -1,7 +1,5 @@
 package com.kh.spring09home.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.spring09home.dao.PokemonDao;
 import com.kh.spring09home.dto.PokemonDto;
 import com.kh.spring09home.error.TargetNotfoundException;
+import com.kh.spring09home.vo.PageVO;
 
 @Controller
 @RequestMapping("/pokemon")
@@ -44,21 +43,12 @@ public class PokemonController
 	
 	// 목록 페이지 매핑
 	@RequestMapping("/list")
-	public String list(Model model, 
-			@RequestParam(required = false) String column, 
-			@RequestParam(required = false) String keyword) 
+	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
 	{
-		boolean isSearch = column != null && keyword != null;
-		if (isSearch) 
-		{
-			List<PokemonDto> pokemonList = pokemonDao.selectList(column, keyword);
-			model.addAttribute("pokemonList", pokemonList);
-		}
-		else 
-		{
-			List<PokemonDto> pokemonList = pokemonDao.selectList();
-			model.addAttribute("pokemonList", pokemonList);
-		}
+		model.addAttribute("pokemonList", pokemonDao.selectListWithPaging(pageVO));
+		pageVO.setDataCount(pokemonDao.count(pageVO));
+		model.addAttribute("pageVO", pageVO); // @ModelAttribute에 value 설정시 생략 가능
+		
 		return "/WEB-INF/views/pokemon/list.jsp";
 	}
 	

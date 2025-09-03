@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.spring09home.dto.MemberDto;
 import com.kh.spring09home.dto.PokemonDto;
 import com.kh.spring09home.mapper.PokemonMapper;
+import com.kh.spring09home.vo.PageVO;
 
 @Repository
 public class PokemonDao 
@@ -70,5 +72,56 @@ public class PokemonDao
 		Object[] params = {pokemon_no};
 		List<PokemonDto> list = jdbcTemplate.query(sql, pokemonMapper, params);
 		return list.isEmpty()? null : list.get(0);
+	}
+	
+	public int count(PageVO pageVO) 
+	{
+		if(pageVO.isList()) 
+		{
+			String sql ="select count(*) from pokemon "
+					+ "order by pokemon_no asc";
+			return jdbcTemplate.queryForObject(sql, int.class);
+		}
+		else 
+		{
+			String sql ="select count(*) from pokemon "
+					+ "where instr(#1, ?) > 0";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {pageVO.getKeyword()};
+			return jdbcTemplate.queryForObject(sql, int.class, params);
+		}
+	}
+
+	public List<PokemonDto> selectListWithPaging(PageVO pageVO) 
+	{
+		if(pageVO.isList()) 
+		{//목록이라면
+			String sql = "select * from ("
+					+ "select rownum rn, TMP.* from ("
+						+ "select * from pokemon "
+						+ "order by pokemon_no asc"
+					+ ")TMP"
+				+ ") where rn between ? and ?";
+
+			Object[] params = {
+					pageVO.getBegin(), pageVO.getEnd()
+			};//동적할당
+			return jdbcTemplate.query(sql, pokemonMapper, params);
+		}
+		else 
+		{//검색이라면
+			String sql = "select * from ("
+								+ "select rownum rn, TMP.* from ("
+									+ "select * from pokemon "
+									+ "where instr(#1, ?) > 0"
+									+ "order by #1 asc, pokemon_no asc"
+								+ ")TMP"
+							+ ") where rn between ? and ?";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {
+					pageVO.getKeyword(), pageVO.getBegin(), pageVO.getEnd()
+			};//동적할당
+			return jdbcTemplate.query(sql, pokemonMapper, params);
+		}
 	}
 }

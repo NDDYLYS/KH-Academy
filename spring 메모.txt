@@ -1502,3 +1502,84 @@ public String list(Model model,
 	
 	return "/WEB-INF/views/board/list.jsp";
 }
+
+* Markdown
+
+## 테이블 만들기
+
+| 제목1 | 제목2 | 제목3 |
+| :------ | ------: | :------: |
+| 항목1 | 항목2 | 항목3 | --- 3개 이상
+| 왼쪽 정렬 | 오른쪽 정렬 | 중앙 정렬4 |
+
+
+erdcloud.com
+
+A가 B를 C하는 것이다
+E entity
+R relation
+
+
+** 250903
+
+String sql = "select * from ("
+					+ "select rownum rn, TMP.* from ("
+						+ "select * from member "
+						+ "where instr(#1, ?) > 0 and member_level != '관리자' "
+						+ "order by #1 asc, member_id asc"
+					+ ")TMP"
+				+ ") where rn between ? and ?";
+
+<%-- 페이지 네비게이터 출력 --%>
+<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
+
+@RequestMapping("/list")
+public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
+{
+	model.addAttribute("memberList", memberDao.selectListWithPaging(pageVO));
+	pageVO.setDataCount(memberDao.count(pageVO));
+	model.addAttribute("pageVO", pageVO); // @ModelAttribute에 value 설정시 생략 가능
+	
+	return "/WEB-INF/views/admin/member/list.jsp";
+}
+
+public int count(PageVO pageVO) 
+{
+	if(pageVO.isList()) 
+	{
+		return 0;//목록은 데이터가 없다! (회원 검색의 특징)
+		//String sql = "select count(*) from member";
+		//return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	else 
+	{
+		String sql ="select count(*) from member "
+				+ "where instr(#1, ?) > 0 and member_level != '관리자'";
+		sql = sql.replace("#1", pageVO.getColumn());
+		Object[] params = {pageVO.getKeyword()};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
+}
+
+public List<MemberDto> selectListWithPaging(PageVO pageVO) 
+{
+	if(pageVO.isList()) 
+	{//목록이라면
+		return null;//return List.of();//목록은 현재 보여주지 않고 있다
+	}
+	else 
+	{//검색이라면
+		String sql = "select * from ("
+							+ "select rownum rn, TMP.* from ("
+								+ "select * from member "
+								+ "where instr(#1, ?) > 0 and member_level != '관리자' "
+								+ "order by #1 asc, member_id asc"
+							+ ")TMP"
+						+ ") where rn between ? and ?";
+		sql = sql.replace("#1", pageVO.getColumn());
+		Object[] params = {
+				pageVO.getKeyword(), pageVO.getBegin(), pageVO.getEnd()
+		};//동적할당
+		return jdbcTemplate.query(sql, memberMapper, params);
+	}
+}

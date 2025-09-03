@@ -1,18 +1,16 @@
 package com.kh.spring09home.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.MemberDao;
 import com.kh.spring09home.dto.MemberDto;
 import com.kh.spring09home.error.TargetNotfoundException;
-
-import jakarta.servlet.http.HttpSession;
+import com.kh.spring09home.vo.PageVO;
 
 @Controller
 @RequestMapping("/admin/member")
@@ -22,25 +20,12 @@ public class AdminMemberController
 	private MemberDao memberDao;
 	
 	@RequestMapping("/list")
-	public String list(Model model,
-					HttpSession session,
-					@RequestParam(required = false) String column,
-					@RequestParam(required = false) String keyword) 
+	public String list(Model model, @ModelAttribute(value = "pageVO") PageVO pageVO) 
 	{
-		boolean isSearch = column != null && keyword != null;
-		model.addAttribute("isSearch", isSearch);
-		String loginId = (String)session.getAttribute("loginId");
+		model.addAttribute("memberList", memberDao.selectListWithPaging(pageVO));
+		pageVO.setDataCount(memberDao.count(pageVO));
+		model.addAttribute("pageVO", pageVO); // @ModelAttribute에 value 설정시 생략 가능
 		
-		if (isSearch) 
-		{
-			List<MemberDto> memberList = memberDao.selectListByAdmin(loginId, column, keyword);
-			model.addAttribute("memberList", memberList);			
-		}
-		else 
-		{
-			List<MemberDto> memberList = memberDao.selectListByAdmin(loginId);
-			model.addAttribute("memberList", memberList);
-		}
 		return "/WEB-INF/views/admin/member/list.jsp";
 	}
 	

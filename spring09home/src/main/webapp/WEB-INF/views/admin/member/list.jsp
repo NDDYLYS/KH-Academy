@@ -41,8 +41,8 @@
 				</tr>
 			</thead>
 			<tbody align="center">
-				<c:forEach var="memberDto" items="${memberList}">
-				<tr>
+				<c:forEach var="memberDto" items="${memberList}" varStatus = "status">
+				<tr bgcolor = "${ status.count % 5 == 0 ? '#ffeaa7' : '' }">
 					<td>
 						<a href="detail?memberId=${memberDto.memberId}">
 							${memberDto.memberId}

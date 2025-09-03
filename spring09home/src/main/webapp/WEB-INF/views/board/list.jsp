@@ -29,10 +29,15 @@
 		</tr>
 	</thead>
 	<tbody align = "center">
-		<c:forEach var = "boardDto" items = "${ boardList }">
-			<tr>
-				<td>${ boardDto.boardNo }</td>
-				<td><a href="detail?boardNo=${boardDto.boardNo}">${ boardDto.boardTitle }</a></td>
+		<c:forEach var = "boardDto" items = "${ boardList }" varStatus = "status">
+			<tr bgcolor = "${ status.index < noticeCount ? '#ffeaa7' : ''}">
+				<td>${ boardDto.boardNo } (${ status.index })</td>
+			
+				<td><a href="detail?boardNo=${boardDto.boardNo}">
+				<c:if test = "${ boardDto.boardNotice == 'Y' }">
+					(공지)
+				</c:if>
+				${ boardDto.boardTitle }</a></td>
 				<td>${ boardDto.boardWriter == null ? '탈퇴한 사용자' : boardDto.boardWriter }</td>
 				<c:choose>
 					<c:when test="${ boardDto.nextDay() }">

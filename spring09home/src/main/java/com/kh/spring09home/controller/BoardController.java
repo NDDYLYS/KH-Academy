@@ -1,5 +1,6 @@
 package com.kh.spring09home.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09home.dao.BoardDao;
 import com.kh.spring09home.dto.BoardDto;
+import com.kh.spring09home.error.NeedPermissionException;
 import com.kh.spring09home.error.TargetNotfoundException;
 import com.kh.spring09home.vo.PageVO;
 
@@ -28,9 +30,15 @@ public class BoardController {
 	public String list(Model model, 
 			@ModelAttribute PageVO pageVO) {
 		
+		List<BoardDto> boardNoticeList = boardDao.selectListNotice(pageVO);
+		model.addAttribute("noticeCount", boardNoticeList.size());
 		List<BoardDto> boardList = boardDao.selectListWithPaging(pageVO);
-		model.addAttribute("boardList", boardList);		
-	
+		
+		List<BoardDto> result = new ArrayList<>();
+		result.addAll(boardNoticeList);
+		result.addAll(boardList);
+		model.addAttribute("boardList", result);		
+		
 		int dataCount = boardDao.count(pageVO);
 		pageVO.setDataCount(dataCount);
 		
@@ -49,6 +57,12 @@ public class BoardController {
 			@ModelAttribute BoardDto boardDto) {
 		String loginId = (String)session.getAttribute("loginId");
 		boardDto.setBoardWriter(loginId);
+		
+		// 검사를 통해 관리자가 아닌데 공지사항을 쓰려고 하면 차단한다
+		String loginLevel = (String)session.getAttribute("loginLevel");
+		if (loginLevel.equals("관리자") == false && boardDto.getBoardNotice().equals("Y"))
+			throw new NeedPermissionException("공지글을 작성할 권한이 없습니다");
+		
 		int boardNo = boardDao.sequence();//번호를 생성해서
 		boardDto.setBoardNo(boardNo);//게시글 정보에 합친다
 		boardDao.insert(boardDto);

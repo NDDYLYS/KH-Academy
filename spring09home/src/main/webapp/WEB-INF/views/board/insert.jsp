@@ -13,6 +13,9 @@
 <!-- </form> -->
 
 <form action = "/board/insert" method = "post" align = "center">
+	<c:if test = "${ sessionScope.loginLevel == '관리자' }">
+		<input type = "checkbox" name = "boardNotice" value = "Y">공지사항으로 등록<br>
+	</c:if>
 	<br>
 	<textarea name = "boardTitle" cols="110" required></textarea>
 	<br><br>

@@ -62,11 +62,13 @@ public class BoardDao
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
 	public void insert(BoardDto boardDto) {
-		String sql = "insert into board(board_no, board_title, board_content, board_writer) "
-						+ "values(?, ?, ?, ?)";
+		String sql = "insert into board(board_no, board_title, board_content, "
+				+ "board_writer, board_notice) "
+						+ "values(?, ?, ?, ?, nvl(?, 'N'))";
 		Object[] params = {
 			boardDto.getBoardNo(), boardDto.getBoardTitle(), 
-			boardDto.getBoardContent(), boardDto.getBoardWriter()
+			boardDto.getBoardContent(), boardDto.getBoardWriter(),
+			boardDto.getBoardNotice()
 		};
 		jdbcTemplate.update(sql, params);
 	}
@@ -169,19 +171,28 @@ public class BoardDao
 		}
 	}
 	
-//	public int count(String column, String keyword) 
-//	{
-//		String sql = "select count(*) from board where instr(#1, ?) > 0";
-//		sql = sql.replace("#1", column);
-//		Object[] params = {keyword};
-//		return jdbcTemplate.queryForObject(sql, int.class, params);
-//	}
-//	
-//	public int count(PageVO pageVO) 
-//	{
-//		String sql = "select count(*) from board where instr(#1, ?) > 0";
-//		sql = sql.replace("#1", pageVO.getColumn());
-//		Object[] params = {pageVO.getKeyword()};
-//		return jdbcTemplate.queryForObject(sql, int.class, params);
-//	}
+	public List<BoardDto> selectListNotice(PageVO pageVO)
+	{
+		if (pageVO.isList())
+		{
+			String sql = "select "
+					+ "board_no, board_title, board_writer, board_wtime, board_etime,"
+					+ "board_read, board_like, board_reply, board_notice "
+					+ "from board where board_notice = 'Y' order by board_no desc";
+			return jdbcTemplate.query(sql, boardListMapper);
+		}
+		else 
+		{
+			String sql = "select "
+					+ "board_no, board_title, board_writer, board_wtime, board_etime,"
+					+ "board_read, board_like, board_reply, board_notice "
+					+ "from board "
+					+ "where board_notice = 'Y' and instr(#1, ?) > 0 "
+					+ "order by board_no desc";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {pageVO.getKeyword()};
+			return jdbcTemplate.query(sql, boardListMapper, params);
+		}
+	}
+	
 }

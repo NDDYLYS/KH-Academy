@@ -19,7 +19,7 @@ public class BoardDto
 	private long boardRead;
 	private long boardLike;
 	private int boardReply;
-	private String boardNotice;
+	private String boardNotice = "N";
 	
 	public boolean nextDay() 
 	{

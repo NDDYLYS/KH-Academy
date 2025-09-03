@@ -1616,3 +1616,48 @@ public List<MemberDto> selectListWithPaging(PageVO pageVO)
 
 		<%-- 페이지 네비게이터 출력 --%>
 		<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
+
+* checkbox
+<input type = "checkbox" name = "boardNotice" value = "Y">공지사항으로 등록<br>
+체크 안 하면 아예 안 넘어간다. 체크하면 Y가 넘어감
+
+오라클 전용
+* nvl(?, 'N')
+
+BoardDto
+private String boardNotice = "N";
+
+* status 사용
+
+List<BoardDto> boardNoticeList = boardDao.selectListNotice(pageVO);
+List<BoardDto> boardList = boardDao.selectListWithPaging(pageVO);
+
+List<BoardDto> result = new ArrayList<>();
+result.addAll(boardNoticeList);
+result.addAll(boardList);
+
+
+* JSP에서 status 사용법
+<tbody align = "center">
+	<c:forEach var = "boardDto" items = "${ boardList }" varStatus = "status">
+	<tr bgcolor = "${ status.index < noticeCount ? '#ffeaa7' : ''}">
+		<td>${ boardDto.boardNo } (${ status.index })</td>
+	
+		<td><a href="detail?boardNo=${boardDto.boardNo}">
+		<c:if test = "${ boardDto.boardNotice == 'Y' }">
+			(공지)
+		</c:if>
+		${ boardDto.boardTitle }</a></td>
+		<td>${ boardDto.boardWriter == null ? '탈퇴한 사용자' : boardDto.boardWriter }</td>
+		<c:choose>
+			<c:when test="${ boardDto.nextDay() }">
+				<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd"/></td>
+			</c:when>				
+			<c:otherwise>
+				<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="HH:mm"/></td>
+			</c:otherwise>
+		</c:choose>
+		<td>${ boardDto.boardRead }</td>
+		<td>${ boardDto.boardLike }</td>
+	</tr>
+</c:forEach>

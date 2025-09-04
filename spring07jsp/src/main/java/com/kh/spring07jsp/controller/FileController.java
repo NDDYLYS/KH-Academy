@@ -48,13 +48,13 @@ public class FileController
 	public String test04 (@RequestParam String uploader, @RequestParam MultipartFile attach) throws IllegalStateException, IOException 
 	{
 		int attachmentNo = attachmentDao.sequence();
-		
-		System.out.println("uploader : " + uploader); // 업로드한 입력창 이름
-		System.out.println("업로드한 입력창 이름 : " + attach.getName()); // 업로드한 입력창 이름
-		System.out.println("파일명 : " + attach.getOriginalFilename()); // 파일명
-		System.out.println("파일 크기 : " + attach.getSize()); // 파일 크기
-		System.out.println("업로드한 파일 유형 : " + attach.getContentType()); // 업로드한 파일 유형
-		System.out.println("고유번호 : " + attach); // 고유번호
+//		
+//		System.out.println("uploader : " + uploader); // 업로드한 입력창 이름
+//		System.out.println("업로드한 입력창 이름 : " + attach.getName()); // 업로드한 입력창 이름
+//		System.out.println("파일명 : " + attach.getOriginalFilename()); // 파일명
+//		System.out.println("파일 크기 : " + attach.getSize()); // 파일 크기
+//		System.out.println("업로드한 파일 유형 : " + attach.getContentType()); // 업로드한 파일 유형
+//		System.out.println("고유번호 : " + attach); // 고유번호
 		
 		if (!attach.isEmpty()) 
 		{

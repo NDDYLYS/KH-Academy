@@ -20,6 +20,7 @@
 		<a href = "/student/list">Student</a>
 		<a href = "/member/mypage">내 정보</a>
 		<a href = "/member/logout">로그아웃</a>
+		<br><a href = "/board/list2" style="float: right;">멘션형 자유 게시판</a><br>
 		<a href = "/board/list" style="float: right;">자유 게시판</a>
 	</c:when>
 	<c:when  test="${sessionScope.loginId != null && sessionScope.loginLevel == '우수회원'}">
@@ -29,6 +30,7 @@
 		<a href = "/book/list">Book</a>
 		<a href = "/member/mypage">내 정보</a>
 		<a href = "/member/logout">로그아웃</a>
+		<br><a href = "/board/list2" style="float: right;">멘션형 자유 게시판</a><br>
 		<a href = "/board/list" style="float: right;">자유 게시판</a>
 	</c:when>
 	<c:when  test="${sessionScope.loginId != null && sessionScope.loginLevel == '관리자'}">
@@ -38,6 +40,7 @@
 		<a href = "/book/list">Book</a>
 		<a href = "/member/logout">로그아웃</a>
 		<a href = "/admin/home">[관리메뉴]</a>
+		<br><a href = "/board/list2" style="float: right;">멘션형 자유 게시판</a><br>
 		<a href = "/board/list" style="float: right;">자유 게시판</a>
 	</c:when>
 	<c:otherwise>
@@ -45,6 +48,7 @@
 		<a href = "/pokemon/list">Pokemon</a>
 		<a href = "/member/join">회원가입</a>
 		<a href = "/member/login">로그인</a>
+		<br><a href = "/board/list2" style="float: right;">멘션형 자유 게시판</a><br>
 		<a href = "/board/list" style="float: right;">자유 게시판</a>
 	</c:otherwise>
 </c:choose>

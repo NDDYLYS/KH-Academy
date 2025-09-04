@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.kh.spring09home.dto.BoardDto;
 import com.kh.spring09home.vo.BoardListVO;
 
 @Component

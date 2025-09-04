@@ -18,6 +18,7 @@ import com.kh.spring09home.dto.BoardDto;
 import com.kh.spring09home.dto.MemberDto;
 import com.kh.spring09home.error.NeedPermissionException;
 import com.kh.spring09home.error.TargetNotfoundException;
+import com.kh.spring09home.vo.BoardListVO;
 import com.kh.spring09home.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -34,11 +35,11 @@ public class BoardController {
 	public String list(Model model, 
 			@ModelAttribute PageVO pageVO) {
 		
-		List<BoardDto> boardNoticeList = boardDao.selectListNotice(pageVO);
+		List<BoardListVO> boardNoticeList = boardDao.selectListNotice(pageVO);
 		model.addAttribute("noticeCount", boardNoticeList.size());
-		List<BoardDto> boardList = boardDao.selectListWithPaging(pageVO);
+		List<BoardListVO> boardList = boardDao.selectListWithPaging(pageVO);
 		
-		List<BoardDto> result = new ArrayList<>();
+		List<BoardListVO> result = new ArrayList<>();
 		result.addAll(boardNoticeList);
 		result.addAll(boardList);
 		model.addAttribute("boardList", result);		
@@ -49,6 +50,27 @@ public class BoardController {
 		model.addAttribute("pageVO", pageVO);
 		
 		return "/WEB-INF/views/board/list.jsp";
+	}
+	
+	@RequestMapping("/list2")
+	public String list2(Model model, 
+			@ModelAttribute PageVO pageVO) {
+		
+		List<BoardListVO> boardNoticeList = boardDao.selectListNotice(pageVO);
+		model.addAttribute("noticeCount", boardNoticeList.size());
+		List<BoardListVO> boardList = boardDao.selectListWithPaging(pageVO);
+		
+		List<BoardListVO> result = new ArrayList<>();
+		result.addAll(boardNoticeList);
+		result.addAll(boardList);
+		model.addAttribute("boardList", result);		
+		
+		int dataCount = boardDao.count(pageVO);
+		pageVO.setDataCount(dataCount);
+		
+		model.addAttribute("pageVO", pageVO);
+		
+		return "/WEB-INF/views/board/list2.jsp";
 	}
 
 	@GetMapping("/insert")

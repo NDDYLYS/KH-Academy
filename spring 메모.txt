@@ -1883,7 +1883,20 @@ select * from board->member; right join
 grant connect, resource, create view to kh16;
 
 create or replace view board_list as 
-select board.*, member.member_nickname, member.member_level from board left outer join member on member.member_id = board.board_writer
+select  board.board_no, board.board_title, board.board_writer, board.board_wtime,
+    board.board_etime, board.board_read, board.board_like, board.board_reply, 
+    board.board_notice, board.board_group, board.board_origin, board.board_depth, 
+    member.member_id, member.member_nickname, member.member_level from board left outer join member on member.member_id = board.board_writer
 connect by prior board.board_no = board.BOARD_ORIGIN 
 start with board.board_origin is null 
 order siblings by board.board_group desc, board.board_no asc;
+
+create or replace view board_mention as
+select  B.board_no, B.board_title, B.board_writer, B.board_wtime,
+    B.board_etime, B.board_read, B.board_like, B.board_reply, 
+    B.board_notice, B.board_group, B.board_origin, B.board_depth, 
+    M.member_id, M.member_nickname, M.member_level, 
+    O.board_no origin_no, O.board_title origin_title, O.board_writer origin_writer
+from board B
+left outer join member M on M.member_id = B.board_writer
+left outer join board O on O.board_no = B.board_origin;

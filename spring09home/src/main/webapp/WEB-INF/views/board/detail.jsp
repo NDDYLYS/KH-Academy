@@ -12,7 +12,7 @@
 <c:choose>
 	<c:when test="${ memberDto != null }">
 	, 아이디 : ${boardDto.boardWriter },
-<%-- 	<a href = "/member/detail?memberId=${ memberDto.memberId }">닉네임 : ${ memberDto.memberNickname }</a> --%>
+	<a href = "/member/detail?memberId=${ memberDto.memberId }">닉네임 : ${ memberDto.memberNickname }</a>
 	닉네임 : ${ memberDto.memberNickname }
 	(${memberDto.memberLevel })
 	</c:when>

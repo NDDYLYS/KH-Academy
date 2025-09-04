@@ -32,36 +32,41 @@
 		</tr>
 	</thead>
 	<tbody align="center">
-		<c:forEach var="boardDto" items="${boardList}" varStatus="status">
+		<c:forEach var="boardListVO" items="${boardList}" varStatus="status">
 		<tr bgcolor="${status.index < noticeCount ? '#ffeaa7' : ''}">
-			<td>${boardDto.boardNo} (${status.index})</td>
+			<td>${boardListVO.boardNo} (${status.index})</td>
 			<td align="left">
 				<%--차수만큼 띄어쓰기(공지로 표시되는 경우가 아니라면) --%>
 				<c:if test="${status.index >= noticeCount}">
-					<c:forEach var="i" begin="1" end="${boardDto.boardDepth}" step="1">
+					<c:forEach var="i" begin="1" end="${boardListVO.boardDepth}" step="1">
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					</c:forEach>
-					<c:if test="${boardDto.boardDepth > 0}">
+					<c:if test="${boardListVO.boardDepth > 0}">
 						<img src="/images/test/arrow.png" width="16" height="16">
 					</c:if>
 				</c:if>
 			
 				<%-- 공지사항인 경우는 제목앞에 (공지) 추가 --%>
-				<c:if test="${boardDto.boardNotice == 'Y'}">
+				<c:if test="${boardListVO.boardNotice == 'Y'}">
 				(공지)
 				</c:if>
 				
-				<a href="detail?boardNo=${boardDto.boardNo}">
-					${boardDto.boardTitle}
-					<c:if test= "${ boardDto.boardEtime != null }">
+				<a href="detail?boardNo=${boardListVO.boardNo}">
+					${boardListVO.boardTitle}
+					<c:if test= "${ boardListVO.boardEtime != null }">
 					(수정됨)
 					</c:if>
 				</a>
 			</td>
-			<td>${boardDto.boardWriter == null ? '(탈퇴한사용자)' : boardDto.boardWriter}</td>
-			<td>${boardDto.boardWtime}</td>
-			<td>${boardDto.boardRead}</td>
-			<td>${boardDto.boardLike}</td>
+			<td>
+				<a href = "/member/detail?memberId=${ boardListVO.memberId }">
+				${boardListVO.boardWriter == null ? 
+				'(탈퇴한사용자)' : boardListVO.memberNickname}
+				</a>
+			</td>
+			<td>${boardListVO.boardWtime}</td>
+			<td>${boardListVO.boardRead}</td>
+			<td>${boardListVO.boardLike}</td>
 <%-- 			<td>${boardDto.boardGroup}</td> --%>
 <%-- 			<td>${boardDto.boardOrigin}</td> --%>
 <%-- 			<td>${boardDto.boardDepth}</td> --%>

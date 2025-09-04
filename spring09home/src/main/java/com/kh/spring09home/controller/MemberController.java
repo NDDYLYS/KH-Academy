@@ -2,7 +2,6 @@ package com.kh.spring09home.controller;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -219,5 +218,15 @@ public class MemberController
 		memberDto.setMemberPw(newPassword);
 		memberDao.updatePassword(memberDto);
 		return "redirect:mypage";
+	}
+	
+	@RequestMapping("/detail")
+	public String detail(Model model,
+			@RequestParam String memberId) 
+	{
+		MemberDto memberDto = memberDao.selectOne(memberId);
+		model.addAttribute("memberDto", memberDto);
+		
+		return "/WEB-INF/views/member/detail.jsp";
 	}
 }

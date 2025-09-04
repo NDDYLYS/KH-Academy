@@ -1,7 +1,6 @@
 package com.kh.spring09home.dao;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.spring09home.dto.BoardDto;
 import com.kh.spring09home.mapper.BoardListMapper;
 import com.kh.spring09home.mapper.BoardMapper;
+import com.kh.spring09home.vo.BoardListVO;
 import com.kh.spring09home.vo.PageVO;
 
 @Repository
@@ -22,47 +22,26 @@ public class BoardDao
 	@Autowired
 	private BoardListMapper boardListMapper;//목록 및 검색용도 (내용 조회되지 않음)
 
-	public List<BoardDto> selectList() {
-		String sql = "select "
-							+ "board_no, board_title, board_writer, board_notice,"
-							+ "board_wtime, board_etime, board_read, board_like, board_reply "
-							+ "board_group, board_origin, board_depth "
-						+ "from board order by board_no desc";
-		return jdbcTemplate.query(sql, boardListMapper);
-	}
-	//검색
-	public List<BoardDto> selectList(String column, String keyword) {
-		Set<String> allowList = Set.of("board_title", "board_writer");
-		if(allowList.contains(column) == false) return List.of();
-		
-		String sql = "select "
-							+ "board_no, board_title, board_writer, board_notice,"
-							+ "board_wtime, board_etime, board_read, board_like, board_reply "
-							+ "board_group, board_origin, board_depth "
-						+ "from board "
-						+ "where instr(#1, ?) > 0 "
-						+ "order by board_no desc";
-		sql = sql.replace("#1", column);
-		Object[] params = {keyword};
-		return jdbcTemplate.query(sql, boardListMapper, params);
-	}
 	public BoardDto selectOne(int boardNo) {
 		String sql = "select * from board where board_no=?";
 		Object[] params = {boardNo};
 		List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
 		return list.isEmpty() ? null : list.get(0);
 	}
+	
 	public boolean updateBoardRead(int boardNo) {
 		String sql = "update board set board_read=board_read+1 where board_no=?";
 		Object[] params = {boardNo};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	
 	public int sequence() {
 		String sql = "select board_seq.nextval from dual";
 		//int처럼 자바의 기본데이터들은 Mapper 없이도 조회가 가능
 		//= int 1개, String 1개 처럼 매우 특수한 상황(특히 집계함수 사용 결과)
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
+	
 	public void insert(BoardDto boardDto) {
 		String sql = "insert into board(board_no, board_title, board_content, "
 				+ "board_writer, board_notice, "
@@ -76,11 +55,13 @@ public class BoardDao
 		};
 		jdbcTemplate.update(sql, params);
 	}
+	
 	public boolean delete(int boardNo) {
 		String sql = "delete board where board_no = ?";
 		Object[] params = {boardNo};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	
 	public boolean update(BoardDto boardDto) {
 		String sql = "update board "
 						+ "set board_title=?, board_content=?, "
@@ -126,18 +107,13 @@ public class BoardDao
 //		Object[] params = {keyword, begin, end};
 //		return jdbcTemplate.query(sql, boardListMapper, params);
 //	}
-	public List<BoardDto> selectListWithPaging(PageVO pageVO) 
+	public List<BoardListVO> selectListWithPaging(PageVO pageVO) 
 	{
 		if (pageVO.isList()) 
 		{
 			String sql = "select * from ("
 					+ "select rownum rn, TMP.* from ("
-						+ "select "
-							+ "board_no, board_title, board_writer, board_notice,"
-							+ "board_wtime, board_etime, board_read, board_like, board_reply,"
-							+ "board_group, board_origin, board_depth "
-						+ "from board "
-						//+ "order by board_no desc"
+						+ "select * from board_list "
 						+ "connect by prior board_no = board_origin "
 						+ "start with board_origin is null "
 						+ "order siblings by board_group desc, board_no asc"
@@ -150,13 +126,8 @@ public class BoardDao
 		{
 			String sql = "select * from ("
 					+ "select rownum rn, TMP.* from ("
-						+ "select "
-							+ "board_no, board_title, board_writer, board_notice,"
-							+ "board_wtime, board_etime, board_read, board_like, board_reply "
-							+ "board_group, board_origin, board_depth "
-						+ "from board "
+						+ "select * from board_list "
 						+ "where instr(#1, ?) > 0 "
-						//+ "order by board_no desc"
 						+ "connect by prior board_no = board_origin "
 						+ "start with board_origin is null "
 						+ "order siblings by board_group desc, board_no asc"
@@ -173,36 +144,29 @@ public class BoardDao
 	{
 		if (pageVO.isList()) 
 		{
-			String sql = "select count(*) from board";
+			String sql = "select count(*) from board_list";
 			return jdbcTemplate.queryForObject(sql, int.class);			
 		}
 		else 
 		{
-			String sql = "select count(*) from board where instr(#1, ?) > 0";
+			String sql = "select count(*) from board_list where instr(#1, ?) > 0";
 			sql = sql.replace("#1", pageVO.getColumn());
 			Object[] params = {pageVO.getKeyword()};
 			return jdbcTemplate.queryForObject(sql, int.class, params);
 		}
-	}
+	}	
 	
-	public List<BoardDto> selectListNotice(PageVO pageVO)
+	public List<BoardListVO> selectListNotice(PageVO pageVO)
 	{
 		if (pageVO.isList())
 		{
-			String sql = "select "
-					+ "board_no, board_title, board_writer, board_wtime, board_etime,"
-					+ "board_read, board_like, board_reply, board_notice, "
-					+ "board_group, board_origin, board_depth "
-					+ "from board where board_notice = 'Y' order by board_no desc";
+			String sql = "select * from board_list "
+					+ "where board_notice = 'Y' order by board_no desc";
 			return jdbcTemplate.query(sql, boardListMapper);
 		}
 		else 
 		{
-			String sql = "select "
-					+ "board_no, board_title, board_writer, board_wtime, board_etime,"
-					+ "board_read, board_like, board_reply, board_notice, "
-					+ "board_group, board_origin, board_depth "
-					+ "from board "
+			String sql = "select * from board_list "
 					+ "where board_notice = 'Y' and instr(#1, ?) > 0 "
 					+ "order by board_no desc";
 			sql = sql.replace("#1", pageVO.getColumn());
@@ -210,5 +174,4 @@ public class BoardDao
 			return jdbcTemplate.query(sql, boardListMapper, params);
 		}
 	}
-	
 }

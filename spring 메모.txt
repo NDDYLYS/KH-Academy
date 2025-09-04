@@ -1873,7 +1873,7 @@ public class PageVO
 
 table join : 연결된 서로 다른 테이블을 조회시 어떤 기준에 맞게 합치는 행위
  - inner join : 양쪽에 동일하게 존재하는 항목이 있을 경우만 합쳐서 조회(null 제외) null은 버린다
- - outer join : 특정 테이블
+ - outer join : 특정 테이블을 기준으로 조회하여 다른 테이블을 붙여서 조회(null 포함)
 select * from board<-member; left join
  ** left outer join 예제)select board.*, member.member_nickname, member.member_level from board left outer join member on member.member_id = board.board_writer;
 select * from board->member; right join
@@ -1900,3 +1900,20 @@ select  B.board_no, B.board_title, B.board_writer, B.board_wtime,
 from board B
 left outer join member M on M.member_id = B.board_writer
 left outer join board O on O.board_no = B.board_origin;
+
+파일 업로드
+
+기본방식(application/x-www-form-urlencoded)
+GET - 주소?이름=값&이름=값&이름=값
+POST - 주소
+	(body:이름=값&이름=값&이름=값)
+이 방식으로는 전송할 수 없다
+파일전송용 방식(multipart/form-data)
+ - 파일처럼 하나의 이름에 많은 정보를 담아야 하는 경우 사용하는 방식
+ - 기존 데이터도 전송 가능
+ - 선언은 form에 enctype 속성을 적어서 작성
+
+text/html
+대분류/소분류 : MIME - TYPE
+
+<form action = "test04" method = "post" enctype="multipart/form-data">

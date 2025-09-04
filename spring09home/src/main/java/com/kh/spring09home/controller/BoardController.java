@@ -99,12 +99,14 @@ public class BoardController {
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
 			throw new TargetNotfoundException("존재하지 않는 게시글 번호");
-		MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
-		if (memberDto == null)
-			throw new TargetNotfoundException("존재하지 않는 글쓴이입니다");
-		model.addAttribute("boardDto", boardDto);
-		model.addAttribute("memberDto", memberDto);
+		
+		if (boardDto.getBoardWriter() != null) 
+		{			
+			MemberDto memberDto = memberDao.selectOne(boardDto.getBoardWriter());
+			model.addAttribute("memberDto", memberDto);
+		}
 
+		model.addAttribute("boardDto", boardDto);
 		return "/WEB-INF/views/board/detail.jsp";
 	}
 	

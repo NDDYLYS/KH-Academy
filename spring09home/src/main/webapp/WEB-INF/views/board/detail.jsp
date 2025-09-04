@@ -7,8 +7,28 @@
 
 
 
-<h3>글 번호 : ${boardDto.boardNo }, 아이디 : ${boardDto.boardWriter }, 닉네임 : ${ memberDto.memberNickname }</h3>
-<h1>글 제목 : ${boardDto.boardTitle }</h1>
+<h3>글 번호 : ${boardDto.boardNo }
+
+<c:choose>
+	<c:when test="${ memberDto != null }">
+	, 아이디 : ${boardDto.boardWriter },
+<%-- 	<a href = "/member/detail?memberId=${ memberDto.memberId }">닉네임 : ${ memberDto.memberNickname }</a> --%>
+	닉네임 : ${ memberDto.memberNickname }
+	(${memberDto.memberLevel })
+	</c:when>
+	
+	<c:otherwise>
+	| 탈퇴한 사용자입니다
+	</c:otherwise>
+</c:choose>
+</h3>
+<h1>
+글 제목 : ${boardDto.boardTitle }
+<c:if test= "${ boardDto.boardEtime != null }">
+(수정됨)
+</c:if>
+
+</h1>
 <pre>
 	<h1>본문 : ${boardDto.boardContent }</h1>
 </pre>

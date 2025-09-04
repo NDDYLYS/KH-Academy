@@ -47,10 +47,15 @@
 				</c:if>
 			
 				<%-- 공지사항인 경우는 제목앞에 (공지) 추가 --%>
-				<c:if test="${boardDto.boardNotice == 'Y'}">(공지)</c:if>
+				<c:if test="${boardDto.boardNotice == 'Y'}">
+				(공지)
+				</c:if>
 				
 				<a href="detail?boardNo=${boardDto.boardNo}">
 					${boardDto.boardTitle}
+					<c:if test= "${ boardDto.boardEtime != null }">
+					(수정됨)
+					</c:if>
 				</a>
 			</td>
 			<td>${boardDto.boardWriter == null ? '(탈퇴한사용자)' : boardDto.boardWriter}</td>

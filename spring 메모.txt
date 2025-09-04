@@ -1917,3 +1917,42 @@ text/html
 대분류/소분류 : MIME - TYPE
 
 <form action = "test04" method = "post" enctype="multipart/form-data">
+
+* pom.xml은 메이븐의 설정값
+
+application.propreties
+
+MultipartFile file
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
+
+System.out.println("file : " + attach.getName()); // 업로드한 입력창 이름
+System.out.println("file : " + attach.getOriginalFilename()); // 파일명
+System.out.println("file : " + attach.getSize()); // 파일 크기
+System.out.println("file : " + attach.getContentType()); // 업로드한 파일 유형
+
+FS(File System)
+파일 저장법 : c:\user\user1을 기본 경로로 지정
+
+File home = new File(System.getProperty("user.home"));
+File upload = new File(home, "upload");
+if (upload.exists() == false) 
+{
+	upload.mkdirs();
+}
+	
+File target = new File(upload, attach.getOriginalFilename()); // 저장할 파일의 인스턴스
+attach.transferTo(target);
+
+이름 글자수 제한 : 255
+
+
+create table attachment(
+attachment_no number primary key,
+attachment_name varchar2(255) NOT NULL,
+attachment_size number not null,
+attachment_type varchar2(100) not null,
+attachment_time timestamp default systimestamp not null
+);
+create sequence attachment_seq;

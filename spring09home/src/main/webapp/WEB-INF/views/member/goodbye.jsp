@@ -6,25 +6,4 @@
 <h1>회원 탈퇴가 완료되었습니다.</h1>
 <p>그동안 이용해주셔서 감사합니다.</p>
 
-
-<a href="https://www.apple.com">
-	<img src = "/images/apple.png" width = "50" height = "50">
-</a>
-
-<a href="https://www.facebook.com">
-	<img src = "/images/facebook.png" width = "50" height = "50">
-</a>
-
-<a href="https://www.google.com">
-	<img src = "/images/google-logo.png" width = "50" height = "50">
-</a>
-
-<a href="https://kh-academy.co.kr/">
-	<img src = "/images/kt.png" width = "50" height = "50">
-</a>
-
-<a href="https://www.naver.co.kr">
-	<img src = "/images/naver-icon-style.png" width = "50" height = "50">
-</a>
-
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

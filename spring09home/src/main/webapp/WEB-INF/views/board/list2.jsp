@@ -16,7 +16,7 @@
 			(${boardListVO.memberNickname == null ? '탈퇴한 사용자':boardListVO.memberNickname})
 			<br><br> 
 			<c:if test = "${boardListVO.boardDepth > 0 }">
-			@멘션
+				@${ boardListVO.originWriter } - ${ boardListVO.originTitle }<br>
 			</c:if>
 			<a href="detail?boardNo=${ boardListVO.boardNo }">${ boardListVO.boardTitle }</a>
 			</td>

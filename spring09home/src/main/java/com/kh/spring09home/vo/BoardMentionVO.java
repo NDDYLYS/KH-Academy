@@ -27,6 +27,5 @@ public class BoardMentionVO
 	
 	private int originNo;
 	private String originTitle;
-	private String originWriter;
-	
+	private String originWriter;	
 }

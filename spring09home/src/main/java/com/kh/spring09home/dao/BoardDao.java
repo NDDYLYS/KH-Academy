@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 import com.kh.spring09home.dto.BoardDto;
 import com.kh.spring09home.mapper.BoardListMapper;
 import com.kh.spring09home.mapper.BoardMapper;
+import com.kh.spring09home.mapper.BoardMentionMapper;
 import com.kh.spring09home.vo.BoardListVO;
+import com.kh.spring09home.vo.BoardMentionVO;
 import com.kh.spring09home.vo.PageVO;
 
 @Repository
@@ -21,6 +23,8 @@ public class BoardDao
 	private BoardMapper boardMapper;
 	@Autowired
 	private BoardListMapper boardListMapper;//목록 및 검색용도 (내용 조회되지 않음)
+	@Autowired
+	private BoardMentionMapper boardMentionMapper;
 
 	public BoardDto selectOne(int boardNo) {
 		String sql = "select * from board where board_no=?";
@@ -172,6 +176,38 @@ public class BoardDao
 			sql = sql.replace("#1", pageVO.getColumn());
 			Object[] params = {pageVO.getKeyword()};
 			return jdbcTemplate.query(sql, boardListMapper, params);
+		}
+	}
+	
+	public List<BoardMentionVO> selectListWithMention(PageVO pageVO) 
+	{
+		if (pageVO.isList()) 
+		{
+			String sql = "select * from ("
+					+ "select rownum rn, TMP.* from ("
+						+ "select * from board_mention "
+						+ "connect by prior board_no = board_origin "
+						+ "start with board_origin is null "
+						+ "order siblings by board_group desc, board_no asc"
+					+ ")TMP"
+				+ ") where rn between ? and ?";
+			Object[] params = {pageVO.getBegin(), pageVO.getEnd()};
+			return jdbcTemplate.query(sql, boardMentionMapper, params);
+		}
+		else 
+		{
+			String sql = "select * from ("
+					+ "select rownum rn, TMP.* from ("
+						+ "select * from board_mention "
+						+ "where instr(#1, ?) > 0 "
+						+ "connect by prior board_no = board_origin "
+						+ "start with board_origin is null "
+						+ "order siblings by board_group desc, board_no asc"
+					+ ")TMP"
+			+ ") where rn between ? and ?";
+			sql = sql.replace("#1", pageVO.getColumn());
+			Object[] params = {pageVO.getKeyword(), pageVO.getBegin(), pageVO.getEnd()};
+			return jdbcTemplate.query(sql, boardMentionMapper, params);
 		}
 	}
 }

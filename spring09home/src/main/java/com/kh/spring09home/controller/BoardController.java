@@ -19,6 +19,7 @@ import com.kh.spring09home.dto.MemberDto;
 import com.kh.spring09home.error.NeedPermissionException;
 import com.kh.spring09home.error.TargetNotfoundException;
 import com.kh.spring09home.vo.BoardListVO;
+import com.kh.spring09home.vo.BoardMentionVO;
 import com.kh.spring09home.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -56,14 +57,10 @@ public class BoardController {
 	public String list2(Model model, 
 			@ModelAttribute PageVO pageVO) {
 		
-		List<BoardListVO> boardNoticeList = boardDao.selectListNotice(pageVO);
-		model.addAttribute("noticeCount", boardNoticeList.size());
-		List<BoardListVO> boardList = boardDao.selectListWithPaging(pageVO);
-		
-		List<BoardListVO> result = new ArrayList<>();
-		result.addAll(boardNoticeList);
-		result.addAll(boardList);
-		model.addAttribute("boardList", result);		
+		//List<BoardListVO> boardNoticeList = boardDao.selectListNotice(pageVO);
+		//model.addAttribute("noticeCount", boardNoticeList.size());
+		List<BoardMentionVO> boardList = boardDao.selectListWithMention(pageVO);
+		model.addAttribute("boardList", boardList);		
 		
 		int dataCount = boardDao.count(pageVO);
 		pageVO.setDataCount(dataCount);

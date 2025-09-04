@@ -4,11 +4,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
-
-import com.kh.spring09home.vo.BoardListVO;
+import org.springframework.stereotype.Component;
+import com.kh.spring09home.aop.TestInterceptor;
 import com.kh.spring09home.vo.BoardMentionVO;
 
+@Component
 public class BoardMentionMapper  implements RowMapper<BoardMentionVO> {
+
+    private final TestInterceptor testInterceptor;
+
+    BoardMentionMapper(TestInterceptor testInterceptor) {
+        this.testInterceptor = testInterceptor;
+    }
 	@Override
 	public BoardMentionVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 		BoardMentionVO boardMentionVO = new BoardMentionVO();
@@ -33,7 +40,7 @@ public class BoardMentionMapper  implements RowMapper<BoardMentionVO> {
 		boardMentionVO.setOriginNo(rs.getInt("origin_no"));
 		boardMentionVO.setOriginTitle(rs.getString("origin_title"));
 		boardMentionVO.setOriginWriter(rs.getString("origin_writer"));
-		
+		System.out.println(boardMentionVO);
 		return boardMentionVO;
 	}
 }

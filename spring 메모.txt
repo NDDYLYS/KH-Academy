@@ -1956,3 +1956,30 @@ attachment_type varchar2(100) not null,
 attachment_time timestamp default systimestamp not null
 );
 create sequence attachment_seq;
+
+MultipartFile은 전송이 안 되어도 데이터가 생긴다
+
+if (!attach.isEmpty()) 
+{
+	File home = new File(System.getProperty("user.home"));
+	File upload = new File(home, "upload");
+	if (upload.exists() == false) 
+	{
+		upload.mkdirs();
+	}
+			
+	File target = new File(upload, attach.getOriginalFilename()); // 저장할 파일의 인스턴스
+	attach.transferTo(target);
+}
+
+int attachmentNo = attachmentDao.sequence();
+AttachmentDto attachmentDto = new AttachmentDto();
+attachmentDto.setAttachmentNo(attachmentNo);
+attachmentDto.setAttachmentName(attach.getOriginalFilename());
+attachmentDto.setAttachmentType(attach.getContentType());
+attachmentDto.setAttachmentSize(attach.getSize());
+
+attachmentDao.insert(attachmentDto);
+
+File target = new File(upload, String.valueOf(attachmentNo));
+// 파일명의 중복을 막기 위해 원본 파일의 이름은 저장한 후 시퀀스 번호로 갈아치운다

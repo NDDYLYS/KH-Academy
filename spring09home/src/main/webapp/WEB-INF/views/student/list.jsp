@@ -25,6 +25,7 @@
 	<thead>
 		<tr>
 			<th>번호</th>
+			<th>프로필</th>
 			<th>이름</th>
 			<th>국어</th>
 			<th>영어</th>
@@ -37,6 +38,7 @@
 		<c:forEach var = "studentDto" items = "${ studentList }">
 			<tr>
 				<td>${ studentDto.getStudentNo() }</td>
+				<td><img src = "/student/image?studentNo=${studentDto.getStudentNo()}" width="32" height = "32"></td>
 				<td><a href = "detail?studentNo=${studentDto.getStudentNo()}">${ studentDto.getStudentName() }</a></td>
 				<td>${ studentDto.getStudentKor() }</td>
 				<td>${ studentDto.getStudentEng() }</td>

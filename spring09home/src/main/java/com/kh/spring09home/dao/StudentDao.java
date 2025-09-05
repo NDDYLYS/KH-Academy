@@ -18,13 +18,22 @@ public class StudentDao
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private StudentMapper studentMapper;
+	
+	
+	public int sequence() 
+	{
+		String sql = "select student_seq.nextval from dual";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
 
 	public void insert(StudentDto studentDto) 
 	{
 		String sql = "insert into student (student_no, student_name, "
 				+ "student_kor, student_eng, student_mat, student_reg) "
-				+ "values (student_seq.nextval, ?, ?, ?, ?, systimestamp)";
-		Object[] params = {studentDto.getStudentName(), 
+				+ "values (?, ?, ?, ?, ?, systimestamp)";
+		Object[] params = {
+				studentDto.getStudentNo(),
+				studentDto.getStudentName(), 
 				studentDto.getStudentKor(), 
 				studentDto.getStudentEng(), 
 				studentDto.getStudentMat()};
@@ -120,5 +129,22 @@ public class StudentDao
 			};//동적할당
 			return jdbcTemplate.query(sql, studentMapper, params);
 		}
+	}
+	
+	public void connect(int studentNo, int attachmentNo) 
+	{
+		String sql = "insert into student_image (student_no, attachment_no) values (?, ?)";
+		Object[] params = {
+				studentNo, 
+				attachmentNo
+		};//동적할당
+		jdbcTemplate.update(sql, params);
+	}
+	
+	public int findAttachment(int studentNo) 
+	{
+		String sql = "select attachment_no from student_image where student_no = ?";
+		Object[] params = {studentNo};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 }

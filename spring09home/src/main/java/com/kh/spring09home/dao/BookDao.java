@@ -19,13 +19,21 @@ public class BookDao
 	@Autowired
 	private BookMapper bookMapper;
 	
+	public int sequence() 
+	{
+		String sql = "select book_seq.nextval from dual";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	
 	public void insert(BookDto bookDto) 
 	{
 		String sql = "insert into book (book_id, book_title, book_author,"
 				+ "book_publication_date, book_price, book_publisher,"
 				+ "book_page_count, book_genre) "
-				+ "values (book_seq.nextval, ?, ?, ?, ?, ?, ?, ?)";
-		Object[] params = {bookDto.getBookTitle(), 
+				+ "values (?, ?, ?, ?, ?, ?, ?, ?)";
+		Object[] params = {
+				bookDto.getBookId(),
+				bookDto.getBookTitle(), 
 				bookDto.getBookAuthor(),
 				bookDto.getBookPublicationDate(),
 				bookDto.getBookPrice(),
@@ -129,5 +137,22 @@ public class BookDao
 			};//동적할당
 			return jdbcTemplate.query(sql, bookMapper, params);
 		}
+	}
+	
+	public void connect(int bookId, int attachmentNo) 
+	{
+		String sql = "insert into book_image (book_id, attachment_no) values (?, ?)";
+		Object[] params = {
+				bookId, 
+				attachmentNo
+		};//동적할당
+		jdbcTemplate.update(sql, params);
+	}
+	
+	public int findAttachment(int bookId) 
+	{
+		String sql = "select attachment_no from book_image where book_id = ?";
+		Object[] params = {bookId};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 }

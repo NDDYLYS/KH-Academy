@@ -24,6 +24,7 @@
 	<thead>
 		<tr>
 			<th>번호</th>
+			<th>표지</th>
 			<th>이름</th>
 			<th>저자</th>
 			<th>출판사</th>
@@ -37,6 +38,7 @@
 		<c:forEach var = "bookDto" items = "${ bookList }">
 			<tr>
 				<td>${ bookDto.getBookId() }</td>
+				<td><img src = "/book/image?bookId=${bookDto.getBookId()}" width="32" height = "32"></td>
 				<td><a href="detail?bookId=${bookDto.getBookId()}">${ bookDto.getBookTitle() }</a></td>
 				<td>${ bookDto.getBookAuthor() }</td>
 				<td>${ bookDto.getBookPublisher() }</td>

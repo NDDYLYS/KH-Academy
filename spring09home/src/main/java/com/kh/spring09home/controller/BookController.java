@@ -1,6 +1,6 @@
 package com.kh.spring09home.controller;
 
-import java.util.List;
+import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring09home.dao.BookDao;
 import com.kh.spring09home.dto.BookDto;
 import com.kh.spring09home.error.TargetNotfoundException;
+import com.kh.spring09home.service.AttachmentService;
 import com.kh.spring09home.vo.PageVO;
 
 @Controller
@@ -22,6 +24,8 @@ public class BookController
 {
 	@Autowired
 	private BookDao bookDao;
+	@Autowired
+	private AttachmentService attachmentService;
 	
 	// (+추가) 이 콘트롤러로 들어오는 empty string은 null이다
 //	@InitBinder
@@ -37,10 +41,19 @@ public class BookController
 	}
 	
 	@PostMapping("/save")
-	public String save(@ModelAttribute BookDto bookDto) 
+	public String save(@ModelAttribute BookDto bookDto,
+			@RequestParam MultipartFile attach) throws IllegalStateException, IOException 
 	{
+		int bookId = bookDao.sequence();
+		bookDto.setBookId(bookId);
 		bookDao.insert(bookDto);
-		//return "/WEB-INF/views/pokemon/add2.jsp";
+		
+		if(!attach.isEmpty()) 
+		{
+			int attachmentNo = attachmentService.save(attach);
+			bookDao.connect(bookId, attachmentNo);
+		}
+		
 		return "redirect:saveFinish";
 	}
 	
@@ -98,5 +111,19 @@ public class BookController
 		
 		bookDao.delete(bookId);
 		return "redirect:list";
+	}
+	
+	@GetMapping("/image")
+	public String image(@RequestParam int bookId) 
+	{
+		try 
+		{
+			int attachmentNo = bookDao.findAttachment(bookId);
+			return "redirect:/attachment/download?attachmentNo=" + attachmentNo;			
+		}
+		catch(Exception e) 
+		{
+			return "redirect:/images/error/no-image.png";
+		}
 	}
 }

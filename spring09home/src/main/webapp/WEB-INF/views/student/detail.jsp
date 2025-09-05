@@ -12,12 +12,12 @@
 	<tr align = "center">
 		<th>번호</th>
 		<td>${studentDto.getStudentNo()}</td>
-	</tr align = "center">
+	</tr>
 	
 	<tr align = "center">
 		<th>프로필</th>
 		<td><img src = "/student/image?studentNo=${studentDto.getStudentNo()}" width="264" height = "264"></td>
-	</tr align = "center">
+	</tr>
 	
 	<tr align = "center">
 		<th>이름</th>

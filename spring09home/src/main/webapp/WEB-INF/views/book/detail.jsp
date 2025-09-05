@@ -15,35 +15,39 @@
     </c:when>
     <c:otherwise>
         <table border = "1" width = "900">
-        	<tr>
+        	<tr align = "center">
         		<th>번호</th>
         		<td>${bookDto.getBookId()}</td>
         	</tr>
-        	<tr>
+        	<tr align = "center">
+        		<th>표지</th>
+        		<td><img src = "/book/image?bookId=${bookDto.getBookId()}" width="264" height = "264"></td>
+        	</tr>
+        	<tr align = "center">
         		<th>이름</th>
         		<td>${bookDto.getBookTitle()}</td>
         	</tr>
-        	<tr>
+        	<tr align = "center">
         		<th>저자</th>
         		<td>${bookDto.getBookAuthor()}</td>
         	</tr>
-        	<tr>
+        	<tr align = "center">
         		<th>출판사</th>
         		<td>${bookDto.getBookPublisher()}</td>
         	</tr>
-        	<tr>
+        	<tr align = "center">
         		<th>출판일</th>
         		<td>${bookDto.getBookPublicationDate()}</td>
         	</tr>
-        	<tr>
+        	<tr align = "center">
         		<th>가격</th>
         		<td><fmt:formatNumber value="${bookDto.getBookPrice()}" pattern="#,##0"/></td>
         	</tr>
-        	<tr>
+        	<tr align = "center">
         		<th>페이지수</th>
         		<td>${bookDto.getBookPageCount()}</td>
         	</tr>
-        	<tr>
+        	<tr align = "center">
         		<th>장르</th>
         		<td>${bookDto.getBookGenre()}</td>
         	</tr>

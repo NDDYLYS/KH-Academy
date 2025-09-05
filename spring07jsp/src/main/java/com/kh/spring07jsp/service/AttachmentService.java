@@ -2,14 +2,17 @@ package com.kh.spring07jsp.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring07jsp.dao.AttachmentDao;
 import com.kh.spring07jsp.dto.AttachmentDto;
+import com.kh.spring07jsp.error.TargetNotfoundException;
 
 @Service // 각종 도구들을 주입하여 거대한 목표를 달성하기 위한 복잡한 코드를 메소드로 가지는 도구
 // 상품구매 : 회원포인트 검사/차감 + 상품재고검사/차감 + 구매이력기록
@@ -41,5 +44,21 @@ public class AttachmentService
 		attachmentDao.insert(attachmentDto);
 		
 		return attachmentNo;
+	}
+	
+	public ByteArrayResource load(int attachmentNo) throws IOException 
+	{	
+		// 파일의 정보 읽기
+		File home = new File(System.getProperty("user.home"));
+		File upload = new File(home, "upload");
+		File target = new File(upload, String.valueOf(attachmentNo));
+		
+		if (!target.isFile())
+			throw new TargetNotfoundException("존재하지 않는 파일");
+		
+		// java.nio 패키지의 명령
+		byte[] data = Files.readAllBytes(target.toPath());
+		ByteArrayResource resource = new ByteArrayResource(data);
+		return resource;
 	}
 }

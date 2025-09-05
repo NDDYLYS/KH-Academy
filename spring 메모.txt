@@ -1983,3 +1983,66 @@ attachmentDao.insert(attachmentDto);
 
 File target = new File(upload, String.valueOf(attachmentNo));
 // 파일명의 중복을 막기 위해 원본 파일의 이름은 저장한 후 시퀀스 번호로 갈아치운다
+
+** 250905
+
+JPA (ORM Framework : DB를 편하게 쓰도록 하는 도구)
+
+java.sql -> Spring JDBC 	-> mybatis
+			-> JPA
+
+GET은 전송이 안 됨
+
+@Service // 각종 도구들을 주입하여 거대한 목표를 달성하기 위한 복잡한 코드를 메소드로 가지는 도구
+// 상품구매 : 회원포인트 검사/차감 + 상품재고검사/차감 + 구매이력기록
+
+@Transactional // 이 메소드를 하나의 트랜잭션으로 간주(이 안에서의 DB 작업은 일괄로 처리/취소)
+다 실행 / 다 취소
+내부에서 발생하는 DB 처리를 묶음으로 처리
+
+Controller의 상위 : DispatcherServlet
+
+다운로드 코드를 작성하기 위해 알아야 할 배경지식
+컨트롤러는 DispatcherServlet은 문자열을 해석해서 필요한 화면을 불러온다
+사실은 다른 걸 반환해도 된다
+
+ModelAndView("/WEB-INF/views/file/test1.jsp")
+
+Map.of("hello", "java") == Model model = model.addAttribute("hello", "java");
+
+ResponsEntity라는 걸 반환하면 내가 사용자에게 보낼 응답을 직접 다 설정할 수 있다
+이 방식을 사용하면 파일과 같은 특수데이터도 사용자에게 컨트롤러에서 보낼 수 있다
+
+
+@GetMapping("/download")
+public ResponseEntity<ByteArrayResource> download(@RequestParam int attachmentNo) throws IOException 
+{
+	// DB에서 정보 조회
+	AttachmentDto attachmentDto = attachmentDao.selectOne(attachmentNo);
+	if (attachmentDao == null)
+		throw new TargetNotfoundException("존재하지 않는 파일");
+	
+	// 파일의 정보 읽기
+	File home = new File(System.getProperty("user.home"));
+	File upload = new File(home, "upload");
+	File target = new File(upload, String.valueOf(attachmentNo));
+	
+	// java.nio 패키지의 명령
+	byte[] data = Files.readAllBytes(target.toPath());
+	ByteArrayResource resource = new ByteArrayResource(data);
+	
+	// 사용자에게 정보(header)와 내용(body)을 담아서 전송
+	// 형태를 모르면 application/octet-stream
+	// Content-Length는 전송할 파일의 크기
+	// Content-Disposition는 body에 담긴 데이터를 어떻게 처리할지
+	// inline 으로 작성하면 
+	// attachment
+	return ResponseEntity.ok()
+			.header("Content-Encoding", "UTF-8") // 이건 UTF-8이다
+			.header("Content-Type", attachmentDto.getAttachmentType()) // db에 저장된 AttachmentType
+			.header("Content-Length", String.valueOf(attachmentDto.getAttachmentSize()))
+			.header("Content-Disposition", "attachment; filename=" + attachmentDto.getAttachmentName())
+			.body(resource);
+}
+
+Microsoft 949

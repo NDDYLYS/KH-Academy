@@ -8,15 +8,19 @@
      <a href = "list">목록 보기</a>
     
     <table border = "1" width = "400">
-    	<tr width = "25%">
+    	<tr width = "15%" align = "center">
     		<th>번호</th>
     		<td>${pokemonDto.getPokemonNo()}</td>
     	</tr>
-    	<tr width = "25%">
+    	<tr width = "55%" align = "center">
+    		<th>이미지</th>
+    		<td><img src = "/pokemon/image?pokemonNo=${pokemonDto.getPokemonNo()}" width="220" height = "220"></td>
+    	</tr>
+    	<tr width = "15%" align = "center">
     		<th>이름</th>
     		<td>${pokemonDto.getPokemonName()}</td>
     	</tr>
-    	<tr width = "25%">
+    	<tr width = "15%" align = "center">
     		<th>속성</th>
     		<td>${pokemonDto.getPokemonType()}</td>
     	</tr>

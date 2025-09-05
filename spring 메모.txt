@@ -2055,3 +2055,28 @@ public ResponseEntity<ByteArrayResource> download(@RequestParam int attachmentNo
 }
 
 Microsoft 949
+
+drop table pokemon_image;
+create table pokemon_image 
+(
+pokemon_no references pokemon(pokemon_no) on delete cascade not null unique,
+attachment_no references attachment(attachment_no) on delete cascade not null unique,
+primary key(pokemon_no, attachment_no) -- 같은 몬스터가 같은 이미지를 쓸 수 없다
+);
+
+
+<input type = "file" name = "attach" accept = ".png,.jpg">
+
+public int sequence() 
+{
+	String sql = "select pokemon_seq.nextval from dual";
+	return jdbcTemplate.queryForObject(sql, int.class);
+}
+
+// 포켓몬 번호를 받아서 프로필 이미지 주소로 쫓아내는 매핑 구현
+@GetMapping("/image")
+public String image(@RequestParam int pokemonNo) 
+{
+	int attachmentNo = pokemonDao.findAttachment(pokemonNo);
+	return "redirect:/attachment/download?attachmentNo=" + attachmentNo;
+}

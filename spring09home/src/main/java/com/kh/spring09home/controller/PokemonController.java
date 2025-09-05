@@ -1,5 +1,7 @@
 package com.kh.spring09home.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,10 +10,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring09home.dao.PokemonDao;
 import com.kh.spring09home.dto.PokemonDto;
 import com.kh.spring09home.error.TargetNotfoundException;
+import com.kh.spring09home.service.AttachmentService;
 import com.kh.spring09home.vo.PageVO;
 
 @Controller
@@ -20,6 +24,8 @@ public class PokemonController
 {
 	@Autowired
 	private PokemonDao pokemonDao;
+	@Autowired
+	private AttachmentService attachmentService;
 	
 	@GetMapping("/add")
 	public String add() 
@@ -28,10 +34,19 @@ public class PokemonController
 	}
 	
 	@PostMapping("/add")
-	public String add(@ModelAttribute PokemonDto pokemonDto) 
+	public String add(@ModelAttribute PokemonDto pokemonDto,
+			@RequestParam MultipartFile attach) throws IllegalStateException, IOException 
 	{
+		int pokemonNo = pokemonDao.sequence();
+		pokemonDto.setPokemonNo(pokemonNo);
 		pokemonDao.insert(pokemonDto);
-		//return "/WEB-INF/views/pokemon/add2.jsp";
+		
+		if(!attach.isEmpty()) 
+		{
+			int attachmentNo = attachmentService.save(attach);
+			pokemonDao.connect(pokemonNo, attachmentNo);
+		}
+		
 		return "redirect:addFinish";
 	}
 	
@@ -103,5 +118,20 @@ public class PokemonController
 		
 		pokemonDao.delete(pokemonNo);
 		return "redirect:list";
+	}
+	
+	// 포켓몬 번호를 받아서 프로필 이미지 주소로 쫓아내는 매핑 구현
+	@GetMapping("/image")
+	public String image(@RequestParam int pokemonNo) 
+	{
+		try 
+		{
+			int attachmentNo = pokemonDao.findAttachment(pokemonNo);
+			return "redirect:/attachment/download?attachmentNo=" + attachmentNo;			
+		}
+		catch(Exception e) 
+		{
+			return "redirect:/images/error/no-image.png";
+		}
 	}
 }

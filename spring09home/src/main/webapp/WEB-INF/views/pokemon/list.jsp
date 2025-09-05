@@ -24,6 +24,7 @@
 	<thead>
 		<tr>
 			<th>번호</th>
+			<th>이미지</th>
 			<th>이름</th>
 			<th>속성</th>
 			<th>바로가기</th>
@@ -33,9 +34,10 @@
 		<c:forEach var="pokemonDto" items="${ pokemonList }">
 			<tr>
 				<td>${ pokemonDto.getPokemonNo() }</td>
+				<td><img src = "/pokemon/image?pokemonNo=${pokemonDto.getPokemonNo()}" width="32" height = "32"></td>
 				<td>${ pokemonDto.getPokemonName() }</td>
 				<td>${ pokemonDto.getPokemonType() }</td>
-				<td><a href="detail?pokemonNo=${pokemonDto.getPokemonNo()}">바로가기</a></td>
+				<td><a href="detail?pokemonNo=${pokemonDto.getPokemonNo()}">바로가기</a></td>				
 			</tr>
 		</c:forEach>
 	</tbody>

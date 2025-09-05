@@ -20,11 +20,19 @@ public class PokemonDao
 	@Autowired
 	private PokemonMapper pokemonMapper;
 	
+	public int sequence() 
+	{
+		String sql = "select pokemon_seq.nextval from dual";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	
 	public void insert(PokemonDto pokemonDto) 
 	{
 		String sql = "insert into pokemon (pokemon_no, pokemon_name, pokemon_type) "
-				+ "values (pokemon_seq.nextval, ?, ?)";
-		Object[] params = {pokemonDto.getPokemonName(),
+				+ "values (?, ?, ?)";
+		Object[] params = {
+				pokemonDto.getPokemonNo(),
+				pokemonDto.getPokemonName(),
 				pokemonDto.getPokemonType()};
 		jdbcTemplate.update(sql, params);
 	}
@@ -33,7 +41,10 @@ public class PokemonDao
 	{
 		String sql = "update pokemon set pokemon_name=?, pokemon_type=? "
     			+ "where pokemon_no=?";
-    	Object[] params = {pokemonDto.getPokemonName(), pokemonDto.getPokemonType(), pokemonDto.getPokemonNo()};
+    	Object[] params = {
+    			pokemonDto.getPokemonName(), 
+    			pokemonDto.getPokemonType(), 
+    			pokemonDto.getPokemonNo()};
     	int result = jdbcTemplate.update(sql, params);
     	return 0 < result;
 	} 
@@ -123,5 +134,22 @@ public class PokemonDao
 			};//동적할당
 			return jdbcTemplate.query(sql, pokemonMapper, params);
 		}
+	}
+	
+	public void connect(int pokemonNo, int attachmentNo) 
+	{
+		String sql = "insert into pokemon_image (pokemon_no, attachment_no) values (?, ?)";
+		Object[] params = {
+				pokemonNo, 
+				attachmentNo
+		};//동적할당
+		jdbcTemplate.update(sql, params);
+	}
+	
+	public int findAttachment(int pokemonNo) 
+	{
+		String sql = "select attachment_no from pokemon_image where pokemon_no = ?";
+		Object[] params = {pokemonNo};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 }

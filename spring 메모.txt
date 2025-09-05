@@ -2043,6 +2043,15 @@ public ResponseEntity<ByteArrayResource> download(@RequestParam int attachmentNo
 			.header("Content-Length", String.valueOf(attachmentDto.getAttachmentSize()))
 			.header("Content-Disposition", "attachment; filename=" + attachmentDto.getAttachmentName())
 			.body(resource);
+
+	// 다운로드 최종코드
+	return ResponseEntity.ok()
+			.header(HttpHeaders.CONTENT_ENCODING, StandardCharsets.UTF_8.name())
+			.header(HttpHeaders.CONTENT_TYPE, attachmentDto.getAttachmentType())
+			.contentLength(attachmentDto.getAttachmentSize())
+			.header(HttpHeaders.CONTENT_DISPOSITION, 
+				ContentDisposition.attachment().filename(attachmentDto.getAttachmentName(), StandardCharsets.UTF_8).build().toString())
+			.body(resource);
 }
 
 Microsoft 949

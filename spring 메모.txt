@@ -2080,3 +2080,6 @@ public String image(@RequestParam int pokemonNo)
 	int attachmentNo = pokemonDao.findAttachment(pokemonNo);
 	return "redirect:/attachment/download?attachmentNo=" + attachmentNo;
 }
+
+** 250908
+

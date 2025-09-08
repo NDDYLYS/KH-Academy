@@ -8,4 +8,4 @@
  <a href = "add">다시 등록</a>
  <a href = "list">목록 보기</a>
  
- <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

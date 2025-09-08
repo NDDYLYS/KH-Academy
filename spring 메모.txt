@@ -2273,7 +2273,8 @@ catch(Exception e) { /*아무것도 안함*/ }
 
 @PostMapping("/edit")
 public String edit(@ModelAttribute PokemonDto pokemonDto,
-		@RequestParam MultipartFile attach) throws IllegalStateException, IOException 
+		@RequestParam MultipartFile attach,
+		@RequestParam(required = false) String remove) throws IllegalStateException, IOException 
 {
 	PokemonDto findDto = pokemonDao.selectOne(pokemonDto.getPokemonNo());
 	if (findDto == null)
@@ -2291,7 +2292,24 @@ public String edit(@ModelAttribute PokemonDto pokemonDto,
 		int attachmentNo = attachmentService.save(attach);
 		pokemonDao.connect(pokemonDto.getPokemonNo(), attachmentNo);
 	}
+	else 
+	{
+		if (remove != null) 
+		{
+			try 
+			{
+				int attachmentNo = pokemonDao.findAttachment(pokemonDto.getPokemonNo());
+				attachmentService.delete(attachmentNo);
+			}
+			catch(Exception e) { /*아무것도 안함*/ }
+		}				
+	}
 	
 	pokemonDao.update(pokemonDto);
 	return "redirect:detail?pokemonNo=" + pokemonDto.getPokemonNo();
 }
+
+drop table giftcard cascade constraint;
+외래키의 제약조건으로 묶여도 삭제 가능
+
+9,900원에 10,000 포인트 증정

@@ -40,6 +40,7 @@
 		<a href = "/book/list">Book</a>
 		<a href = "/member/logout">로그아웃</a>
 		<a href = "/admin/home">[관리메뉴]</a>
+		<a href = "/admin/giftcard/list">상품권</a>
 		<br><a href = "/board/list2" style="float: right;">멘션형 자유 게시판</a><br>
 		<a href = "/board/list" style="float: right;">자유 게시판</a>
 	</c:when>

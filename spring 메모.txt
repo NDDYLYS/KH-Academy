@@ -1638,29 +1638,12 @@ result.addAll(boardList);
 
 
 * JSP에서 status 사용법
-<tbody align = "center">
-	<c:forEach var = "boardDto" items = "${ boardList }" varStatus = "status">
-	<tr bgcolor = "${ status.index < noticeCount ? '#ffeaa7' : ''}">
-		<td>${ boardDto.boardNo } (${ status.index })</td>
+<c:forEach var = "boardDto" items = "${ boardList }" varStatus = "status">
+<tr bgcolor = "${ status.index < noticeCount ? '#ffeaa7' : ''}">
+	<td>${ boardDto.boardNo } (${ status.index })</td>
 	
-		<td><a href="detail?boardNo=${boardDto.boardNo}">
-		<c:if test = "${ boardDto.boardNotice == 'Y' }">
-			(공지)
-		</c:if>
-		${ boardDto.boardTitle }</a></td>
-		<td>${ boardDto.boardWriter == null ? '탈퇴한 사용자' : boardDto.boardWriter }</td>
-		<c:choose>
-			<c:when test="${ boardDto.nextDay() }">
-				<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd"/></td>
-			</c:when>				
-			<c:otherwise>
-				<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="HH:mm"/></td>
-			</c:otherwise>
-		</c:choose>
-		<td>${ boardDto.boardRead }</td>
-		<td>${ boardDto.boardLike }</td>
-	</tr>
-</c:forEach>
+<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd"/></td>
+<td><fmt:formatDate value="${boardDto.boardWtime}" pattern="HH:mm"/></td>
 
 <input type = "checkbox" name = "boardNotice" value = "Y" ${ boardDto.boardNotice == 'Y' ?
 		'checked' : ''>
@@ -2083,3 +2066,232 @@ public String image(@RequestParam int pokemonNo)
 
 ** 250908
 
+* primary key(member_id, attachment_no) 복합키
+
+* 이미지 다운로드 방법
+<img src = "/member/profile?memberId=${memberDto.getMemberId()}"
+        		 width="200" height = "200">
+application.properties
+
+* 다운로드 용량 증가
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
+
+-- DB와 연결
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe
+spring.datasource.username=kh16
+spring.datasource.password=kh16
+
+-- DB 최적화
+# dbcp (database connection pool)
+spring.datasource.dbcp2.max-total=20
+#spring.datasource.dbcp2.min-idle=5
+spring.datasource.dbcp2.max-idle=5
+
+@GetMapping("/profile")
+public String Controller.profile(@RequestParam String memberId) 
+{
+	try 
+	{
+		int attachmentNo = memberDao.findAttachment(memberId);
+		return "redirect:/attachment/download?attachmentNo=" + attachmentNo;			
+	}
+	catch(Exception e) 
+	{
+		return "redirect:/images/error/no-image.png";
+	}
+}
+
+public void Dao.connect(String memberId, int attachmentNo) 
+{
+	String sql = "insert into member_profile (member_id, attachment_no) values (?, ?)";
+	Object[] params = {
+			memberId, 
+			attachmentNo
+	};//동적할당
+	jdbcTemplate.update(sql, params);
+}
+
+public int Dao.findAttachment(String memberId) 
+{
+	String sql = "select attachment_no from member_profile where member_id = ?";
+	Object[] params = {memberId};
+	return jdbcTemplate.queryForObject(sql, int.class, params);
+}
+
+
+@Service // 각종 도구들을 주입하여 거대한 목표를 달성하기 위한 복잡한 코드를 메소드로 가지는 도구
+// 상품구매 : 회원포인트 검사/차감 + 상품재고검사/차감 + 구매이력기록
+public class AttachmentService 
+{
+	@Autowired
+	private AttachmentDao attachmentDao;
+	
+	private File home = new File(System.getProperty("user.home"));
+	private File upload = new File(home, "upload");
+	
+	@Transactional // 이 메소드를 하나의 트랜잭션으로 간주(이 안에서의 DB 작업은 일괄로 처리/취소)
+	public int save(MultipartFile attach) throws IllegalStateException, IOException 
+	{
+		int attachmentNo = attachmentDao.sequence();
+		
+		if (upload.exists() == false) 
+			upload.mkdirs();
+		
+		File target = new File(upload, String.valueOf(attachmentNo)); // 저장할 파일의 인스턴스
+		attach.transferTo(target);
+		
+		AttachmentDto attachmentDto = new AttachmentDto();
+		attachmentDto.setAttachmentNo(attachmentNo);
+		attachmentDto.setAttachmentName(attach.getOriginalFilename());
+		attachmentDto.setAttachmentType(attach.getContentType());
+		attachmentDto.setAttachmentSize(attach.getSize());
+		
+		attachmentDao.insert(attachmentDto);
+		
+		return attachmentNo;
+	}
+	
+	public ByteArrayResource load(int attachmentNo) throws IOException 
+	{	
+		// 파일의 정보 읽기
+		File home = new File(System.getProperty("user.home"));
+		File upload = new File(home, "upload");
+		File target = new File(upload, String.valueOf(attachmentNo));
+		
+		if (!target.isFile())
+			throw new TargetNotfoundException("존재하지 않는 파일");
+		
+		// java.nio 패키지의 명령
+		byte[] data = Files.readAllBytes(target.toPath());
+		ByteArrayResource resource = new ByteArrayResource(data);
+		return resource;
+	}
+}
+
+@Controller
+@RequestMapping("/attachment")
+public class AttachmentController 
+{
+	@Autowired
+	private AttachmentService attachmentService;
+	@Autowired
+	private AttachmentDao attachmentDao;
+	
+	@GetMapping("/download")
+	public ResponseEntity<ByteArrayResource> download(@RequestParam int attachmentNo) throws IOException 
+	{
+		// DB에서 정보 조회
+		AttachmentDto attachmentDto = attachmentDao.selectOne(attachmentNo);
+		if (attachmentDao == null)
+			throw new TargetNotfoundException("존재하지 않는 파일");
+		
+		ByteArrayResource resource = attachmentService.load(attachmentNo);
+		
+		// 사용자에게 정보(header)와 내용(body)을 담아서 전송
+		// 형태를 모르면 application/octet-stream
+		// Content-Length는 전송할 파일의 크기
+		// Content-Disposition는 body에 담긴 데이터를 어떻게 처리할지
+		// inline 으로 작성하면 
+		// attachment
+//		return ResponseEntity.ok()
+//				.header("Content-Encoding", "UTF-8") // 이건 UTF-8이다
+//				.header("Content-Type", attachmentDto.getAttachmentType()) // db에 저장된 AttachmentType
+//				.header("Content-Length", String.valueOf(attachmentDto.getAttachmentSize()))
+//				.header("Content-Disposition", "attachment; filename=" + attachmentDto.getAttachmentName())
+//				.body(resource);
+		
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_ENCODING, StandardCharsets.UTF_8.name())
+				.header(HttpHeaders.CONTENT_TYPE, attachmentDto.getAttachmentType())
+				.contentLength(attachmentDto.getAttachmentSize())
+				.header(HttpHeaders.CONTENT_DISPOSITION, 
+						ContentDisposition.attachment().filename(attachmentDto.getAttachmentName(), StandardCharsets.UTF_8).build().toString())
+				.body(resource);
+	}
+}
+
+// 파일 삭제
+public void delete(int attachmentNo) 
+{
+	AttachmentDto attachmentDto = attachmentDao.selectOne(attachmentNo);
+	if (attachmentDto == null)
+		throw new TargetNotfoundException("존재하지 않는 파일");
+	
+	// 실제 파일 삭제
+	File target = new File(upload, String.valueOf(attachmentNo));
+	target.delete();
+	
+	// DB 정보 삭제
+	attachmentDao.delete(attachmentNo);
+}
+
+public boolean AttachmentService.delete(int attachmentNo) 
+{
+	String sql = "delete attachment where attachment_no = ?";
+	Object[] params = {attachmentNo};
+	return jdbcTemplate.update(sql, params) > 0;
+}
+
+// 첨부파일도 같이 삭제되도록 수정
+// attachmentService.delete 추가
+@RequestMapping("/remove")
+public String Controller.remove(@RequestParam int pokemonNo)
+{
+	PokemonDto pokemonDto = pokemonDao.selectOne(pokemonNo);
+	if (pokemonDto == null) 
+	{
+		throw new TargetNotfoundException("존재하지 않는 포켓몬 번호");
+	}
+	
+	try 
+	{
+		int attachmentNo = pokemonDao.findAttachment(pokemonNo);
+		attachmentService.delete(attachmentNo);
+	}
+	catch(Exception e) { /*아무것도 안함*/ }
+	
+	pokemonDao.delete(pokemonNo);
+	return "redirect:list";
+}
+
+현재 프로필 없음 -> 변경 프로필 없음 : 유지
+현재 프로필 없음 -> 변경 프로필 있음 : 저장
+현재 프로필 있음 -> 변경 프로필 없음 : 유지
+현재 프로필 있음 -> 변경 프로필 있음 : 삭제/저장
+
+<form action = "edit" method = "post" enctype = "multipart/form-data"> 파일 전송시 필수
+
+try 
+{
+	int attachmentNo = pokemonDao.findAttachment(pokemonNo);
+	attachmentService.delete(attachmentNo);
+}
+catch(Exception e) { /*아무것도 안함*/ }
+
+@PostMapping("/edit")
+public String edit(@ModelAttribute PokemonDto pokemonDto,
+		@RequestParam MultipartFile attach) throws IllegalStateException, IOException 
+{
+	PokemonDto findDto = pokemonDao.selectOne(pokemonDto.getPokemonNo());
+	if (findDto == null)
+		throw new TargetNotfoundException("포켓몬 파일이 없음");
+	
+	if (!attach.isEmpty())
+	{
+		try 
+		{
+			int attachmentNo = pokemonDao.findAttachment(pokemonDto.getPokemonNo());
+			attachmentService.delete(attachmentNo);
+		}
+		catch(Exception e) { /*아무것도 안함*/ }
+		
+		int attachmentNo = attachmentService.save(attach);
+		pokemonDao.connect(pokemonDto.getPokemonNo(), attachmentNo);
+	}
+	
+	pokemonDao.update(pokemonDto);
+	return "redirect:detail?pokemonNo=" + pokemonDto.getPokemonNo();
+}

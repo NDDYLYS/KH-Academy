@@ -2309,7 +2309,7 @@ public String edit(@ModelAttribute PokemonDto pokemonDto,
 	return "redirect:detail?pokemonNo=" + pokemonDto.getPokemonNo();
 }
 
-drop table giftcard cascade constraint;
+0drop table giftcard cascade constraint;
 외래키의 제약조건으로 묶여도 삭제 가능
 
 9,900원에 10,000 포인트 증정
@@ -2320,3 +2320,27 @@ drop table giftcard cascade constraint;
 </c:if>
 
 <input type = "file" name = "attach" accept = "image/*" required>
+
+giftcardNo=1&giftcardNo=2&giftcardNo=3
+ -> @RequestParam(value = "giftcardNo") List<Integer> giftcardNoList
+
+@GetMapping("/deleteAll")
+public String deleteAll(@RequestParam(value = "giftcardNo") List<Integer> giftcardNoList) 
+{
+	for(int giftcardNo : giftcardNoList) 
+	{
+		GiftcardDto giftcardDto = giftcardDao.selectOne(giftcardNo);
+		if (giftcardDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 상품권");
+		
+		try 
+		{
+			int attachmentNo = giftcardDao.findAttachment(giftcardNo);
+			attachmentService.delete(attachmentNo);
+		}
+		catch(Exception e) { /*아무것도 안함*/ }		
+		
+		giftcardDao.delete(giftcardNo);
+	}
+	return "redirect:list";
+}

@@ -9,6 +9,11 @@
 
 <table border="1" width="500">
 	<tr>
+        <th>프로필</th>
+        <td><img src = "/member/profile?memberId=${memberDto.getMemberId()}"
+         width="200" height = "200"></td>
+    </tr>
+	<tr>
 		<th>닉네임</th>
 		<td>${memberDto.memberNickname}</td>
 	</tr>

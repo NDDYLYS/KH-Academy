@@ -101,12 +101,45 @@ public class PokemonController
 	}
 	
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute PokemonDto pokemonDto) 
+	public String edit(@ModelAttribute PokemonDto pokemonDto,
+			@RequestParam MultipartFile attach,
+			@RequestParam(required = false) String remove) throws IllegalStateException, IOException 
 	{
+		PokemonDto findDto = pokemonDao.selectOne(pokemonDto.getPokemonNo());
+		if (findDto == null)
+			throw new TargetNotfoundException("포켓몬 파일이 없음");
+		
+		if (!attach.isEmpty())
+		{
+			try 
+			{
+				int attachmentNo = pokemonDao.findAttachment(pokemonDto.getPokemonNo());
+				attachmentService.delete(attachmentNo);
+			}
+			catch(Exception e) { /*아무것도 안함*/ }
+			
+			int attachmentNo = attachmentService.save(attach);
+			pokemonDao.connect(pokemonDto.getPokemonNo(), attachmentNo);
+		}
+		else 
+		{
+			if (remove != null) 
+			{
+				try 
+				{
+					int attachmentNo = pokemonDao.findAttachment(pokemonDto.getPokemonNo());
+					attachmentService.delete(attachmentNo);
+				}
+				catch(Exception e) { /*아무것도 안함*/ }
+			}				
+		}
+		
 		pokemonDao.update(pokemonDto);
 		return "redirect:detail?pokemonNo=" + pokemonDto.getPokemonNo();
 	}
 	
+	// 첨부파일도 같이 삭제되도록 수정
+	// attachmentService.delete 추가
 	@RequestMapping("/remove")
 	public String remove(@RequestParam int pokemonNo)
 	{
@@ -115,6 +148,13 @@ public class PokemonController
 		{
 			throw new TargetNotfoundException("존재하지 않는 포켓몬 번호");
 		}
+		
+		try 
+		{
+			int attachmentNo = pokemonDao.findAttachment(pokemonNo);
+			attachmentService.delete(attachmentNo);
+		}
+		catch(Exception e) { /*아무것도 안함*/ }
 		
 		pokemonDao.delete(pokemonNo);
 		return "redirect:list";

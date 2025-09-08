@@ -1,5 +1,6 @@
 package com.kh.spring09home.controller;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
@@ -11,9 +12,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring09home.dao.MemberDao;
 import com.kh.spring09home.dto.MemberDto;
+import com.kh.spring09home.error.TargetNotfoundException;
+import com.kh.spring09home.service.AttachmentService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -23,6 +27,8 @@ public class MemberController
 {
 	@Autowired
 	private MemberDao memberDao;
+	@Autowired
+	private AttachmentService attachmentService;
 	
 	@GetMapping("/join")
 	public String join() 
@@ -31,9 +37,17 @@ public class MemberController
 	}
 	
 	@PostMapping("/join")
-	public String join(@ModelAttribute MemberDto memberDto) 
+	public String join(@ModelAttribute MemberDto memberDto,
+			@RequestParam MultipartFile attach) throws IllegalStateException, IOException 
 	{
 		memberDao.insert(memberDto);
+		
+		if(!attach.isEmpty()) 
+		{
+			int attachmentNo = attachmentService.save(attach);
+			memberDao.connect(memberDto.getMemberId(), attachmentNo);
+		}
+		
 		return "redirect:joinFinish";
 	}
 	
@@ -150,9 +164,19 @@ public class MemberController
 	{
 		String loginId = (String)session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectOne(loginId);
+		if (memberDto == null)
+			throw new TargetNotfoundException("존재하지 않는 회원 아이디 번호");
+		
 		boolean isValid = memberDto.getMemberPw().equals(memberPw);
 		if (isValid) 
 		{
+			try 
+			{
+				int attachmentNo = memberDao.findAttachment(loginId);
+				attachmentService.delete(attachmentNo);
+			}
+			catch(Exception e) { /*아무것도 안함*/ }			
+				
 			memberDao.delete(loginId);
 			session.removeAttribute("loginId");
 			session.removeAttribute("loginLevel");
@@ -228,5 +252,20 @@ public class MemberController
 		model.addAttribute("memberDto", memberDto);
 		
 		return "/WEB-INF/views/member/detail.jsp";
+	}
+	
+	
+	@GetMapping("/profile")
+	public String profile(@RequestParam String memberId) 
+	{
+		try 
+		{
+			int attachmentNo = memberDao.findAttachment(memberId);
+			return "redirect:/attachment/download?attachmentNo=" + attachmentNo;			
+		}
+		catch(Exception e) 
+		{
+			return "redirect:/images/error/no-image.png";
+		}
 	}
 }

@@ -19,6 +19,11 @@
         		<th>아이디</th>
         		<td>${memberDto.getMemberId()}</td>
         	</tr>
+        	 <tr>
+        		<th>프로필</th>
+        		<td><img src = "/member/profile?memberId=${memberDto.getMemberId()}"
+        		 width="200" height = "200"></td>
+        	</tr>
         	<tr>
         		<th>닉네임</th>
         		<td>${memberDto.getMemberNickname()}</td>

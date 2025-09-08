@@ -46,6 +46,7 @@ public class AttachmentService
 		return attachmentNo;
 	}
 	
+	// 파일 불러오기
 	public ByteArrayResource load(int attachmentNo) throws IOException 
 	{	
 		// 파일의 정보 읽기
@@ -60,5 +61,20 @@ public class AttachmentService
 		byte[] data = Files.readAllBytes(target.toPath());
 		ByteArrayResource resource = new ByteArrayResource(data);
 		return resource;
+	}
+	
+	// 파일 삭제
+	public void delete(int attachmentNo) 
+	{
+		AttachmentDto attachmentDto = attachmentDao.selectOne(attachmentNo);
+		if (attachmentDto == null)
+			throw new TargetNotfoundException("존재하지 않는 파일");
+		
+		// 실제 파일 삭제
+		File target = new File(upload, String.valueOf(attachmentNo));
+		target.delete();
+		
+		// DB 정보 삭제
+		attachmentDao.delete(attachmentNo);
 	}
 }

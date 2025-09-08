@@ -21,18 +21,11 @@ public class MemberDao
 	public void insert(MemberDto memberDto) 
 	{
 		String sql = "insert into member("
-				+ "member_id, member_pw, member_nickname, member_email, "
-				+ "member_birth, member_contact,"
-				+ "member_post, member_address1, member_address2, "
-				+ "member_change"
-			+ ") "
-			+ "values(?, ?, ?, ?, ?, ?, ?, ?, ?, systimestamp)";
+				+ "member_id, member_pw, member_nickname, member_email)"
+			+ "values(?, ?, ?, ?)";
 		Object[] params = {
 		memberDto.getMemberId(), memberDto.getMemberPw(),
-		memberDto.getMemberNickname(), memberDto.getMemberEmail(),
-		memberDto.getMemberBirth(), memberDto.getMemberContact(),
-		memberDto.getMemberPost(), memberDto.getMemberAddress1(),
-		memberDto.getMemberAddress2()
+		memberDto.getMemberNickname(), memberDto.getMemberEmail()
 		};
 		jdbcTemplate.update(sql, params);
 	}
@@ -177,5 +170,22 @@ public class MemberDao
 			};//동적할당
 			return jdbcTemplate.query(sql, memberMapper, params);
 		}
+	}
+	
+	public void connect(String memberId, int attachmentNo) 
+	{
+		String sql = "insert into member_profile (member_id, attachment_no) values (?, ?)";
+		Object[] params = {
+				memberId, 
+				attachmentNo
+		};//동적할당
+		jdbcTemplate.update(sql, params);
+	}
+	
+	public int findAttachment(String memberId) 
+	{
+		String sql = "select attachment_no from member_profile where member_id = ?";
+		Object[] params = {memberId};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 }

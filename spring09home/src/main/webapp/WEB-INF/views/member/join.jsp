@@ -5,7 +5,7 @@
 
 <h1>회원 정보 입력</h1>
 
-<form action = "./join" method = "post">
+<form action = "./join" method = "post" enctype = "multipart/form-data">
 <input type = "text" name = "memberId" placeholder = "아이디를 입력하세요." required>
 <input type = "password" name = "memberPw" placeholder = "비밀번호를 입력하세요." required>
 <input type = "text" name = "memberNickname" placeholder = "닉네임을 입력하세요." required>
@@ -20,6 +20,9 @@
 <!-- <input type = "text" name = "memberJoin" placeholder = "가입시간을 입력하세요."> -->
 <!-- <input type = "text" name = "memberLogin" placeholder = "로그인시간을 입력하세요."> -->
 <!-- <input type = "text" name = "memberChange" placeholder = "변경시간을 입력하세요."> -->
+
+프로필(선택) : <input type = "file" name = "attach" accept = ".png,.jpg,.webp">
+
 <button>회원가입</button>
 </form>
 

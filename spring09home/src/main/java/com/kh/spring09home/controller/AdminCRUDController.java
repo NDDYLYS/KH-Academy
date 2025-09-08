@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.spring09home.dao.MemberDao;
 import com.kh.spring09home.dto.MemberDto;
 import com.kh.spring09home.error.TargetNotfoundException;
-
-import jakarta.servlet.http.HttpSession;
+import com.kh.spring09home.service.AttachmentService;
 
 @Controller
 @RequestMapping("/admin/crud")
@@ -21,6 +20,8 @@ public class AdminCRUDController
 {
 	@Autowired
 	private MemberDao memberDao;
+	@Autowired
+	private AttachmentService attachmentService;
 	
 	@GetMapping("/drop")
 	public String drop()
@@ -34,6 +35,14 @@ public class AdminCRUDController
 		MemberDto memberDto = memberDao.selectOne(memberId);
 		if (memberDto == null)
 			throw new TargetNotfoundException("존재하지 않는 회원");
+		
+		try 
+		{
+			int attachmentNo = memberDao.findAttachment(memberDto.getMemberId());
+			attachmentService.delete(attachmentNo);
+		}
+		catch(Exception e) { /*아무것도 안함*/ }
+		
 		memberDao.delete(memberId);
 		return "redirect:goodbye";
 	}

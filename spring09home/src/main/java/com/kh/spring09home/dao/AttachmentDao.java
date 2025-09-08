@@ -40,4 +40,11 @@ public class AttachmentDao
 		List<AttachmentDto> list = jdbcTemplate.query(sql, attachmentMapper, params);
 		return list.isEmpty()? null : list.get(0);
 	}
+	
+	public boolean delete(int attachmentNo) 
+	{
+		String sql = "delete attachment where attachment_no = ?";
+		Object[] params = {attachmentNo};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
 }

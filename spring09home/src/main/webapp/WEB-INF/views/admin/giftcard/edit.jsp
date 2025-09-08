@@ -11,10 +11,10 @@
 	<input type = "hidden" name = "giftcardNo" 
 		value = "${giftcardDto.giftcardNo}">
 	
-	<input type = "text" name = "giftcardName" value = "${giftcardDto.giftcardName}" required>
-	<input type = "text" name = "giftcardContent" value = "${giftcardDto.giftcardContent}" required>
-	<input type = "text" name = "giftcardPrice" value = "${giftcardDto.giftcardPrice}" required>
-	<input type = "text" name = "giftcardPoint" value = "${giftcardDto.giftcardPoint}" required>
+	이름 : <input type = "text" name = "giftcardName" value = "${giftcardDto.giftcardName}" required>
+	내용 : <textarea name = "giftcardContent" rows = "4" cols = "60">${giftcardDto.giftcardContent}</textarea>
+	가격 : <input type = "text" name = "giftcardPrice" value = "${giftcardDto.giftcardPrice}" required>
+	포인트 : <input type = "text" name = "giftcardPoint" value = "${giftcardDto.giftcardPoint}" required>
 	<input type = "file" name = "attach" accept = ".png,.jpg,.webp">
 	
 	<button>수정하기</button>

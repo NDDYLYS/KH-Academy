@@ -46,6 +46,10 @@ public class AdminGiftCardController
 			int attachmentNo = attachmentService.save(attach);
 			giftcardDao.connect(giftcardNo, attachmentNo);
 		}
+		else
+		{
+			return "redirect:add?error";
+		}
 		
 		return "redirect:list";
 	}

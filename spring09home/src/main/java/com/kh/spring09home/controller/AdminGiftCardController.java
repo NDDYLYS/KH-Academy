@@ -126,4 +126,25 @@ public class AdminGiftCardController
 			return "redirect:/images/error/no-image.png";
 		}
 	}
+	
+	@GetMapping("/deleteAll")
+	public String deleteAll(@RequestParam(value = "giftcardNo") List<Integer> giftcardNoList) 
+	{
+		for(int giftcardNo : giftcardNoList) 
+		{
+			GiftcardDto giftcardDto = giftcardDao.selectOne(giftcardNo);
+			if (giftcardDto == null) 
+				throw new TargetNotfoundException("존재하지 않는 상품권");
+			
+			try 
+			{
+				int attachmentNo = giftcardDao.findAttachment(giftcardNo);
+				attachmentService.delete(attachmentNo);
+			}
+			catch(Exception e) { /*아무것도 안함*/ }		
+			
+			giftcardDao.delete(giftcardNo);
+		}
+		return "redirect:list";
+	}
 }

@@ -9,30 +9,34 @@
  
  <a href = "add">상품권 추가</a>
  
- <table border="1" width="900">
-	<thead align = "center">
-		<tr>
-			<th>이름</th>
-			<th>이미지</th>
-			<th>내용</th>
-			<th>가격</th>
-			<th>포인트</th>
-		</tr>
-	</thead>
-	<tbody align = "center">
-		<c:forEach var = "giftcardDto" items = "${ giftcardList }">
+ <form action="deleteAll">
+	 <table border="1" width="900">
+		<thead align = "center">
 			<tr>
-				<td>${ giftcardDto.giftcardName }</td>
-				<td><img src = "image?giftcardNo=${giftcardDto.giftcardNo}" width="80" height = "50"></td>
-				<td>${ giftcardDto.giftcardContent }</td>
-				<td><fmt:formatNumber value="${giftcardDto.giftcardPrice}" pattern="#,##0"/>원</td>
-				<td><fmt:formatNumber value="${giftcardDto.giftcardPoint}" pattern="#,##0"/>포인트</td>
-				<td><a href = "edit?giftcardNo=${giftcardDto.giftcardNo}">수정</a></td>
-				<td><a href = "delete?giftcardNo=${giftcardDto.giftcardNo}">삭제</a></td>
+				<th>삭제</th>
+				<th>이름</th>
+				<th>이미지</th>
+				<th>내용</th>
+				<th>가격</th>
+				<th>포인트</th>
 			</tr>
-		</c:forEach>
-	</tbody>	
-</table>
-
+		</thead>
+		<tbody align = "center">
+			<c:forEach var = "giftcardDto" items = "${ giftcardList }">
+				<tr>
+				<td><input type = "checkbox" name = "giftcardNo" value = "${giftcardDto.giftcardNo }"></td>
+					<td>${ giftcardDto.giftcardName }</td>
+					<td><img src = "image?giftcardNo=${giftcardDto.giftcardNo}" width="80" height = "50"></td>
+					<td>${ giftcardDto.giftcardContent }</td>
+					<td><fmt:formatNumber value="${giftcardDto.giftcardPrice}" pattern="#,##0"/>원</td>
+					<td><fmt:formatNumber value="${giftcardDto.giftcardPoint}" pattern="#,##0"/>포인트</td>
+					<td><a href = "edit?giftcardNo=${giftcardDto.giftcardNo}">수정</a></td>
+					<td><a href = "delete?giftcardNo=${giftcardDto.giftcardNo}">삭제</a></td>
+				</tr>
+			</c:forEach>
+		</tbody>	
+	</table>
+	<button>선택한 상품권 삭제</button>
+ </form>
  
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

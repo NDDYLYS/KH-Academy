@@ -2313,3 +2313,10 @@ drop table giftcard cascade constraint;
 외래키의 제약조건으로 묶여도 삭제 가능
 
 9,900원에 10,000 포인트 증정
+
+<!-- error 파라미터가 있다면 오류 메세지 출력 -->
+<c:if test = "${ param.error != null }">
+	<h2 style = "color:red">입력하신 정보가 일치하지 않습니다.</h2>
+</c:if>
+
+<input type = "file" name = "attach" accept = "image/*" required>

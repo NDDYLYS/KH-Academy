@@ -20,6 +20,8 @@ import com.kh.spring09home.dto.GiftcardDto;
 import com.kh.spring09home.dto.MemberDto;
 import com.kh.spring09home.error.TargetNotfoundException;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/giftcard")
 public class GiftcardController 
@@ -44,22 +46,30 @@ public class GiftcardController
 	
 	@Transactional
 	@PostMapping("/buy")
-	public String buy(@ModelAttribute BuyDto buyDto) 
+	public String buy(@ModelAttribute BuyDto buyDto, HttpSession session) 
 	{
-		MemberDto memberDto = memberDao.selectOne(buyDto.getBuyMemberId());
+		String loginId = (String)session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(loginId);
 		if (memberDto == null)
 			throw new TargetNotfoundException("로그인한 회원이 존재하지 않습니다");
 		GiftcardDto giftcardDto = giftcardDao.selectOne(buyDto.getBuyGiftcardNo());
 		if (giftcardDto == null)
 			throw new TargetNotfoundException("구매한 상품권이 존재하지 않습니다");
 		
-		int buyNo = buyDao.sequence();
-		buyDto.setBuyNo(buyNo);
-		buyDto.setBuyAmount(giftcardDto.getGiftcardPrice() * buyDto.getBuyQty());
-		buyDao.insert(buyDto);
+		buyDto.setBuyMemberId(loginId);//buyMemberId 설정
 		
-		int memberPoint = memberDto.getMemberPoint();
-		memberDto.setMemberPoint(memberPoint + (giftcardDto.getGiftcardPoint() * buyDto.getBuyQty()));
+		int buyNo = buyDao.sequence();
+		buyDto.setBuyNo(buyNo);//buyNo 설정
+		
+		buyDto.setBuyGiftcardName(giftcardDto.getGiftcardName());//이름 설정
+		buyDto.setBuyAmount(giftcardDto.getGiftcardPrice() * buyDto.getBuyQty());//가격 설정
+		
+		buyDao.insert(buyDto);//6개 데이터를 확보한 뒤 등록
+		
+		//회원의 포인트 증가 및 상품권 재고 감소
+		int origin = memberDto.getMemberPoint();//기존포인트
+		int add = giftcardDto.getGiftcardPoint() * buyDto.getBuyQty();//충전될포인트
+		memberDto.setMemberPoint(origin + add);
 		memberDao.update(memberDto);
 		
 		return "redirect:buyFinish";

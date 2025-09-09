@@ -11,14 +11,9 @@
  
 <form action = "buy" method = "post">
 <img src = "image?giftcardNo=${giftcardDto.giftcardNo}" width="200" height = "160">
-
-<input type = "hidden" name = "buyMemberId" value = "${ sessionScope.loginId }" required>
-<input type = "hidden" name = "buyGiftcardNo" value = "${ giftcardDto.giftcardNo }" required>
-<input type = "hidden" name = "buyGiftcardName" value = "${ giftcardDto.giftcardName }" required>
-
 수량 : <input type = "number" name = "buyQty" inputmode = "numeric" 
 min = "1" value = "1" required>
-<input type = "hidden" name = "buyAmount" value = "${ giftcardDto.giftcardPrice }" required>
+<input type="hidden" name="buyGiftcardNo" value="${giftcardDto.giftcardNo}">
 <button>상품권 구매</button>
 </form>
  

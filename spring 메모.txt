@@ -2378,3 +2378,5 @@ create sequence buy_seq;
 * JSP에서 localhost의 경로 : ${pageContext.request.contextPath}
 
 @Transactional // 이 메소드를 하나의 트랜잭션으로 간주(이 안에서의 DB 작업은 일괄로 처리/취소)
+
+figma

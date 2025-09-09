@@ -20,6 +20,7 @@
 		<a href = "/student/list">Student</a>
 		<a href = "/member/mypage">내 정보</a>
 		<a href = "/member/logout">로그아웃</a>
+		<a href = "/giftcard/list">상품권</a>
 		<br><a href = "/board/list2" style="float: right;">멘션형 자유 게시판</a><br>
 		<a href = "/board/list" style="float: right;">자유 게시판</a>
 	</c:when>
@@ -30,6 +31,7 @@
 		<a href = "/book/list">Book</a>
 		<a href = "/member/mypage">내 정보</a>
 		<a href = "/member/logout">로그아웃</a>
+		<a href = "/giftcard/list">상품권</a>
 		<br><a href = "/board/list2" style="float: right;">멘션형 자유 게시판</a><br>
 		<a href = "/board/list" style="float: right;">자유 게시판</a>
 	</c:when>

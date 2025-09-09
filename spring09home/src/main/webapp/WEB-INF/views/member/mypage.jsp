@@ -38,7 +38,7 @@
         	</tr>
         	<tr>
         		<th>포인트</th>
-        		<td>${memberDto.getMemberPoint()}</td>
+        		<td><fmt:formatNumber value="${memberDto.getMemberPoint()}" pattern="#,##0"/></td>
         	</tr>
         	<tr>
         		<th>우편번호</th>

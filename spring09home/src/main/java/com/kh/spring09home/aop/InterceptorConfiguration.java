@@ -32,10 +32,10 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 		//registry.addInterceptor(testInterceptor).addPathPatterns("/**");
 		registry.addInterceptor(memberLoginInterceptor)
 		.addPathPatterns("/student/**", "/book/**", "/member/**", "/admin/**", 
-				"/board/**")
+				"/board/**", "giftcard/**")
 		.excludePathPatterns("/member/join*", 
 				"/member/login", "/member/goodbye", 
-				"/board/list*", "/board/detail").order(1);
+				"/board/list*", "/board/detail", "giftcard/list").order(1);
 		
 		registry.addInterceptor(advencedMemberInterceptor)
 		.addPathPatterns("/book/**").order(2);

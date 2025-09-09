@@ -1,5 +1,7 @@
 package com.kh.spring09home.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,7 +20,7 @@ public class BuyDao
 	public int sequence() 
 	{
 		String sql = "select buy_seq.nextval from dual";
-		return jdbcTemplate.queryForObject(sql, int.class)
+		return jdbcTemplate.queryForObject(sql, int.class);
 	}
 	
 	public void insert(BuyDto buyDto) 
@@ -35,4 +37,10 @@ public class BuyDao
 				buyDto.getBuyAmount()};
 		jdbcTemplate.update(sql, params);
 	}
+	
+//	public List<BuyDto> select()
+//	{
+//		String sql = "select * from buy order by buy_no asc";
+//		return jdbcTemplate.query(sql, buyMapper);
+//	}
 }

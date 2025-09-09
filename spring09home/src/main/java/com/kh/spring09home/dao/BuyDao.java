@@ -38,9 +38,14 @@ public class BuyDao
 		jdbcTemplate.update(sql, params);
 	}
 	
-//	public List<BuyDto> select()
-//	{
-//		String sql = "select * from buy order by buy_no asc";
-//		return jdbcTemplate.query(sql, buyMapper);
-//	}
+	public List<BuyDto> selectListByMemberId(String buyMemberId)
+	{
+		if (buyMemberId == null)
+			return List.of();
+		
+		String sql = "select * from buy where buy_member_id = ? "
+				+ "order by buy_no desc";
+		Object[] params = {buyMemberId};
+		return jdbcTemplate.query(sql, buyMapper, params);
+	}
 }

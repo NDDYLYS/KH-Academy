@@ -210,4 +210,15 @@ public class BoardDao
 			return jdbcTemplate.query(sql, boardMentionMapper, params);
 		}
 	}
+	
+	public List<BoardListVO> selectListByBoardWriter(String boardWriter)
+	{
+		if (boardWriter == null)
+			return List.of();
+		
+		String sql = "select * from board_list where board_writer = ? "
+				+ "order by board_no desc";
+		Object[] params = {boardWriter};
+		return jdbcTemplate.query(sql, boardListMapper, params);
+	}
 }

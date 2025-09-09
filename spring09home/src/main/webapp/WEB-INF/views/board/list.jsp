@@ -59,10 +59,15 @@
 				</a>
 			</td>
 			<td>
-				<a href = "/member/detail?memberId=${ boardListVO.memberId }">
-				${boardListVO.boardWriter == null ? 
-				'(탈퇴한사용자)' : boardListVO.memberNickname}
-				</a>
+				<c:choose>
+					<c:when test="${boardListVO.boardWriter != null }">
+						<a href = "/member/detail?memberId=${ boardListVO.memberId }">
+						${boardListVO.memberNickname}</a>
+					</c:when>
+					<c:otherwise>
+						(탈퇴한 사용자)
+					</c:otherwise>
+				</c:choose>
 			</td>
 			<td>${boardListVO.boardWtime}</td>
 			<td>${boardListVO.boardRead}</td>

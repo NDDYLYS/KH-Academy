@@ -3,6 +3,7 @@ package com.kh.spring09home.controller;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.spring09home.dao.BoardDao;
+import com.kh.spring09home.dao.BuyDao;
 import com.kh.spring09home.dao.MemberDao;
+import com.kh.spring09home.dto.BuyDto;
 import com.kh.spring09home.dto.MemberDto;
 import com.kh.spring09home.error.TargetNotfoundException;
 import com.kh.spring09home.service.AttachmentService;
+import com.kh.spring09home.vo.BoardListVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -29,6 +34,10 @@ public class MemberController
 	private MemberDao memberDao;
 	@Autowired
 	private AttachmentService attachmentService;
+	@Autowired
+	private BoardDao boardDao;
+	@Autowired
+	private BuyDao buyDao;
 	
 	@GetMapping("/join")
 	public String join() 
@@ -147,8 +156,13 @@ public class MemberController
 		// session에서 loginId를 추출하여 정보 조회 뒤 화면으로 전달
 		String loginId = (String) session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectOne(loginId);
-		
 		model.addAttribute("memberDto", memberDto);
+		
+		List<BoardListVO> boardList = boardDao.selectListByBoardWriter(loginId);
+		model.addAttribute("boardList", boardList);
+		
+		List<BuyDto> buyList = buyDao.selectListByMemberId(loginId);
+		model.addAttribute("buyList", buyList);
 		return "/WEB-INF/views/member/mypage.jsp";
 	}
 	
@@ -248,8 +262,17 @@ public class MemberController
 	public String detail(Model model,
 			@RequestParam String memberId) 
 	{
+		if (memberId == null)
+			throw new TargetNotfoundException("탈퇴한 회원입니다");
+		
 		MemberDto memberDto = memberDao.selectOne(memberId);
 		model.addAttribute("memberDto", memberDto);
+
+		List<BoardListVO> boardList = boardDao.selectListByBoardWriter(memberId);
+		model.addAttribute("boardList", boardList);
+		
+		List<BuyDto> buyList = buyDao.selectListByMemberId(memberId);
+		model.addAttribute("buyList", buyList);
 		
 		return "/WEB-INF/views/member/detail.jsp";
 	}

@@ -54,6 +54,49 @@
     </tr>
 </table>
 
+<h1>나의 글 작성 내역</h1>
+
+<table border = "1" width = "500">
+	<thead>
+		<th>제목</th>
+		<th>작성일</th>
+	</thead>
+	<tbody>
+		<c:forEach var = "boardListVO" items = "${ boardList }">
+			<tr>
+				<td><a href = "/board/detail?boardNo=${boardListVO.boardNo }">${ boardListVO.boardTitle }</a></td>
+				<td>${ boardListVO.boardWtime }</td>
+			</tr>
+		</c:forEach>
+	</tbody>
+</table>
+
+
+<h1>나의 상품권 구매 내역</h1>
+
+<table border = "1" width = "500">
+	<thead>
+		<th>번호</th>
+		<th>구매지</th>
+		<th>상품번호</th>
+		<th>상품이름</th>
+		<th>수량</th>
+		<th>금액</th>
+	</thead>
+	<tbody>
+		<c:forEach var = "buyDto" items = "${ buyList }">
+			<tr>
+				<td>${ buyDto.buyNo }</td>
+				<td>${ buyDto.buyMemberId }</td>
+				<td>${ buyDto.buyGiftcardNo }</td>
+				<td>${ buyDto.buyGiftcardName }</td>
+				<td>${ buyDto.buyQty }</td>
+				<td>${ buyDto.buyAmount}</td>
+			</tr>
+		</c:forEach>
+	</tbody>
+</table>
+
 <h2><a href = "/admin/crud/edit?memberId=${memberDto.memberId}"">정보 수정</a></h2>
 <h2><a href = "/admin/crud/password?memberId=${memberDto.memberId}"">비밀번호 수정</a></h2>
 <h2><a href = "/admin/crud/drop?memberId=${memberDto.memberId}">강퇴</a></h2>

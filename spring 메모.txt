@@ -2344,3 +2344,33 @@ public String deleteAll(@RequestParam(value = "giftcardNo") List<Integer> giftca
 	}
 	return "redirect:list";
 }
+
+** 250909
+
+drop table giftcard_image;
+create table giftcard_image (
+giftcard_no references giftcard(giftcard_no) on delete cascade unique, // 외래키
+attachment_no references attachment(attachment_no) on delete cascade unique, // 외래키
+primary key(giftcard_no, attachment_no) // 복합키
+);
+
+구매 기록은 CR만 구현한다
+CRUD를 하나 마냐에 따라 Dto, Dao, Mapper를 만들지 말지 정한다
+
+drop table buy;
+create table buy
+(
+	buy_no number primary key,
+	buy_member_id varchar2(20) not null,
+	buy_giftcard_no number not NULL,
+	buy_giftcard_name varchar2(90) not null,
+	buy_time TIMESTAMP default systimestamp not null,
+	buy_qty number default 1 not null,
+	buy_amount number not null,
+	check(regexp_like(buy_member_id, '^[a-z][a-z0-9]{4,19}')),
+	check(buy_qty > 0),
+	check(buy_amount <= 0)
+);
+
+drop sequence buy_seq;
+create sequence buy_seq;

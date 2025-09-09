@@ -499,7 +499,7 @@ end = 10;
 step = i++;
 
 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 JSP가 더 편한 것들
 1. 숫자에 컴마 찍기 -> java.text.DecimalFormat : fmt:formatNumber		
@@ -2369,8 +2369,12 @@ create table buy
 	buy_amount number not null,
 	check(regexp_like(buy_member_id, '^[a-z][a-z0-9]{4,19}')),
 	check(buy_qty > 0),
-	check(buy_amount <= 0)
+	check(buy_amount >= 0)
 );
 
 drop sequence buy_seq;
 create sequence buy_seq;
+
+* JSP에서 localhost의 경로 : ${pageContext.request.contextPath}
+
+@Transactional // 이 메소드를 하나의 트랜잭션으로 간주(이 안에서의 DB 작업은 일괄로 처리/취소)

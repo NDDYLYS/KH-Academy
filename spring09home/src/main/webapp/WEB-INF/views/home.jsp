@@ -94,8 +94,8 @@
 		<div class="rotation">날 잡아봐</div>
 	</div>
 </div>
-<marquee direction="left" scrollamount="20"><p>널 납치하겠어! <span class="shake"><image src = "/images/naver-icon-style.png" width = "125"></span> </p></marquee>
-<img id="movingImage" src="/images/kt.png" alt="움직이는 이미지">
+<marquee direction="left" scrollamount="20"><p>널 납치하겠어! <span class="shake"><image src = "/images/test/arrow.png" width = "125"></span> </p></marquee>
+<img id="movingImage" src="/images/test/arrow.png" alt="움직이는 이미지">
 
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

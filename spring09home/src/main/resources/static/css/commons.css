@@ -4,7 +4,8 @@
      font-family: 고딕;
 }
 
-div{/*box-shadow: 0 0 1px 0 gray;*/}
+/* div{box-shadow: 0 0 1px 0 gray;} */
+div{}
 
 .container{margin: 0 auto;}
 
@@ -122,11 +123,19 @@ textarea.field {
 }
 .btn.btn-neutral
 {
-     background-color: #718093;
-     border-color: #718093;
+     background-color: #dddddd;
+     border-color: #dddddd;
      color:white;
 }
 .btn:hover
 {
      filter: brightness(90%);
 }
+
+/* 색상 */
+.red{color:#e74c3c}
+.orange{color:#e67e22}
+.yellow{color:#f1c40f}
+.green{color:#2ecc71}
+.blue{color:#3498db}
+.purple{color:#8e44ad}

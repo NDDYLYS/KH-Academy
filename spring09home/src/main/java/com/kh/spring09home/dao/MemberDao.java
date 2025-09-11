@@ -21,8 +21,8 @@ public class MemberDao
 	public void insert(MemberDto memberDto) 
 	{
 		String sql = "insert into member("
-				+ "member_id, member_pw, member_nickname, member_email)"
-			+ "values(?, ?, ?, ?)";
+				+ "member_id, member_pw, member_nickname, member_email) "
+			+ "values (?, ?, ?, ?)";
 		Object[] params = {
 		memberDto.getMemberId(), memberDto.getMemberPw(),
 		memberDto.getMemberNickname(), memberDto.getMemberEmail()

@@ -9,7 +9,7 @@
 <div class = "container w-600">
     <form action="insert" method="post">
         <div class = "cell mb-30 center">
-            <h1>자유 게시판 글쓰기</h1>
+            <h1>자유 게시판 글쓰기d</h1>
         </div>
         <div class = "cell">
             <c:if test = "${ param.boardOrigin != null }">

@@ -3,7 +3,7 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<form autocomplete="off">
+<form autocomplete="off" action="./join" method="post" enctype="multipart/form-data">
     <div class="container w-600">
         <div class="cell center">
             <h1>회원 가입 정보 입력</h1>

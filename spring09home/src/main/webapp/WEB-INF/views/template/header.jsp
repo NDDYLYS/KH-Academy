@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!-- 디자인 파일 불러오기 -->
+<link rel="stylesheet" type="text/css" href="/css/commons.css">
     
 <div>
 	<h1>KH정보 교육원 스프링 개발자 수업자료</h1>

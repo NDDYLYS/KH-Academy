@@ -5,21 +5,42 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
- <h2>상품권 추가</h2>
- 
-<form action = "add" method = "post" enctype = "multipart/form-data">
-이름 : <input type = "text" name = "giftcardName" placeholder = "상품권 이름을 입력하세요." required>
-내용 : <textarea name = "giftcardContent" placeholder = "상품권 본문을 입력하세요." required
-rows = "4" cols = "60"></textarea>
-가격 : <input type = "text" name = "giftcardPrice" placeholder = "상품권 가격을 입력하세요." required inputmode = "numeric">
-포인트 : <input type = "text" name = "giftcardPoint" placeholder = "상품권 포인트를 입력하세요." required inputmode = "numeric">
-<input type = "file" name = "attach" accept = "image/*" required>
-<button>상품권 등록</button>
-</form>
-
-<!-- error 파라미터가 있다면 오류 메세지 출력 -->
-<c:if test = "${ param.error != null }">
-	<h2 style = "color:red">이미지는 반드시 설정해야 합니다.</h2>
-</c:if>
+<div class = "container w-400">
+    <form action="add" method="post" enctype="multipart/form-data">
+        <div class = "cell center">
+            <h1>상품권 등록</h1>
+        </div>
+        <div class = "cell">
+            <label>상품권 제목 *</label>
+            <input type= "text" name = "giftcardName"
+                class = "field w-100" placeholder="(ex)10,000포인트" required>
+        </div>
+        <div class = "cell">
+            <label>상품권 내용 *</label>
+            <input type= "text" name = "giftcardContent"
+                class = "field w-100" placeholder="(ex)9,900원에 10,000 포인트 증정" required>
+        </div>
+        <div class = "cell">
+            <label>상품권 가격 *</label>
+            <input type= "number" name = "giftcardPrice"
+                class = "field w-100" placeholder="(ex)9,900" required
+                inputmode="numeric">
+        </div>
+        <div class = "cell">
+            <label>상품권 포인트 *</label>
+            <input type= "number" name = "giftcardPoint"
+                class = "field w-100" placeholder="(ex)10,000" required
+                inputmode="numeric">
+        </div>
+            <label>상품권 표지 *</label>
+            <div class = "cell">
+            <input type = "file"
+            name = "attach" accept = ".png,.jpg,.webp" class = "field w-100">
+        </div>
+        <div class = "cell mt-30">
+            <button class = "btn btn-positive w-100">상품권 등록</button>
+        </div>
+    </form>
+</div>
  
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

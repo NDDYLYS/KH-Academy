@@ -1,0 +1,132 @@
+* 
+{
+     box-sizing: border-box;
+     font-family: 고딕;
+}
+
+div{/*box-shadow: 0 0 1px 0 gray;*/}
+
+.container{margin: 0 auto;}
+
+.w-25{width: 25%;}
+.w-50{width: 50%;}
+.w-75{width: 75%;}
+.w-100{width: 100%;}
+.w-150{width: 150px;}
+.w-200{width: 200px;}
+.w-250{width: 250px;}
+.w-300{width: 300px;}
+.w-350{width: 350px;}
+.w-400{width: 400px;}
+.w-450{width: 450px;}
+.w-500{width: 500px;}
+.w-550{width: 550px;}
+.w-600{width: 600px;}
+.w-650{width: 650px;}
+.w-700{width: 700px;}
+.w-750{width: 750px;}
+.w-800{width: 800px;}
+.w-850{width: 850px;}
+.w-900{width: 900px;}
+.w-950{width: 950px;}
+.w-1000{width: 1000px;}
+.w-1050{width: 1050px;}
+.w-1100{width: 1100px;}
+
+.cell{margin: 10px 0;}
+
+.mt-0{margin-top: 0;}
+.mt-10{margin-top: 10px;}
+.mt-20{margin-top: 20px;}
+.mt-30{margin-top: 30px;}
+.mt-40{margin-top: 40px;}
+.mt-50{margin-top: 50px;}
+
+.mb-0{margin-bottom: 0;}
+.mb-10{margin-bottom: 10px;}
+.mb-20{margin-bottom: 20px;}
+.mb-30{margin-bottom: 30px;}
+.mb-40{margin-bottom: 40px;}
+.mb-50{margin-bottom: 50px;}
+
+.ms-0{margin-left: 0;}
+.ms-10{margin-left: 10px;}
+.ms-20{margin-left: 20px;}
+.ms-30{margin-left: 30px;}
+.ms-40{margin-left: 40px;}
+.ms-50{margin-left: 50px;}
+
+.me-0{margin-right: 0;}
+.me-10{margin-right: 10px;}
+.me-20{margin-right: 20px;}
+.me-30{margin-right: 30px;}
+.me-40{margin-right: 40px;}
+.me-50{margin-right: 50px;}
+
+/* 정렬용 클래스 */
+.left{text-align: left;}
+.center{text-align: center;}
+.right{text-align: right;}
+
+/* 
+     입력창 디자인(input/select/textarea)
+*/
+.field {
+     outline: none; /* 기본 강조효과 제거 */
+     font-size: 16px; /* 기본 글자크기 지정 */
+     padding: 0.5em 0.75em;
+     border: 1px solid #636e72;
+     border-radius: 0.1em;
+}
+.field:focus {
+     border-color: #313739;
+}
+textarea.field {
+     resize: vertical;
+}
+
+/*
+     버튼 디자인
+     - a태그와 button을 동일하게 디자인
+     - 버튼마다 역할이 다름
+          - 긍정버튼 : 현재 페이지의 목적을 달성할 수 있거나 긍정적인 영향을 주는 작업 버튼
+          - 부정버튼 : 현재 페이지의 목적이 부정적인 작업인 경우(수정/삭제) 위험성을 알려주는 버튼
+          - 중립버튼 : 현재 페이지의 목적과 관계없는 작업 버튼
+*/
+.btn {
+     outline: none;
+     font-size: 16px;
+     padding: 0.5em 0.75em;
+     cursor: pointer;
+     border: 1px solid #636e72;
+     border-radius: 0.1em;
+     /* a태그까지 고려한 디자인 추가 */
+     text-decoration: none;
+     color: #2d3436;
+     background-color: #f2f2f2;
+     display: inline-block;
+     text-align: center;
+}
+
+.btn.btn-positive
+{
+     background-color: #0097e6;
+     border-color: #0097e6;
+     color:white;
+}
+.btn.btn-negative
+{
+     background-color: #e84118;
+     border-color: #e84118;
+     color:white;
+}
+.btn.btn-neutral
+{
+     background-color: #718093;
+     border-color: #718093;
+     color:white;
+}
+.btn:hover
+{
+     filter: brightness(90%);
+}

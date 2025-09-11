@@ -6,28 +6,34 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 
-<!-- <form action = "/board/insert" method = "post"> -->
-<!-- <input type = "text" name = "boardTitle" placeholder = "제목"> -->
-<!-- <input type = "text" name = "boardContent" placeholder = "내용"> -->
-<!-- <button>글 등록</button> -->
-<!-- </form> -->
-
-<form action = "insert" method = "post" align = "center">
-
-	<c:if test = "${ param.boardOrigin != null }">
-		<input type = "hidden" name = "boardOrigin" value = "${ param.boardOrigin }">
-	</c:if>
-
-	<c:if test = "${ sessionScope.loginLevel == '관리자' }">
-		<input type = "checkbox" name = "boardNotice" value = "Y">공지사항으로 등록<br>
-	</c:if>
-	<br>
-	<textarea name = "boardTitle" cols="110" required></textarea>
-	<br><br>
-	<textarea name = "boardContent" rows="5" cols="110" required></textarea>
-	<br><br><br>
-	<button>글 등록</button>
-</form>
+<div class = "container w-600">
+    <form action="insert" method="post">
+        <div class = "cell mb-30 center">
+            <h1>자유 게시판 글쓰기</h1>
+        </div>
+        <div class = "cell">
+            <c:if test = "${ param.boardOrigin != null }">
+		        <input type = "hidden" name = "boardOrigin" value = "${ param.boardOrigin }">
+	        </c:if>
+	        <c:if test = "${ sessionScope.loginLevel == '관리자' }">
+		        <input type = "checkbox" name = "boardNotice" value = "Y">공지사항으로 등록<br>
+	        </c:if>
+        </div>
+        <div class = "cell">
+            <label>글 제목 *</label>
+            <input type= "text" name = "boardTitle"
+                class = "field w-100" placeholder="제목" required>
+        </div>
+        <div class = "cell">
+            <label>글 내용 *</label>
+            <textarea name = "boardContent"
+                class = "field w-100" placeholder="본문" required></textarea>
+        </div>
+        <div class = "cell mt-50">
+            <button class = "btn btn-positive w-100">글쓰기</button>
+        </div>
+    </form>
+</div>
 
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

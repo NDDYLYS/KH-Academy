@@ -4,15 +4,38 @@
     
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<h1>회원 탈퇴</h1>
 
-<p>
-탈퇴를 위해 비밀번호를 한 번 더 입력해주세요.
-</p>
+<!-- <div class = "container w-300"> -->
+<!--     <div class = "cell"> -->
+<!--         <h2>회원 탈퇴</h2> -->
+<!--     </div> -->
+<!--     <div class = "cell"> -->
+<!--         <h5>탈퇴를 위해 비밀번호를 한 번 더 입력해주세요.</h5> -->
+<!--     </div> -->
+<!--     <div class = "cell"></div> -->
+<!--         <label>비밀번호</label><br> -->
+<!--         <input type = "password" name = "memberPw" class = "field" required> -->
+<!--     <div class = "cell right"> -->
+<!--         <button class = "btn btn-negative">탈퇴하기</button> -->
+<!--     </div> -->
+<!-- </div> -->
+
 
 <form action = "drop" method = "post">
-	<input type = "password" name = "memberPw" required placehodler = "비밀번호">
-	<button>탈퇴하기</button>
+	<div class = "container w-300">
+	    <div class = "cell">
+	        <h2>회원 탈퇴</h2>
+	    </div>
+	    <div class = "cell">
+	        <h5>탈퇴를 위해 비밀번호를 한 번 더 입력해주세요.</h5>
+	    </div>
+	    <div class = "cell"></div>
+	        <label>비밀번호</label><br>
+	        <input type = "password" name = "memberPw" class = "field" required>
+	    <div class = "cell right">
+	        <button class = "btn btn-negative">탈퇴하기</button>
+	    </div>
+	</div>
 </form>
 
 <c:if test = "${param.error != null}">

@@ -5,120 +5,127 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
  
-<h1>회원 상세정보</h1>
-
-<a href = "list">회원 목록보기</a>
-
-<c:choose>
-    <c:when test="${memberDto == null}">
-        존재하지 않는 회원 정보입니다.
-    </c:when>
-    <c:otherwise>
-        <table border = "1" width = "900">
-        	<tr>
-        		<th>아이디</th>
-        		<td>${memberDto.getMemberId()}</td>
-        	</tr>
-        	 <tr>
-        		<th>프로필</th>
-        		<td><img src = "/member/profile?memberId=${memberDto.getMemberId()}"
-        		 width="200" height = "200"></td>
-        	</tr>
-        	<tr>
-        		<th>닉네임</th>
-        		<td>${memberDto.getMemberNickname()}</td>
-        	</tr>
-        	<tr>
-        		<th>생일</th>
-        		<td>${memberDto.getMemberBirth()}</td>
-        	</tr>
-        	<tr>
-        		<th>등급</th>
-        		<td>${memberDto.getMemberLevel()}</td>
-        	</tr>
-        	<tr>
-        		<th>포인트</th>
-        		<td><fmt:formatNumber value="${memberDto.getMemberPoint()}" pattern="#,##0"/></td>
-        	</tr>
-        	<tr>
-        		<th>우편번호</th>
-        		<td size = "6">${memberDto.getMemberPost()}</td>
-        	</tr>
-        	<tr>
-        		<th>기본주소</th>
-        		<td size = "60">${memberDto.getMemberAddress1()}</td>
-        	</tr>
-        	<tr>
-        		<th>상세주소</th>
-        		<td size = "60">${memberDto.getMemberAddress2()}</td>
-        	</tr>
-        	<tr>
-        		<th>가입일</th>
-        		<td>
-        		<fmt:formatDate value="${memberDto.memberJoin}" pattern="y년 M월 d일 H시 m분 s초"/>
-        		</td>
-        	</tr>
-        	<tr>
-        		<th>최종로그인</th>
-        		<td>
-        		<fmt:formatDate value="${memberDto.memberLogin}" pattern="y년 M월 d일 H시 m분 s초"/>
-        		</td>
-        	</tr>
-        	<tr>
-        		<th>비밀번호 변경일</th>
-        		<td>
-        		<fmt:formatDate value="${memberDto.memberChange}" pattern="y년 M월 d일 H시 m분 s초"/>
-        		</td>
-        	</tr>
+<div class="container w-600">         
+    <div class = "cell center">
+        <h1>회원 상세정보</h1>
+    </div>
+    <div class = "cell w-100">
+        <c:choose>
+            <c:when test="${memberDto == null}">
+                존재하지 않는 회원 정보입니다.
+            </c:when>
+            <c:otherwise>
+                <table border = "1" width = "900" class = "table table-hover table-sprited w-100 center">
+                    <tr>
+                        <th>아이디</th>
+                        <td>${memberDto.getMemberId()}</td>
+                    </tr>
+                    <tr>
+                        <th>프로필</th>
+                        <td><img src = "/member/profile?memberId=${memberDto.getMemberId()}"
+                        width="200" height = "200"></td>
+                    </tr>
+                    <tr>
+                        <th>닉네임</th>
+                        <td>${memberDto.getMemberNickname()}</td>
+                    </tr>
+                    <tr>
+                        <th>생일</th>
+                        <td>${memberDto.getMemberBirth()}</td>
+                    </tr>
+                    <tr>
+                        <th>등급</th>
+                        <td>${memberDto.getMemberLevel()}</td>
+                    </tr>
+                    <tr>
+                        <th>포인트</th>
+                        <td><fmt:formatNumber value="${memberDto.getMemberPoint()}" pattern="#,##0"/></td>
+                    </tr>
+                    <tr>
+                        <th>우편번호</th>
+                        <td size = "6">${memberDto.getMemberPost()}</td>
+                    </tr>
+                    <tr>
+                        <th>기본주소</th>
+                        <td size = "60">${memberDto.getMemberAddress1()}</td>
+                    </tr>
+                    <tr>
+                        <th>상세주소</th>
+                        <td size = "60">${memberDto.getMemberAddress2()}</td>
+                    </tr>
+                    <tr>
+                        <th>가입일</th>
+                        <td>
+                        <fmt:formatDate value="${memberDto.memberJoin}" pattern="y년 M월 d일 H시 m분 s초"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>최종로그인</th>
+                        <td>
+                        <fmt:formatDate value="${memberDto.memberLogin}" pattern="y년 M월 d일 H시 m분 s초"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>비밀번호 변경일</th>
+                        <td>
+                        <fmt:formatDate value="${memberDto.memberChange}" pattern="y년 M월 d일 H시 m분 s초"/>
+                        </td>
+                    </tr>
+                </table>
+            </c:otherwise>
+        </c:choose>
+    </div>
+    <div class = "cell w-100 center">
+        <h4>나의 글 작성 내역</h4>
+    </div>
+    <div class = "cell">
+        <table border = "1" width = "500" class = "table table-hover table-sprited w-100 center">
+            <thead>
+                <th>제목</th>
+                <th>작성일</th>
+            </thead>
+            <tbody>
+                <c:forEach var = "boardListVO" items = "${ boardList }">
+                    <tr>
+                        <td><a href = "/board/detail?boardNo=${boardListVO.boardNo }">${ boardListVO.boardTitle }</a></td>
+                        <td>${ boardListVO.boardWtime }</td>
+                    </tr>
+                </c:forEach>
+            </tbody>
         </table>
-    </c:otherwise>
-</c:choose>
-
-<h1>나의 글 작성 내역</h1>
-
-<table border = "1" width = "500">
-	<thead>
-		<th>제목</th>
-		<th>작성일</th>
-	</thead>
-	<tbody>
-		<c:forEach var = "boardListVO" items = "${ boardList }">
-			<tr>
-				<td><a href = "/board/detail?boardNo=${boardListVO.boardNo }">${ boardListVO.boardTitle }</a></td>
-				<td>${ boardListVO.boardWtime }</td>
-			</tr>
-		</c:forEach>
-	</tbody>
-</table>
-
-
-<h1>나의 상품권 구매 내역</h1>
-
-<table border = "1" width = "500">
-	<thead>
-		<th>번호</th>
-		<th>구매지</th>
-		<th>상품번호</th>
-		<th>상품이름</th>
-		<th>수량</th>
-		<th>금액</th>
-	</thead>
-	<tbody>
-		<c:forEach var = "buyDto" items = "${ buyList }">
-			<tr>
-				<td>${ buyDto.buyNo }</td>
-				<td>${ buyDto.buyMemberId }</td>
-				<td>${ buyDto.buyGiftcardNo }</td>
-				<td>${ buyDto.buyGiftcardName }</td>
-				<td>${ buyDto.buyQty }</td>
-				<td>${ buyDto.buyAmount}</td>
-			</tr>
-		</c:forEach>
-	</tbody>
-</table>
-
-<h2><a href = "edit">정보 수정</a></h2>
-<h2><a href = "password">비밀번호 수정</a></h2>
-<h2><a href = "drop">탈퇴</a></h2>
+    </div>
+    <div class = "cell w-100 center">
+        <h4>나의 상품권 구매 내역</h4>
+    </div>
+    <div class = "cell">
+        <table border = "1" width = "500" class = "table table-hover table-sprited w-100 center">
+            <thead>
+                <th>번호</th>
+                <th>구매자</th>
+                <th>상품번호</th>
+                <th>상품이름</th>
+                <th>수량</th>
+                <th>금액</th>
+            </thead>
+            <tbody>
+                <c:forEach var = "buyDto" items = "${ buyList }">
+                    <tr>
+                        <td>${ buyDto.buyNo }</td>
+                        <td>${ buyDto.buyMemberId }</td>
+                        <td>${ buyDto.buyGiftcardNo }</td>
+                        <td>${ buyDto.buyGiftcardName }</td>
+                        <td>${ buyDto.buyQty }</td>
+                        <td>${ buyDto.buyAmount}</td>
+                    </tr>
+                </c:forEach>
+             </tbody>
+         </table>
+     </div>
+     <div class = "cell right mb-30">
+		<a href = "drop" class = "btn btn-negative">탈퇴</a>
+     	<a href = "edit" class = "btn btn-nuetral">정보 수정</a>
+		<a href = "password" class = "btn btn-nuetral">비밀번호 수정</a>
+     </div>
+ </div>
     
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

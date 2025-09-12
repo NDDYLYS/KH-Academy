@@ -44,6 +44,17 @@
 					</tr>
 				</c:forEach>
             </tbody>
+            
+            <tfoot>
+				<tr>
+					<td colspan="7">
+						검색결과 : 
+						${pageVO.begin} - ${pageVO.end}
+						/
+						${pageVO.dataCount}개
+					</td>
+				</tr>
+			</tfoot>
         </table>
     </div>
 </div>

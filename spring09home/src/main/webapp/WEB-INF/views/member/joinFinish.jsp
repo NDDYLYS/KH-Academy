@@ -3,11 +3,13 @@
     
  <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
  
- <h2>회원가입 완료</h2>
- 
- <a href = "/member/login">로그인</a>
- 
-<!--  <a href = "add">다시 등록</a> -->
-<!--  <a href = "list">목록 보기</a> -->
+<div class = "container w-300">
+	<div class = "cell">
+		<h1>회원가입 완료</h1>
+	</div>
+	<div class = "cell center">
+		 <a href = "/member/login" class = "field center">로그인</a>
+	</div>
+</div>
     
  <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

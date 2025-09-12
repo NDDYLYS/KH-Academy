@@ -10,9 +10,7 @@
             <label>No.${boardDto.boardNo }</label>
             <c:choose>
                 <c:when test="${ memberDto != null }">
-                , 아이디 : ${boardDto.boardWriter },
-                <a href = "/member/detail?memberId=${ memberDto.memberId }">닉네임 : ${ memberDto.memberNickname }</a>
-                작성자 : ${ memberDto.memberNickname }
+                	<a href = "/member/detail?memberId=${ memberDto.memberId }">${ memberDto.memberNickname }</a>
                 </c:when>
                 <c:otherwise>
                     탈퇴한 사용자입니다

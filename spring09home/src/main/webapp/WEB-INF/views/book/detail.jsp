@@ -5,17 +5,16 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<h1>도서 상세정보</h1>
-
-<a href = "list">목록보기</a>
-
-<c:choose>
-    <c:when test="${bookDto == null}">
-        존재하지 않는 도서 정보입니다.
-    </c:when>
-    <c:otherwise>
-        <table border = "1" width = "900">
-        	<tr align = "center">
+<div class = "container w-500">
+    <div class = "cell">
+        <h1>도서 상세정보</h1>
+    </div>
+    <div class = "cell right">
+        <a href = "list" class = "btn btn-nuetral">목록 보기</a>
+    </div>
+    <div class = "cell">
+        <table class = "table table-hover table-sprited w-100 center">
+          	<tr align = "center">
         		<th>번호</th>
         		<td>${bookDto.getBookId()}</td>
         	</tr>
@@ -52,10 +51,13 @@
         		<td>${bookDto.getBookGenre()}</td>
         	</tr>
         </table>
-    </c:otherwise>
-</c:choose>
-
-<a href = "edit?bookId=${bookDto.getBookId()}">수정</a>
-<a href = "remove?bookId=${bookDto.getBookId()}">삭제</a>
+    </div>
+    <div class = "cell right">
+        <a href = "edit?bookId=${bookDto.getBookId()}" 
+        class = "btn btn-nuetral">수정</a>
+        <a href = "remove?bookId=${bookDto.getBookId()}"
+        class = "btn btn-nuetral">삭제</a>   
+    </div>
+</div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

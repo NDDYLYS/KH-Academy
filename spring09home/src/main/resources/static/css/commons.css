@@ -4,70 +4,70 @@
      font-family: 고딕;
 }
 
-/* div{box-shadow: 0 0 1px 0 gray;} */
-div{}
+div{/*box-shadow: 0 0 1px 0 gray;*/}
 
 .container{margin: 0 auto;}
 
-.w-25{width: 25%;}
-.w-50{width: 50%;}
-.w-75{width: 75%;}
-.w-100{width: 100%;}
-.w-150{width: 150px;}
-.w-200{width: 200px;}
-.w-250{width: 250px;}
-.w-300{width: 300px;}
-.w-350{width: 350px;}
-.w-400{width: 400px;}
-.w-450{width: 450px;}
-.w-500{width: 500px;}
-.w-550{width: 550px;}
-.w-600{width: 600px;}
-.w-650{width: 650px;}
-.w-700{width: 700px;}
-.w-750{width: 750px;}
-.w-800{width: 800px;}
-.w-850{width: 850px;}
-.w-900{width: 900px;}
-.w-950{width: 950px;}
-.w-1000{width: 1000px;}
-.w-1050{width: 1050px;}
-.w-1100{width: 1100px;}
+.w-25 { width:25% !important; }
+.w-50 { width:50% !important; }
+.w-75 { width:75% !important; }
+.w-100 { width:100% !important; }
+
+.w-150 { width:150px !important; }
+.w-200 { width: 200px !important; }
+.w-250 { width: 250px !important; }
+.w-300 { width: 300px !important; }
+.w-350 { width: 300px !important; }
+.w-400 { width: 400px !important; }
+.w-450 { width: 450px !important; }
+.w-500 { width: 500px !important; }
+.w-550 { width: 550px !important; }
+.w-600 { width: 600px !important; }
+.w-650 { width: 650px !important; }
+.w-700 { width: 700px !important; }
+.w-750 { width: 750px !important; }
+.w-800 { width: 800px !important; }
+.w-850 { width: 850px !important; }
+.w-900 { width: 900px !important; }
+.w-950 { width: 950px !important; }
+.w-1000 { width: 1000px !important; }
+.w-1050 { width: 1050px !important; }
+.w-1100 { width: 1100px !important; }
 
 .cell{margin: 10px 0;}
 
-.mt-0{margin-top: 0;}
-.mt-10{margin-top: 10px;}
-.mt-20{margin-top: 20px;}
-.mt-30{margin-top: 30px;}
-.mt-40{margin-top: 40px;}
-.mt-50{margin-top: 50px;}
+.mt-0 { margin-top: 0px !important; }
+.mt-10 { margin-top: 10px !important; }
+.mt-20 { margin-top: 20px !important; }
+.mt-30 { margin-top: 30px !important; }
+.mt-40 { margin-top: 40px !important; }
+.mt-50 { margin-top: 50px !important; }
 
-.mb-0{margin-bottom: 0;}
-.mb-10{margin-bottom: 10px;}
-.mb-20{margin-bottom: 20px;}
-.mb-30{margin-bottom: 30px;}
-.mb-40{margin-bottom: 40px;}
-.mb-50{margin-bottom: 50px;}
+.mb-0 { margin-bottom: 0px !important; }
+.mb-10 { margin-bottom: 10px !important; }
+.mb-20 { margin-bottom: 20px !important; }
+.mb-30 { margin-bottom: 30px !important; }
+.mb-40 { margin-bottom: 40px !important; }
+.mb-50 { margin-bottom: 50px !important; }
 
-.ms-0{margin-left: 0;}
-.ms-10{margin-left: 10px;}
-.ms-20{margin-left: 20px;}
-.ms-30{margin-left: 30px;}
-.ms-40{margin-left: 40px;}
-.ms-50{margin-left: 50px;}
+.ms-0 { margin-left: 0px !important; }
+.ms-10 { margin-left: 10px !important; }
+.ms-20 { margin-left: 20px !important; }
+.ms-30 { margin-left: 30px !important; }
+.ms-40 { margin-left: 40px !important; }
+.ms-50 { margin-left: 50px !important; }
 
-.me-0{margin-right: 0;}
-.me-10{margin-right: 10px;}
-.me-20{margin-right: 20px;}
-.me-30{margin-right: 30px;}
-.me-40{margin-right: 40px;}
-.me-50{margin-right: 50px;}
+.me-0 { margin-right: 0px !important; }
+.me-10 { margin-right: 10px !important; }
+.me-20 { margin-right: 20px !important; }
+.me-30 { margin-right: 30px !important; }
+.me-40 { margin-right: 40px !important; }
+.me-50 { margin-right: 50px !important; }
 
-/* 정렬용 클래스 */
-.left{text-align: left;}
-.center{text-align: center;}
-.right{text-align: right;}
+/* 정렬 스타일 */
+.left { text-align: left !important; }
+.center { text-align: center !important; }
+.right { text-align: right !important; }
 
 /* 
      입력창 디자인(input/select/textarea)
@@ -139,3 +139,54 @@ textarea.field {
 .green{color:#2ecc71}
 .blue{color:#3498db}
 .purple{color:#8e44ad}
+
+/* 테이블 디자인
+- 모든 태그에 클래스를 붙일 수  없기에 탐색을 통해 
+태그를 찾아야 한다
+- 후손 선택자( )를 이용하여 대상의 내부에 있는 태그를 포괄적으로 찾을 수 있다
+테이블이 중첩될 수 있기에  */
+.table 
+{
+     /* border: 1px solid black; */
+     border-collapse:collapse;
+     font-size: 16px;
+     font-weight: 400 !important;
+}
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td
+{
+     /* border: 1px solid black;  */
+     font-size: inherit;
+     font-weight: inherit;
+     text-align: center;
+     padding: 0.25em;
+}
+
+/* 확장 스타일 - 테두리가 있는 테이블 */
+.table.table-border,
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td
+{
+     border: 1px solid black; 
+}
+
+/* 확장 스타일 - 마우스에 반응하는 테이블 */
+.table.table-hover > tbody > tr:hover
+{
+     color: white;
+     background-color: #f5cd79;
+}
+
+/* 확장 스타일 - 줄무늬 테이블 */
+.table.table-sprited > tbody> tr:nth-child(2n)
+{
+     background-color: #f7d794;
+}

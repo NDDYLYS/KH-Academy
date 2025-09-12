@@ -213,3 +213,11 @@ textarea.field {
      /* border: 1px solid #303952; */
      box-shadow:0 0 2px 1px #303952;
 }
+
+
+.badge 
+{
+     border:1px solid black;
+     border-radius: 100px;
+     padding: 0 0.25em;
+}

@@ -5,101 +5,119 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<h1 align="center">자유 게시판</h1>
+<style>
+	.board-title-link {
+		text-decoration: none;
+		color: #2d3436;
+		display: inline-block;
+		/* transition: transform 0.1s ease-out; */
+		transition-property: color, transform;
+		transition-duration: 0.1s;
+		transition-timing-function: ease-out;
+	}
+	.board-title-link:hover {
+		color: #d63031;
+		/* transform: translate(30px, 0); */
+		/* transform : rotate(45deg); */
+		transform: scale(1.01);
+	}
+</style>
 
-<c:choose>
-	<c:when test = "${ sessionScope.loginId != null }">
-		<a href = "/board/insert" style="float: right;">글쓰기</a>
-	</c:when>
-	<c:otherwise>
-		<a href = "/member/login" style="float: right;">로그인</a>을 해야 글을 작성할 수 있습니다
-<!-- 		../member/login -->
-	</c:otherwise>
-</c:choose>
+<div class="container w-1000">
+	<div class="cell center">
+		<h1>자유 게시판</h1>
+	</div>
+	<div class="cell center">
+		타인에 대한 무분별한 비방 또는 욕설은 제제의 대상입니다
+	</div>
+	<div class="cell right">
+		<c:choose>
+			<c:when test="${sessionScope.loginId != null}">
+				<h3><a href="write" class="btn btn-neutral">글쓰기</a></h3>
+			</c:when>
+			<c:otherwise>
+				<h3><a href="/member/login">로그인</a>을 해야 글을 작성할 수 있습니다</h3>
+			</c:otherwise>
+		</c:choose>
+	</div>
+	
+	<div class="cell">
+		<table class="table table-border w-100">
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th width="40%">제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+					<th>조회수</th>
+					<th>좋아요</th>
+<!-- 					<th>그룹</th> -->
+<!-- 					<th>상위글</th> -->
+<!-- 					<th>차수</th> -->
+				</tr>
+			</thead>
+			<tbody align="center">
+				<c:forEach var="boardListVO" items="${boardList}" varStatus="status">
+				<tr>
+					<td>${boardListVO.boardNo}</td>
+					<td class="left" style="padding-left:${boardListVO.boardDepth * 20  + 10}px">
+						<c:if test="${boardListVO.boardDepth > 0}">
+							<img src="/images/board/reply.png" width="16" height="16">
+						</c:if>
+					
+						<%-- 공지사항인 경우는 제목앞에 (공지) 추가 --%>
+						<c:if test="${boardListVO.boardNotice == 'Y'}">
+							<span class="badge">공지</span>
+						</c:if>
+						
+						<a href="detail?boardNo=${boardListVO.boardNo}" class="board-title-link">
+							${boardListVO.boardTitle}
+						</a>
+					</td>
+					<td>${boardListVO.boardWriter == null ? '(탈퇴한사용자)' : boardListVO.memberNickname}</td>
+					<td>${boardListVO.boardWtime}</td>
+					<td>${boardListVO.boardRead}</td>
+					<td>${boardListVO.boardLike}</td>
+<%-- 					<td>${boardListVO.boardGroup}</td> --%>
+<%-- 					<td>${boardListVO.boardOrigin}</td> --%>
+<%-- 					<td>${boardListVO.boardDepth}</td> --%>
+				</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="cell right">
+		<c:choose>
+			<c:when test="${sessionScope.loginId != null}">
+				<h3><a href="write" class="btn btn-neutral">글쓰기</a></h3>
+			</c:when>
+			<c:otherwise>
+				<h3><a href="/member/login">로그인</a>을 해야 글을 작성할 수 있습니다</h3>
+			</c:otherwise>
+		</c:choose>
+	</div>
+	
+	<!-- 네비게이터 -->
+	<div class="cell">
+		<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
+	</div>
+	
+	<%-- 검색창 --%>
+	<div class="cell center mt-30 mb-50">
+		<form action="list">
+			<select name="column" class="field">
+				<option value="board_title" ${pageVO.column == 'board_title' ? 'selected' : ''}>제목</option>
+				<option value="board_writer" ${pageVO.column == 'board_writer' ? 'selected' : ''}>작성자ID</option>
+				<option value="member_nickname" ${pageVO.column == 'member_nickname' ? 'selected' : ''}>작성자닉네임</option>
+			</select>
+			<input type="text" name="keyword" value="${pageVO.keyword}" required class="field">
+			<button type="submit" class="btn btn-positive">검색</button>
+		</form>
+	</div>
+	
+</div>
 
-<table border="1" width="1900">
-	<thead>
-		<tr>
-			<th width = "50">번호</th>
-			<th width = "1300">제목</th>
-			<th width = "200">아이디</th>
-			<th width = "150">작성일자</th>
-			<th width = "75">조회수</th>
-			<th width = "75">좋아요</th>
-<!-- 			<th width = "50">그룹</th> -->
-<!-- 			<th width = "50">상위글</th> -->
-<!-- 			<th width = "50">차수</th> -->
-		</tr>
-	</thead>
-	<tbody align="center">
-		<c:forEach var="boardListVO" items="${boardList}" varStatus="status">
-		<tr bgcolor="${status.index < noticeCount ? '#ffeaa7' : ''}">
-			<td>${boardListVO.boardNo} (${status.index})</td>
-			<td align="left">
-				<%--차수만큼 띄어쓰기(공지로 표시되는 경우가 아니라면) --%>
-				<c:if test="${status.index >= noticeCount}">
-					<c:forEach var="i" begin="1" end="${boardListVO.boardDepth}" step="1">
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					</c:forEach>
-					<c:if test="${boardListVO.boardDepth > 0}">
-						<img src="/images/test/arrow.png" width="16" height="16">
-					</c:if>
-				</c:if>
-			
-				<%-- 공지사항인 경우는 제목앞에 (공지) 추가 --%>
-				<c:if test="${boardListVO.boardNotice == 'Y'}">
-				(공지)
-				</c:if>
-				
-				<a href="detail?boardNo=${boardListVO.boardNo}">
-					${boardListVO.boardTitle}
-					<c:if test= "${ boardListVO.boardEtime != null }">
-					(수정됨)
-					</c:if>
-				</a>
-			</td>
-			<td>
-				<c:choose>
-					<c:when test="${boardListVO.boardWriter != null }">
-						<a href = "/member/detail?memberId=${ boardListVO.memberId }">
-						${boardListVO.memberNickname}</a>
-					</c:when>
-					<c:otherwise>
-						(탈퇴한 사용자)
-					</c:otherwise>
-				</c:choose>
-			</td>
-			<td>${boardListVO.boardWtime}</td>
-			<td>${boardListVO.boardRead}</td>
-			<td>${boardListVO.boardLike}</td>
-<%-- 			<td>${boardDto.boardGroup}</td> --%>
-<%-- 			<td>${boardDto.boardOrigin}</td> --%>
-<%-- 			<td>${boardDto.boardDepth}</td> --%>
-		</tr>
-		</c:forEach>
-	</tbody>
-</table>
 
-<!-- 검색창 -->
-<form action="list">
-	<select name="column">
-		<option value="board_title" ${pageVO.column == 'board_title' ? 'selected' : ''}>제목</option>
-		<option value="board_writer" ${pageVO.column == 'board_writer' ? 'selected' : ''}>작성자</option>
-	</select>
-	<input type="text" name="keyword" value="${pageVO.keyword}" required>
-	<button>검색</button>
-</form>
-
-<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
-
-<c:choose>
-	<c:when test = "${ sessionScope.loginId != null }">
-		<a href = "/board/insert" style="float: right;">글쓰기</a>
-	</c:when>
-	<c:otherwise>
-		<a href = "/member/login" style="float: right;">로그인</a>을 해야 글을 작성할 수 있습니다
-<!-- 		../member/login -->
-	</c:otherwise>
-</c:choose>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

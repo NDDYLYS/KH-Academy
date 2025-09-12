@@ -4,7 +4,8 @@
      font-family: 고딕;
 }
 
-div{/*box-shadow: 0 0 1px 0 gray;*/}
+/* div{box-shadow: 0 0 1px 0 gray;} */
+div{}
 
 .container{margin: 0 auto;}
 
@@ -189,4 +190,26 @@ textarea.field {
 .table.table-sprited > tbody> tr:nth-child(2n)
 {
      background-color: #f7d794;
+}
+
+/* 페이지 네비게이터 디자인 */
+.pagination
+{
+     text-align: center;
+     font-size: 16px;
+}
+.pagination > a
+{
+     text-decoration: none;
+     color: #303952;
+     display: inline-block;
+     padding: 0.25em;
+     min-width: 2.5em;
+     border: 1px solid transparent;
+}
+.pagination > a:hover,
+.pagination > a.on
+{
+     /* border: 1px solid #303952; */
+     box-shadow:0 0 2px 1px #303952;
 }

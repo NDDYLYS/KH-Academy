@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     
-<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>\
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <div class = "container w-600">
     <div class = "cell mb-30 center">

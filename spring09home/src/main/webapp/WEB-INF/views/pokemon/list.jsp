@@ -5,53 +5,72 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<h1>포켓몬 목록</h1>
+<div class = "container w-600">
+    <div class = "cell mb-30 center">
+        <h1>포켓몬 목록</h1>
+    </div>
 
-<h2>
-	<a href="add">신규 등록</a>
-</h2>
+	<div class = "cell left">
+	    <select name = "column" class = "field">
+	        <option value="pokemon_name" ${param.column == "pokemon_name" ? "selected" : ""}>이름</option>
+	        <option value="pokemon_type" ${param.column == "pokemon_type" ? "selected" : ""}>속성</option>
+	    </select>
+	    <input type ="search" name="keyword" value = "${param.keyword}" class = "field" required>
+	    <Button class = "btn btn-positive">검색</Button>
+	</div>
+	
+	<div class = "cell right">
+	    <a href = "add" class = "btn me-10  btn-neutral">신규등록</a>
+	</div>
 
-<!-- 검색창 구현 -->
-<form action="list" method="get">
-	<select name="column">
-		<option value="pokemon_name" ${param.column == "pokemon_name" ? "selected" : ""}>이름</option>
-		<option value="pokemon_type" ${param.column == "pokemon_type" ? "selected" : ""}>속성</option>
-	</select> 
-	<input type="search" name="keyword" value="${param.keyword}" required>
-</form>
+    <div class = "cell">
+        <table class = "table table-hover table-sprited w-100 center">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>이미지</th>
+                    <th>이름</th>
+                    <th>속성</th>
+                </tr>
+            </thead>
 
-<table border="1" width="400">
-	<thead>
-		<tr>
-			<th>번호</th>
-			<th>이미지</th>
-			<th>이름</th>
-			<th>속성</th>
-			<th>바로가기</th>
-		</tr>
-	</thead>
-	<tbody align="center">
-		<c:forEach var="pokemonDto" items="${ pokemonList }">
-			<tr>
-				<td>${ pokemonDto.getPokemonNo() }</td>
-				<td><img src = "/pokemon/image?pokemonNo=${pokemonDto.getPokemonNo()}" width="32" height = "32"></td>
-				<td>${ pokemonDto.getPokemonName() }</td>
-				<td>${ pokemonDto.getPokemonType() }</td>
-				<td><a href="detail?pokemonNo=${pokemonDto.getPokemonNo()}">바로가기</a></td>				
-			</tr>
-		</c:forEach>
-	</tbody>
-	<tfoot>
-		<tr>
-			<td colspan="7">
-				검색결과 : 
-				${pageVO.begin} - ${pageVO.end}
-				/
-				${pageVO.dataCount}개
-			</td>
-		</tr>
-	</tfoot>	
-</table>
+            <tbody>
+				<c:forEach var="pokemonDto" items="${ pokemonList }">
+					<tr>
+						<td>${ pokemonDto.getPokemonNo() }</td>
+						<td><img src = "/pokemon/image?pokemonNo=${pokemonDto.getPokemonNo()}" width="32" height = "32"></td>
+						<td><a href="detail?pokemonNo=${pokemonDto.getPokemonNo()}">${ pokemonDto.getPokemonName() }</a></td>
+						<td>${ pokemonDto.getPokemonType() }</td>		
+					</tr>
+				</c:forEach>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- <table border="1" width="400"> -->
+
+<!-- 	<tbody align="center"> -->
+<%-- 		<c:forEach var="pokemonDto" items="${ pokemonList }"> --%>
+<!-- 			<tr> -->
+<%-- 				<td>${ pokemonDto.getPokemonNo() }</td> --%>
+<%-- 				<td><img src = "/pokemon/image?pokemonNo=${pokemonDto.getPokemonNo()}" width="32" height = "32"></td> --%>
+<%-- 				<td><a href="detail?pokemonNo=${pokemonDto.getPokemonNo()}">${ pokemonDto.getPokemonName() }</a></td> --%>
+<%-- 				<td>${ pokemonDto.getPokemonType() }</td>		 --%>
+<!-- 			</tr> -->
+<%-- 		</c:forEach> --%>
+<!-- 	</tbody> -->
+<!-- 	<tfoot> -->
+<!-- 		<tr> -->
+<!-- 			<td colspan="7"> -->
+<!-- 				검색결과 :  -->
+<%-- 				${pageVO.begin} - ${pageVO.end} --%>
+<!-- 				/ -->
+<%-- 				${pageVO.dataCount}개 --%>
+<!-- 			</td> -->
+<!-- 		</tr> -->
+<!-- 	</tfoot>	 -->
+<!-- </table> -->
 
 <%-- 페이지 네비게이터 출력 --%>
 <jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>

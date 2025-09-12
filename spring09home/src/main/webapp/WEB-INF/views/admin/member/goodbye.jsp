@@ -3,6 +3,10 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<h1>회원 강퇴가 완료되었습니다.</h1>
+<div class = "container w-400">
+	<div class = "cell">
+		<h1>회원 강퇴가 완료되었습니다.</h1>
+	</div>
+</div>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

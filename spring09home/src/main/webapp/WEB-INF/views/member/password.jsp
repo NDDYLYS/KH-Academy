@@ -4,15 +4,22 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-
-<h1>회원 비밀번호 수정</h1>
-
 <form action = "password" method = "post">
-	<input type = "password" name = "oldPassword" placeholder = "옛 비밀번호"
-		value = "" required>
-	<input type = "password" name = "newPassword" placeholder = "수정할 비밀번호"
-		value = "" required>
-	<button>회원 비밀번호 확인</button>
+	<div class = "container w-300">
+	    <div class = "cell">
+	        <h2>회원 비밀번호 수정</h2>
+	    </div>
+	    <div class = "cell">
+	        <label>비밀번호(확인용)</label><br>
+	        <input type = "password" name = "oldPassword" class = "field">
+	    </div>
+	    <div class = "cell"></div>
+	        <label>수정할 비밀번호</label><br>
+	        <input type = "password" name = "newPassword" class = "field">
+	    <div class = "cell right">
+	        <button class = "btn btn-negative">비밀번호 수정</button>
+	    </div>
+	</div>
 </form>
 
 <c:if test = "${param.error != null}">

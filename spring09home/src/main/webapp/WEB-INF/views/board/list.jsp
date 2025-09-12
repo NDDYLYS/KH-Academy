@@ -33,7 +33,7 @@
 	<div class="cell right">
 		<c:choose>
 			<c:when test="${sessionScope.loginId != null}">
-				<h3><a href="write" class="btn btn-neutral">글쓰기</a></h3>
+				<h3><a href="insert" class="btn btn-neutral">글쓰기</a></h3>
 			</c:when>
 			<c:otherwise>
 				<h3><a href="/member/login">로그인</a>을 해야 글을 작성할 수 있습니다</h3>
@@ -90,7 +90,7 @@
 	<div class="cell right">
 		<c:choose>
 			<c:when test="${sessionScope.loginId != null}">
-				<h3><a href="write" class="btn btn-neutral">글쓰기</a></h3>
+				<h3><a href="insert" class="btn btn-neutral">글쓰기</a></h3>
 			</c:when>
 			<c:otherwise>
 				<h3><a href="/member/login">로그인</a>을 해야 글을 작성할 수 있습니다</h3>

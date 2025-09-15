@@ -11,12 +11,14 @@
     </div>
 
 	<div class = "cell left">
-	    <select name = "column" class = "field">
-	        <option value="pokemon_name" ${param.column == "pokemon_name" ? "selected" : ""}>이름</option>
-	        <option value="pokemon_type" ${param.column == "pokemon_type" ? "selected" : ""}>속성</option>
-	    </select>
-	    <input type ="search" name="keyword" value = "${param.keyword}" class = "field" required>
-	    <Button class = "btn btn-positive">검색</Button>
+		<div class = "flex-box style = "justify-content:center">
+		    <select name = "column" class = "field">
+		        <option value="pokemon_name" ${param.column == "pokemon_name" ? "selected" : ""}>이름</option>
+		        <option value="pokemon_type" ${param.column == "pokemon_type" ? "selected" : ""}>속성</option>
+		    </select>
+		    <input type ="search" name="keyword" value = "${param.keyword}" class = "field" required>
+		    <Button class = "btn btn-positive">검색</Button>
+	    </div>
 	</div>
 	
 	<div class = "cell right">

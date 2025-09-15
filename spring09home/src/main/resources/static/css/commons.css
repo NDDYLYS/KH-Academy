@@ -4,8 +4,7 @@
      font-family: 고딕;
 }
 
-/* div{box-shadow: 0 0 1px 0 gray;} */
-div{}
+div{box-shadow: 0 0 1px 0 gray;}
 
 .container{margin: 0 auto;}
 
@@ -85,6 +84,14 @@ div{}
 }
 textarea.field {
      resize: vertical;
+}
+.field.field-image 
+{
+        padding-left: 3em;
+        /* background-image: url("./images/mail.png"); */
+        background-size: 2em 1.5em;
+        background-repeat: no-repeat;
+        background-position: 0.5em center;
 }
 
 /*
@@ -211,13 +218,68 @@ textarea.field {
 .pagination > a.on
 {
      /* border: 1px solid #303952; */
-     box-shadow:0 0 2px 1px #303952;
+     box-shadow:0 0 2px 1px #ff0000;
+     color:  #ff0000;;
 }
-
 
 .badge 
 {
      border:1px solid black;
      border-radius: 100px;
      padding: 0 0.25em;
+}
+
+.float-box > .float-left
+{
+    float:left;
+}
+
+.float-box > .float-right
+{
+    float:right;
+}
+
+.float-box::after
+{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.link 
+{
+     text-decoration: none;
+}
+
+
+/* Flexible 디자인 */
+.flex-box {
+    display: flex;
+    flex-direction: row;
+}
+.inline-flex-box {
+    display: inline-flex;
+    flex-direction: row;
+}
+
+/* 세로형 배치를 원할 경우 */
+.flex-box.flex-vertical , 
+.inline-flex-box.flex-vertical
+{
+    flex-direction: column;
+}
+
+/* 플렉스 배치 내에서 나머지를 모두 차지 */
+.flex-box > .flex-fill ,
+.inline-flex-box > .flex-fill
+{
+    flex-grow: 1;
+}
+
+/* 크기가 충분할 경우 정가운데 배치 */
+.flex-box.flex-center ,
+.inline-flex-box.flex-center
+{
+    justify-content: center;
+    align-items: center;
 }

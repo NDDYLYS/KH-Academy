@@ -5,7 +5,7 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<div class = "container w-500">
+<div class = "container w-800">
     <div class = "cell">
         <h1>회원 검색</h1>
     </div>

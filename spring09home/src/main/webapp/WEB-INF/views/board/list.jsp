@@ -23,7 +23,7 @@
 	}
 </style>
 
-<div class="container w-1000">
+<div class="container w-850">
 	<div class="cell center">
 		<h1>자유 게시판</h1>
 	</div>
@@ -60,19 +60,21 @@
 				<c:forEach var="boardListVO" items="${boardList}" varStatus="status">
 				<tr>
 					<td>${boardListVO.boardNo}</td>
-					<td class="left" style="padding-left:${boardListVO.boardDepth * 20  + 10}px">
-						<c:if test="${boardListVO.boardDepth > 0}">
-							<img src="/images/board/reply.png" width="16" height="16">
-						</c:if>
-					
-						<%-- 공지사항인 경우는 제목앞에 (공지) 추가 --%>
-						<c:if test="${boardListVO.boardNotice == 'Y'}">
-							<span class="badge">공지</span>
-						</c:if>
+					<td>
+						<div class="flex-box" style="width:400px; padding-left:${boardListVO.boardDepth * 20  + 10}px">
+							<c:if test="${boardListVO.boardDepth > 0}">
+								<img src="/images/board/reply.png" width="16" height="16">
+							</c:if>
 						
-						<a href="detail?boardNo=${boardListVO.boardNo}" class="board-title-link">
-							${boardListVO.boardTitle}
-						</a>
+							<%-- 공지사항인 경우는 제목앞에 (공지) 추가 --%>
+							<c:if test="${boardListVO.boardNotice == 'Y'}">
+								<span class="badge">공지</span>
+							</c:if>
+							
+							<a href="detail?boardNo=${boardListVO.boardNo}" class="board-title-link ellipsis">
+								${boardListVO.boardTitle}
+							</a>
+						</div>
 					</td>
 					<td>${boardListVO.boardWriter == null ? '(탈퇴한사용자)' : boardListVO.memberNickname}</td>
 					<td>${boardListVO.boardWtime}</td>
@@ -106,13 +108,15 @@
 	<%-- 검색창 --%>
 	<div class="cell center mt-30 mb-50">
 		<form action="list">
-			<select name="column" class="field">
-				<option value="board_title" ${pageVO.column == 'board_title' ? 'selected' : ''}>제목</option>
-				<option value="board_writer" ${pageVO.column == 'board_writer' ? 'selected' : ''}>작성자ID</option>
-				<option value="member_nickname" ${pageVO.column == 'member_nickname' ? 'selected' : ''}>작성자닉네임</option>
-			</select>
-			<input type="text" name="keyword" value="${pageVO.keyword}" required class="field">
-			<button type="submit" class="btn btn-positive">검색</button>
+			<div class="flex-box" style="justify-content:center;">
+				<select name="column" class="field">
+					<option value="board_title" ${pageVO.column == 'board_title' ? 'selected' : ''}>제목</option>
+					<option value="board_writer" ${pageVO.column == 'board_writer' ? 'selected' : ''}>작성자ID</option>
+					<option value="member_nickname" ${pageVO.column == 'member_nickname' ? 'selected' : ''}>작성자닉네임</option>
+				</select>
+				<input type="text" name="keyword" value="${pageVO.keyword}" required class="field ms-10">
+				<button type="submit" class="btn btn-positive ms-10">검색</button>
+			</div>
 		</form>
 	</div>
 	
@@ -121,3 +125,9 @@
 
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
+
+
+
+
+
+

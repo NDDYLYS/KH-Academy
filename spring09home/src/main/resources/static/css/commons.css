@@ -8,7 +8,7 @@
 
 /* 영역을 시각화하는 테스트 디자인 코드 */
 div {
-     box-shadow: 0 0 1px 0 grey;
+    box-shadow: 0 0 1px 0 grey;
 }
 
 * {
@@ -353,4 +353,48 @@ textarea.field {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.fullscreen {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* field 에 success나 fail이 붙으면 디자인한다
+*/
+.field.success
+{
+    border-color: aqua !important;
+}
+
+.field.fail
+{
+    border-color: crimson !important;
+}
+
+/* 피드백은 기본적으로 감춘다 */
+.success-feedback,
+.fail-feedback
+{
+    display: none;
+}
+.success-feedback
+{
+    color : aqua;
+}
+.fail-feedback
+{
+    color:crimson;
+}
+.field.success ~ .success-feedback
+{
+    display: block;
+}
+.field.fail ~ .fail-feedback
+{
+    display: block;
 }

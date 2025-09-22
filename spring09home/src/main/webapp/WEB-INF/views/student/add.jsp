@@ -13,7 +13,7 @@
            input.classList.add(valid ? "success" : "fail");
        }
 
-       function checkKor()
+       function checkStudentKor()
        {
            var input = document.querySelector("[name=studentKor]");
            var regex = /^(100|[1-9][0-9]|[0-9])$/;
@@ -22,7 +22,7 @@
            input.classList.remove("success", "fail");
            input.classList.add(valid ? "success" : "fail");
        }
-       function checkEng()
+       function checkStudentEng()
        {
            var input = document.querySelector("[name=studentEng]");
            var regex = /^(100|[1-9][0-9]|[0-9])$/;
@@ -31,7 +31,7 @@
            input.classList.remove("success", "fail");
            input.classList.add(valid ? "success" : "fail");
        }
-       function checkMat()
+       function checkStudentMat()
        {
            var input = document.querySelector("[name=studentMat]");
            var regex = /^(100|[1-9][0-9]|[0-9])$/;
@@ -62,7 +62,7 @@
             <input type= "number" name = "studentKor"
              class = "field w-100" placeholder="0~100" 
              inputmode = "numeric" 
-             oninput="checkKor();">
+             oninput="checkStudentKor();">
             <div class = "success-feedback">올바른 국어점수입니다.</div>
             <div class = "fail-feedback">옳지 못한 국어점수입니다.</div>
         </div>
@@ -71,7 +71,7 @@
             <input type= "number" name = "studentEng"
              class = "field w-100" placeholder="0~100" 
              inputmode = "numeric" 
-             oninput="checkEng();">
+             oninput="checkStudentEng();">
             <div class = "success-feedback">올바른 영어점수입니다.</div>
             <div class = "fail-feedback">옳지 못한 영어점수입니다.</div>
         </div>
@@ -80,7 +80,7 @@
             <input type= "number" name = "studentMat"
              class = "field w-100" placeholder="0~100" 
              inputmode = "numeric" 
-             oninput="checkMat();">
+             oninput="checkStudentMat();">
             <div class = "success-feedback">올바른 수학점수입니다.</div>
             <div class = "fail-feedback">옳지 못한 수학점수입니다.</div>
         </div>
@@ -90,7 +90,10 @@
             name = "attach" accept = ".png,.jpg" class = "field w-100">
         </div>
         <div class = "cell">
-            <button type = "submit" class = "btn btn-positive w-100">등록하기</button>
+            <button type = "submit" class = "btn btn-positive w-100">
+            	<i class="fa-solid fa-floppy-disk"></i>
+            	등록하기
+            </button>
         </div>
     </form>
 </div>

@@ -34,7 +34,7 @@
         <a href = "edit?pokemonNo=${pokemonDto.getPokemonNo()}" 
         class = "btn btn-nuetral">수정</a>
         <a href = "remove?pokemonNo=${pokemonDto.getPokemonNo()}"
-        class = "btn btn-nuetral">삭제</a>   
+        class = "btn btn-nuetral confirm-link" data-comment="정말로 삭제하시겠습니까?">삭제</a>   
     </div>
 </div>
 

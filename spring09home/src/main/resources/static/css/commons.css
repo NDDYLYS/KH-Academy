@@ -377,6 +377,15 @@ textarea.field {
 }
 
 /* 피드백은 기본적으로 감춘다 */
+.success-feedback
+{
+    color : aqua;
+}
+.fail-feedback
+{
+    color:crimson;
+}
+
 .success-feedback,
 .fail-feedback
 {

@@ -21,7 +21,7 @@
 </style>
 <!-- 카카오 우편 API CDN -->
 <script src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src = "./kakao.js"></script>
+<script src = "/js/kakao.js"></script>
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type = "text/javascript">
     $(function(){
@@ -130,7 +130,7 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<form autocomplete="off" action="./join" method="post"
+<form autocomplete="off" action="join" method="post"
      enctype="multipart/form-data" class = "check-form">
         <div class="container w-600">
             <div class="cell center">

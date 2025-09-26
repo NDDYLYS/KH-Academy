@@ -110,7 +110,7 @@
     
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
     
-        <form action="save" method="post" autocomplete="off" 
+<form action="save" method="post" autocomplete="off" 
     onsubmit="return checkForm();">
     <div class="container w-500">
 	        <div class="cell center">
@@ -178,9 +178,7 @@
 	                <span>저장하기</span>
 	            </button>
 	        </div>
-	
-	
-	    </div>
-	</form>
+	</div>
+</form>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

@@ -122,6 +122,14 @@ public class MemberDao
 		return list.isEmpty()? null : list.get(0);
 	}
 	
+	public MemberDto selectOneByMemberNickname(String memberNickname) 
+	{
+		String sql = "select * from member where member_nickname = ?";
+		Object[] params = {memberNickname};
+		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper, params);
+		return list.isEmpty()? null : list.get(0);
+	}
+	
 	public boolean loginUser(String loginId) 
 	{
 		String sql = "update member set member_login=systimestamp "

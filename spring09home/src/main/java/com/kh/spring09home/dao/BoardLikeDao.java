@@ -20,6 +20,8 @@ public class BoardLikeDao
 	
 	public boolean check(String memberId, int boardNo) 
 	{
+		if (memberId == null)
+			return false;
 		String sql = "select count(*) from board_like where member_id=? and board_no=?";
 		Object[] params = {memberId, boardNo};
 		int count = jdbcTemplate.queryForObject(sql, int.class, params);

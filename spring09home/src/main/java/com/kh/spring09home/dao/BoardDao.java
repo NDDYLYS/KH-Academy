@@ -221,4 +221,12 @@ public class BoardDao
 		Object[] params = {boardWriter};
 		return jdbcTemplate.query(sql, boardListMapper, params);
 	}
+	
+	// 좋아요 개수 갱신
+	public boolean updateBoardLike(int boardNo, int boardLike) 
+	{
+		String sql = "update board set board_like = ? where board_no = ?";
+		Object[] params = {boardLike, boardNo};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
 }

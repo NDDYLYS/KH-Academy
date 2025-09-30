@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.spring09home.dao.BoardDao;
 import com.kh.spring09home.dao.BoardLikeDao;
 import com.kh.spring09home.vo.BoardLikeVO;
 
@@ -19,6 +20,8 @@ public class BoardRestController
 {
 	@Autowired
 	private BoardLikeDao boardLikeDao;
+	@Autowired
+	private BoardDao boardDao;
 	
 	@GetMapping("/check")
 	public BoardLikeVO check(HttpSession session, @RequestParam int boardNo) 
@@ -48,6 +51,7 @@ public class BoardRestController
 			boardLikeVO.setLike(true);
 		}
 		int count = boardLikeDao.countByBoardNo(boardNo);
+		boardDao.updateBoardLike(boardNo, count);
 		boardLikeVO.setCount(count);
 		return boardLikeVO;
 	}

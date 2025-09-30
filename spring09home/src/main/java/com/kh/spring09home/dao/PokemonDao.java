@@ -28,8 +28,8 @@ public class PokemonDao
 	
 	public void insert(PokemonDto pokemonDto) 
 	{
-		String sql = "insert into pokemon (pokemon_no, pokemon_name, pokemon_type) "
-				+ "values (?, ?, ?)";
+		String sql = "insert into pokemon (pokemon_no, pokemon_name, pokemon_type, pokemon_like) "
+				+ "values (?, ?, ?, 0)";
 		Object[] params = {
 				pokemonDto.getPokemonNo(),
 				pokemonDto.getPokemonName(),

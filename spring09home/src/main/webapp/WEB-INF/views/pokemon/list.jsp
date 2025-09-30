@@ -33,7 +33,7 @@
                     <th>이미지</th>
                     <th>이름</th>
                     <th>속성</th>
-                    <th><i class="fa-solid fa-heart"></i></th>
+                    <th><i class="fa-solid fa-heart red"></i></th>
                 </tr>
             </thead>
 

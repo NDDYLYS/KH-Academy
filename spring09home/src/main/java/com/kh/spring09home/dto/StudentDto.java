@@ -14,8 +14,9 @@ public class StudentDto
 	private String studentName;
 	private int studentKor;
 	private int studentEng;
-	private int studentMat;//
+	private int studentMat;
 	private Timestamp studentReg;
+	private int studentLike;
 	
 	
 	public double getStudentAverage() 

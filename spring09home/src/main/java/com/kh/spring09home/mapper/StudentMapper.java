@@ -21,6 +21,7 @@ public class StudentMapper implements RowMapper<StudentDto>
 		studentDto.setStudentEng(rs.getInt("student_eng"));
 		studentDto.setStudentMat(rs.getInt("student_mat"));
 		studentDto.setStudentReg(rs.getTimestamp("student_reg"));
+		studentDto.setStudentLike(rs.getInt("stuedent_like"));
 	
 		// TODO Auto-generated method stub
 		return studentDto;

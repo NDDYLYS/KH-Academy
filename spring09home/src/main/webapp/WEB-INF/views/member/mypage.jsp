@@ -5,7 +5,25 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
  
-<div class="container w-600">         
+<style>
+	.board-title-link {
+		text-decoration: none;
+		color: #2d3436;
+		display: inline-block;
+		/* transition: transform 0.1s ease-out; */
+		transition-property: color, transform;
+		transition-duration: 0.1s;
+		transition-timing-function: ease-out;
+	}
+	.board-title-link:hover {
+		color: #d63031;
+		/* transform: translate(30px, 0); */
+		/* transform : rotate(45deg); */
+		transform: scale(1.01);
+	}
+</style> 
+ 
+<div class="container w-850">         
     <div class = "cell center">
         <h1>회원 상세정보</h1>
     </div>
@@ -15,7 +33,7 @@
                 존재하지 않는 회원 정보입니다.
             </c:when>
             <c:otherwise>
-                <table border = "1" width = "900" class = "table table-hover table-sprited w-100 center">
+                <table border = "1" class = "table table-border w-100">
                     <tr>
                         <th>아이디</th>
                         <td>${memberDto.getMemberId()}</td>
@@ -75,30 +93,28 @@
             </c:otherwise>
         </c:choose>
     </div>
-    <div class = "cell w-100 center">
+    <div class = "cell center">
         <h4>나의 글 작성 내역</h4>
-    </div>
-    <div class = "cell">
-        <table border = "1" width = "500" class = "table table-hover table-sprited w-100 center">
+        
+        <table border = "1" class = "table table-border w-100">
             <thead>
-                <th>제목</th>
+                <th width = "70%">제목</th>
                 <th>작성일</th>
             </thead>
             <tbody>
                 <c:forEach var = "boardListVO" items = "${ boardList }">
-                    <tr>
-                        <td><a href = "/board/detail?boardNo=${boardListVO.boardNo }">${ boardListVO.boardTitle }</a></td>
+                    <tr width = "70%">
+                        <td><a href = "/board/detail?boardNo=${boardListVO.boardNo }" class="ellipsis">${ boardListVO.boardTitle }</a></td>
                         <td>${ boardListVO.boardWtime }</td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
     </div>
-    <div class = "cell w-100 center">
+    <div class = "cell center">
         <h4>나의 상품권 구매 내역</h4>
-    </div>
-    <div class = "cell">
-        <table border = "1" width = "500" class = "table table-hover table-sprited w-100 center">
+        
+        <table border = "1" class = "table table-border w-100">
             <thead>
                 <th>번호</th>
                 <th>구매자</th>

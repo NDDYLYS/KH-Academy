@@ -10,19 +10,12 @@
 		var pokemonNo = params.get("pokemonNo");
 		
 		$.ajax({
-			url:"/rest/pokemon/check?pokemonNo=" + pokemonNo,
-			method:"get",
+			url:"/rest/pokemon/check",
+			method:"post",
+			data:{pokemonNo:pokemonNo},
 			success:function(response){
-				if (response.like)
-				{
-					$("#pokemon-like").removeClass("fa-regular").addClass("fa-solid");
-					$("#pokemon-like-count").text(response.count);
-				}
-				else 
-				{
-					$("#pokemon-like").removeClass("fa-solid").addClass("fa-regular");	
-					$("#pokemon-like-count").text(response.count);
-				}
+				$("#pokemon-like").removeClass("fa-regular fa-solid").addClass((response.like) ? "fa-solid" : "fa-regular");
+				$("#pokemon-like-count").text(response.count);
 			}
 		});
 	});
@@ -36,19 +29,12 @@
 		
 		$("#pokemon-like").on("click", function(){
 			$.ajax({
-				url:"/rest/pokemon/action?pokemonNo=" + pokemonNo,
-				method:"get",
+				url:"/rest/pokemon/action",
+				method:"post",
+				data:{pokemonNo:pokemonNo},
 				success:function(response){
-					if (response.like)
-					{
-						$("#pokemon-like").removeClass("fa-regular").addClass("fa-solid");
-						$("#pokemon-like-count").text(response.count);
-					}
-					else 
-					{
-						$("#pokemon-like").removeClass("fa-solid").addClass("fa-regular");	
-						$("#pokemon-like-count").text(response.count);
-					}
+					$("#pokemon-like").removeClass("fa-regular fa-solid").addClass((response.like) ? "fa-solid" : "fa-regular");
+					$("#pokemon-like-count").text(response.count);
 				}
 			});
 		});

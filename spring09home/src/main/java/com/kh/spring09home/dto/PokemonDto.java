@@ -10,4 +10,5 @@ public class PokemonDto
 	private int pokemonNo;
 	private String pokemonName;
 	private String pokemonType;
+	private int pokemonLike;
 }

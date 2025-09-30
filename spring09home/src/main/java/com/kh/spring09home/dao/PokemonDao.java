@@ -152,4 +152,21 @@ public class PokemonDao
 		Object[] params = {pokemonNo};
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
+	
+	// 좋아요 개수 갱신
+	public boolean updatePokemonLike(int pokemonNo, int pokemonLike) 
+	{
+		String sql = "update pokemon set pokemon_like = ? where pokemon_no = ?";
+		Object[] params = {pokemonLike, pokemonNo};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+	
+//	public boolean updateBoardLike(int boardNo) 
+//	{
+//		String sql = "update board "
+//						+ "set board_like = (select count(*) from board_like where board_no = ?) "
+//						+ "where board_no = ?";
+//		Object[] params = {boardNo, boardNo};
+//		return jdbcTemplate.update(sql, params) > 0;
+//	}
 }

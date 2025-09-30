@@ -33,6 +33,7 @@
                     <th>이미지</th>
                     <th>이름</th>
                     <th>속성</th>
+                    <th><i class="fa-solid fa-heart"></i></th>
                 </tr>
             </thead>
 
@@ -42,7 +43,8 @@
 						<td>${ pokemonDto.getPokemonNo() }</td>
 						<td><img src = "/pokemon/image?pokemonNo=${pokemonDto.getPokemonNo()}" width="32" height = "32"></td>
 						<td><a href="detail?pokemonNo=${pokemonDto.getPokemonNo()}">${ pokemonDto.getPokemonName() }</a></td>
-						<td>${ pokemonDto.getPokemonType() }</td>		
+						<td>${ pokemonDto.getPokemonType() }</td>
+						<td>${pokemonDto.pokemonLike }</td>
 					</tr>
 				</c:forEach>
             </tbody>

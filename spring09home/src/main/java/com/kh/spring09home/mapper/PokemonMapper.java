@@ -20,6 +20,7 @@ public class PokemonMapper implements RowMapper<PokemonDto>
 		pokemonDto.setPokemonNo(rs.getInt("pokemon_no"));
 		pokemonDto.setPokemonName(rs.getString("pokemon_name"));
 		pokemonDto.setPokemonType(rs.getString("pokemon_type"));
+		pokemonDto.setPokemonLike(rs.getInt("pokemon_like"));
 		
 		// TODO Auto-generated method stub
 		return pokemonDto;

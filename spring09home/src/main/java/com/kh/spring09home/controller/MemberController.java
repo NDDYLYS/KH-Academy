@@ -22,6 +22,7 @@ import com.kh.spring09home.dto.BuyDto;
 import com.kh.spring09home.dto.MemberDto;
 import com.kh.spring09home.error.TargetNotfoundException;
 import com.kh.spring09home.service.AttachmentService;
+import com.kh.spring09home.service.MemberService;
 import com.kh.spring09home.vo.BoardListVO;
 
 import jakarta.servlet.http.HttpSession;
@@ -38,6 +39,9 @@ public class MemberController
 	private BoardDao boardDao;
 	@Autowired
 	private BuyDao buyDao;
+	@Autowired
+	private MemberService memberService;
+	
 	
 	@GetMapping("/join")
 	public String join() 
@@ -181,8 +185,8 @@ public class MemberController
 		if (memberDto == null)
 			throw new TargetNotfoundException("존재하지 않는 회원 아이디 번호");
 		
-		boolean isValid = memberDto.getMemberPw().equals(memberPw);
-		if (isValid) 
+		boolean result = memberService.Drop(loginId, memberPw);//memberDto.getMemberPw().equals(memberPw);
+		if (result) 
 		{
 			try 
 			{

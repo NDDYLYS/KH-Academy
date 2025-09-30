@@ -1,5 +1,7 @@
 package com.kh.spring09home.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -40,5 +42,13 @@ public class BoardLikeDao
 		String sql = "select count(*) from board_like where board_no = ?";
 		Object[] params = {boardNo};
 		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
+	
+	// 회원이 좋아요 남긴 글 번호 조회
+	public List<Integer> selectListByMemberId(String memberId)
+	{
+		String sql = "select board_no from board_like where member_id = ?";
+		Object[] params = {memberId};
+		return jdbcTemplate.queryForList(sql, int.class, params);
 	}
 }

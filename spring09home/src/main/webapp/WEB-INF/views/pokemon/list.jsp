@@ -44,7 +44,7 @@
 						<td><img src = "/pokemon/image?pokemonNo=${pokemonDto.getPokemonNo()}" width="32" height = "32"></td>
 						<td><a href="detail?pokemonNo=${pokemonDto.getPokemonNo()}">${ pokemonDto.getPokemonName() }</a></td>
 						<td>${ pokemonDto.getPokemonType() }</td>
-						<td>${pokemonDto.pokemonLike }</td>
+						<td><i class="fa-regular fa-heart red"></i>${pokemonDto.pokemonLike }</td>
 					</tr>
 				</c:forEach>
             </tbody>

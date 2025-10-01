@@ -9,7 +9,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @SpringBootTest
-public class Test02단문메일발송 
+public class Test01단문메일발송2 
 {
 	@Autowired
 	private JavaMailSenderImpl sender;

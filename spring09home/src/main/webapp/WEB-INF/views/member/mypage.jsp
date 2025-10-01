@@ -67,11 +67,15 @@
 		});
 		
 		$(".profile-delete").on("click", function(){
-			
+			var choice = window.confirm("정말 삭제?");
+			if (choice == false)
+				return;
 			$.ajax({
-				url:"/rest/member/remove",
+				url:"/rest/member/delete",
 				method:"post",
 				success:function(response){
+					var newOrigin = origin + "&t=" + new Date().getTime();
+					$(".image-profile").attr("src", newOrigin);
 				}
 			});
 		});

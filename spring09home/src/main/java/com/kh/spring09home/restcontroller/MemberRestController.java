@@ -64,7 +64,7 @@ public class MemberRestController
 	}
 	
 	@PostMapping("/delete")
-	public void delete(HttpSession session) 
+	public String delete(HttpSession session) 
 	{
 		String loginId = (String)session.getAttribute("loginId");
 		
@@ -75,5 +75,7 @@ public class MemberRestController
 			attachmentService.delete(attachmentNo);
 		}
 		catch(Exception e) {/*아무것도 안함*/}
+		
+		return "redirect:/images/error/no-image.png";
 	}
 }

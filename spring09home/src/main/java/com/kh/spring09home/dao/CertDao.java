@@ -38,4 +38,11 @@ public class CertDao
 		List<CertDto> list = jdbcTemplate.query(sql, certMapper, params);
 		return list.isEmpty()? null : list.get(0);
 	}
+	
+	public boolean delete(String certEmail) 
+	{
+		String sql = "delete cert where cert_email = ?";
+		Object[] params = {certEmail};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
 }

@@ -10,8 +10,9 @@
 			<h3>비밀번호가 내 기억 속에서 bye bye</h3>
 		</div>
 		<div class = "cell left">
-			<label>아이디</label>
-			<input type = "hidden" name = "memberId" class = "field w-75" value = "${memberId}">
+<!-- 			<label>아이디</label> -->
+			<input type = "hidden" name = "memberId" value = "${memberId}">
+			<input type="hidden" name="certNumber" value="${certNumber}">
 		</div>
 		<div class = "cell left">
 			<label>비밀번호</label>

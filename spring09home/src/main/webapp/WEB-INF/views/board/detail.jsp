@@ -5,6 +5,68 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
+<!-- 댓글 처리 -->
+<script type="text/javascript">
+	$(function(){
+		var params = new URLSearchParams(location.search);
+		var boardNo = params.get("boardNo");
+		
+		loadList();
+		function loadList(){
+			$.ajax({
+				url:"/rest/reply/list",
+				method:"post",
+				data:{replyTarget:boardNo},
+				success:function(response){ // response == List<ReplyDto>
+					$(".reply-list-wrapper").empty();
+				
+					for(var i= 0; i<response.length;i++){
+						var reply = response[i];
+						
+						var origin = $("#reply-view-template").text();
+				        var html = $.parseHTML(origin);
+				        $(html).find(".reply-writer-profile").attr("src", "/member/profile?memberId="+reply.replyWriter);
+				        $(html).find(".reply-writer").text(reply.replyWriter);
+				        $(html).find(".reply-content").text(reply.replyContent);
+				        $(html).find(".fa-trash").attr("data-pk", reply.replyNo);
+				        $(".reply-list-wrapper").append(html);
+					}
+				}
+			});
+		}
+		
+		$(".reply-list-wrapper").on("click", ".fa-trash", function(){
+			var choice = window.confirm("정말 삭제?");
+			if (choice == false)
+				return;
+			
+			var replyNo = $(this).data("pk");
+			
+			$.ajax({
+				url:"/rest/reply/delete",
+				method:"post",
+				data:{replyNo:replyNo},
+				success:function(response){ // response == List<ReplyDto>
+					loadList();
+				}
+			});
+				
+		});
+	});
+</script>
+<!-- 댓글 표시용 템플릿 -->
+<script type="text/template" id="reply-view-template">
+	<div class="reply-wrapper">
+		<img class="reply-writer-profile" style = "width:32px; height:32px;">
+		<h3 class="reply-writer"></h3>
+		<p class="reply-content"></p>
+		<div class="reply-button-wrapper">
+			<i class="fa-solid fa-file-pen"></i>
+			<i class="fa-solid fa-trash"></i>
+		</div>
+	</div>
+</script>
+
 <!-- 좋아요 확인 -->
 <script type="text/javascript">
 	$(function(){
@@ -88,6 +150,11 @@
 	<span id="board-like-count">?</span>  
 	댓글 ${boardDto.boardReply}
 </div>
+
+<!-- 댓글 영역 -->
+<div class = "reply-write-wrapper">작성 영역</div>
+<div class = "reply-list-wrapper">목록 영역</div>
+
 <hr>
 <div>
 	<a href="write">글쓰기</a> 

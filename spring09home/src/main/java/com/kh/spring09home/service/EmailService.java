@@ -109,13 +109,13 @@ public class EmailService
 		sender.send(message);
 	}
 	
-	public void sendResetPassword(MemberDto memberDto) throws MessagingException, IOException 
-	{
-		MimeMessage message = sender.createMimeMessage();		
+	public void sendResetPassword(MemberDto memberDto) throws MessagingException, IOException {
+		MimeMessage message = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
 		
-		helper.setTo(new String[] {memberDto.getMemberEmail()});
-		helper.setSubject("비밀번호를 재설정합니다.");
+		//정보 설정
+		helper.setTo(memberDto.getMemberEmail());//수신인 설정
+		helper.setSubject("[KH정보교육원] 비밀번호를 재설정하세요");
 		
 		ClassPathResource resource = new ClassPathResource("templates/reset.html");
 		File target = resource.getFile();
@@ -133,15 +133,29 @@ public class EmailService
 		Element targetId = document.selectFirst("#target");//id=target인 대상을 탐색
 		Element targetLink = document.selectFirst("#link");//id=link인 대상을 탐색
 		
-		targetId.text(memberDto.getMemberNickname());//textContent변경
-		String url = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/member/changeMemerPw")
-				.queryParam("memberId", memberDto.getMemberId())
-				.build().toUriString();
-		targetLink.attr("href", url);//attribute 변경
+		targetId.text(memberDto.getMemberNickname());//닉네임 설정
 		
-		helper.setText(document.toString(), true);//HTML로 해석된 내용을 본문으로 설정
+		Random r = new Random();
+		DecimalFormat df = new DecimalFormat("000000");
+		int number = r.nextInt(1000000);
+		String certNumber = df.format(number);//최종 인증번호(6자리)
+		
+		String url = ServletUriComponentsBuilder
+				.fromCurrentContextPath()
+				.path("/member/changeMemberPw")
+				.queryParam("memberId", memberDto.getMemberId())//회원 ID
+				.queryParam("certNumber", certNumber)//인증번호
+				.build().toUriString();
+		targetLink.attr("href", url);//비밀번호 재설정 페이지 주소 안내
+		
+		helper.setText(document.toString(), true);//이메일 본문 설정
 		
 		sender.send(message);
+		
+		//인증 테이블에 등록
+		certDao.insert(CertDto.builder()
+					.certEmail(memberDto.getMemberEmail())
+					.certNumber(certNumber)
+				.build());
 	}
 }

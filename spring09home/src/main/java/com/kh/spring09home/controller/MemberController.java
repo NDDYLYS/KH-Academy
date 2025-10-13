@@ -2,6 +2,8 @@ package com.kh.spring09home.controller;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 
@@ -17,9 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring09home.dao.BoardDao;
 import com.kh.spring09home.dao.BuyDao;
+import com.kh.spring09home.dao.CertDao;
 import com.kh.spring09home.dao.MemberDao;
 import com.kh.spring09home.dto.BuyDto;
+import com.kh.spring09home.dto.CertDto;
 import com.kh.spring09home.dto.MemberDto;
+import com.kh.spring09home.error.NeedPermissionException;
 import com.kh.spring09home.error.TargetNotfoundException;
 import com.kh.spring09home.service.AttachmentService;
 import com.kh.spring09home.service.EmailService;
@@ -45,6 +50,8 @@ public class MemberController
 	private MemberService memberService;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private CertDao certDao;
 	
 	
 	@GetMapping("/join")
@@ -336,20 +343,55 @@ public class MemberController
 	}
 	
 	@GetMapping("/changeMemberPw")
-	public String changeMemberPw(@RequestParam String memberId, Model model) 
-	{
+	public String changeMemberPw(
+			@RequestParam String memberId,//회원 아이디
+			@RequestParam String certNumber,//인증번호
+			Model model) {
+		
+		//아이디로 이메일을 찾아서 인증내역을 조회
+		MemberDto memberDto = memberDao.selectOne(memberId);//아이디 존재?
+		if(memberDto == null) throw new TargetNotfoundException("존재하지 않는 회원");
+		CertDto certDto = certDao.selectOne(memberDto.getMemberEmail());//인증내역 존재?
+		if(certDto == null) throw new NeedPermissionException("허가받지 않은 접근");
+		boolean numberValid = certDto.getCertNumber().equals(certNumber);//인증번호 일치?
+		if(numberValid == false) throw new NeedPermissionException("허가받지 않은 접근");
+		LocalDateTime current = LocalDateTime.now();//현재시각
+		LocalDateTime created = certDto.getCertTime().toLocalDateTime();//인증생성시각
+		Duration duration = Duration.between(created, current);
+		//boolean timeValid = duration.toMinutes() <= 10;//10분 59초까지
+		boolean timeValid = duration.toSeconds() <= 600;//10분 0초까지
+		if(timeValid == false) throw new NeedPermissionException("인증정보 만료됨");
+		
+		//certDao.delete(memberDto.getMemberEmail());//인증정보 재사용 금지(삭제)
+		
 		model.addAttribute("memberId", memberId);
+		model.addAttribute("certNumber", certNumber);
+		
 		return "/WEB-INF/views/member/changeMemberPw.jsp";
 	}
 	
 	@PostMapping("/changeMemberPw")
-	public String changeMemberPw(@ModelAttribute MemberDto memberDto) 
-	{
+	public String changeMemberPw(
+			@ModelAttribute MemberDto memberDto,
+			@RequestParam String certNumber) {
 		MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
-		if (findDto == null)
-			return "redirect:changeMemberPw?error";
+		if(findDto == null) return "redirect:changeMemberPw?error";
 		
-		memberDao.updatePassword(memberDto);
+		//아이디로 이메일을 찾아서 인증내역을 조회
+		CertDto certDto = certDao.selectOne(findDto.getMemberEmail());//인증내역 존재?
+		if(certDto == null) throw new NeedPermissionException("허가받지 않은 접근");
+		boolean numberValid = certDto.getCertNumber().equals(certNumber);//인증번호 일치?
+		if(numberValid == false) throw new NeedPermissionException("허가받지 않은 접근");
+		LocalDateTime current = LocalDateTime.now();//현재시각
+		LocalDateTime created = certDto.getCertTime().toLocalDateTime();//인증생성시각
+		Duration duration = Duration.between(created, current);
+		//boolean timeValid = duration.toMinutes() <= 10;//10분 59초까지
+		boolean timeValid = duration.toSeconds() <= 600;//10분 0초까지
+		if(timeValid == false) throw new NeedPermissionException("인증정보 만료됨");
+		
+		memberDao.updatePassword(memberDto);//비밀번호 변경
+		certDao.delete(findDto.getMemberEmail());//인증정보 재사용 금지(삭제)
+		
 		return "redirect:changeMemberPwFinish";
 	}
 	

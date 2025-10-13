@@ -21,10 +21,18 @@
             <button type = "submit" class ="btn btn-positive mt-20">로그인</button>
         </div>
     </form>
+    
+<!--아이디 및 비밀번호 찾기-->
+	    <div class = "cell center">
+            <a href = "findMemberId">아이디 노기억</a>
+        </div>
+        <div class = "cell center">
+           <a href = "findMemberPw">비밀번호 노기억</a>
+        </div>
 
     <div class = "cell center">
         <c:if test = "${ param.error != null }">
-         <h2 style = "color:red">입력하신 정보가 일치하지 않습니다.</h2>
+        	<h2 style = "color:red">입력하신 정보가 일치하지 않습니다.</h2>
         </c:if>
     </div>
 </div>

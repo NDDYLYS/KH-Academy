@@ -303,4 +303,91 @@ public class MemberController
 			return "redirect:/images/error/no-image.png";
 		}
 	}
+	
+	@GetMapping("/findMemberId")
+	public String findMemberId() 
+	{
+		return "/WEB-INF/views/member/findMemberId.jsp";
+	}
+	
+	@PostMapping("/findMemberId")
+	public String findMemberId(@ModelAttribute MemberDto memberDto) 
+	{
+		MemberDto findDto = memberDao.selectOneByMemberNickname(memberDto.getMemberNickname());
+		if (findDto == null)
+			return "redirect:findMemberId?error";
+		boolean emailValid = memberDto.getMemberEmail().equals(findDto.getMemberEmail());
+		if (emailValid == false)
+			return "redirect:findMemberId?error";
+		
+		emailService.sendEmail(
+				findDto.getMemberEmail(), // "nodvic89@gmail.com",
+				"아이디 찾기 결과", 
+				"너님 아이디는 [" + findDto.getMemberId() + "]입니다.");
+		
+		return "redirect:findMemberIdFinish";
+	}
+	
+
+	@RequestMapping("/findMemberIdFinish")
+	public String findMemberIdFinish() 
+	{
+		return "/WEB-INF/views/member/findMemberIdFinish.jsp";
+	}
+	
+	@GetMapping("/changeMemberPw")
+	public String changeMemberPw(@RequestParam String memberId, Model model) 
+	{
+		model.addAttribute("memberId", memberId);
+		return "/WEB-INF/views/member/changeMemberPw.jsp";
+	}
+	
+	@PostMapping("/changeMemberPw")
+	public String changeMemberPw(@ModelAttribute MemberDto memberDto) 
+	{
+		MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
+		if (findDto == null)
+			return "redirect:changeMemberPw?error";
+		
+		memberDao.updatePassword(memberDto);
+		return "redirect:changeMemberPwFinish";
+	}
+	
+
+	@RequestMapping("/changeMemberPwFinish")
+	public String changeMemberPwFinish() 
+	{
+		return "/WEB-INF/views/member/changeMemberPwFinish.jsp";
+	}
+	
+	@GetMapping("/findMemberPw")
+	public String findMemberPw() 
+	{
+		return "/WEB-INF/views/member/findMemberPw.jsp";
+	}
+	
+	@PostMapping("/findMemberPw")
+	public String findMemberPw(@ModelAttribute MemberDto memberDto) throws MessagingException, IOException 
+	{
+		MemberDto findDto = memberDao.selectOne(memberDto.getMemberId());
+		if (findDto == null)
+			return "redirect:findMemberPw?error";
+		boolean nicknameValid = memberDto.getMemberNickname().equals(findDto.getMemberNickname());
+		if (nicknameValid == false)
+			return "redirect:findMemberPw?error";
+		boolean emailValid = memberDto.getMemberEmail().equals(findDto.getMemberEmail());
+		if (emailValid == false)
+			return "redirect:findMemberPw?error";
+		
+		emailService.sendResetPassword(memberDto);
+		
+		return "redirect:findMemberPwFinish";
+	}
+	
+
+	@RequestMapping("/findMemberPwFinish")
+	public String findMemberPwFinish() 
+	{
+		return "/WEB-INF/views/member/findMemberPwFinish.jsp";
+	}
 }

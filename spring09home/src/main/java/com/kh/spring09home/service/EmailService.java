@@ -108,4 +108,40 @@ public class EmailService
 		
 		sender.send(message);
 	}
+	
+	public void sendResetPassword(MemberDto memberDto) throws MessagingException, IOException 
+	{
+		MimeMessage message = sender.createMimeMessage();		
+		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+		
+		helper.setTo(new String[] {memberDto.getMemberEmail()});
+		helper.setSubject("비밀번호를 재설정합니다.");
+		
+		ClassPathResource resource = new ClassPathResource("templates/reset.html");
+		File target = resource.getFile();
+		
+		StringBuffer buffer = new StringBuffer();
+		BufferedReader reader = new BufferedReader(new FileReader(target));
+		while(true) {
+			String line = reader.readLine();
+			if(line == null) break;
+			buffer.append(line);
+		}
+		reader.close();
+		
+		Document document = Jsoup.parse(buffer.toString());//String을 HTML로 해석
+		Element targetId = document.selectFirst("#target");//id=target인 대상을 탐색
+		Element targetLink = document.selectFirst("#link");//id=link인 대상을 탐색
+		
+		targetId.text(memberDto.getMemberNickname());//textContent변경
+		String url = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path("/member/changeMemerPw")
+				.queryParam("memberId", memberDto.getMemberId())
+				.build().toUriString();
+		targetLink.attr("href", url);//attribute 변경
+		
+		helper.setText(document.toString(), true);//HTML로 해석된 내용을 본문으로 설정
+		
+		sender.send(message);
+	}
 }

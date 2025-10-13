@@ -22,9 +22,11 @@ import com.kh.spring09home.dto.BuyDto;
 import com.kh.spring09home.dto.MemberDto;
 import com.kh.spring09home.error.TargetNotfoundException;
 import com.kh.spring09home.service.AttachmentService;
+import com.kh.spring09home.service.EmailService;
 import com.kh.spring09home.service.MemberService;
 import com.kh.spring09home.vo.BoardListVO;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -41,6 +43,8 @@ public class MemberController
 	private BuyDao buyDao;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private EmailService emailService;
 	
 	
 	@GetMapping("/join")
@@ -51,7 +55,7 @@ public class MemberController
 	
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberDto memberDto,
-			@RequestParam MultipartFile attach) throws IllegalStateException, IOException 
+			@RequestParam MultipartFile attach) throws IllegalStateException, IOException, MessagingException 
 	{
 		memberDao.insert(memberDto);
 		
@@ -60,6 +64,10 @@ public class MemberController
 			int attachmentNo = attachmentService.save(attach);
 			memberDao.connect(memberDto.getMemberId(), attachmentNo);
 		}
+		
+		
+		// 가입 완료 메일 발송
+		emailService.sendWelcomeMail(memberDto);
 		
 		return "redirect:joinFinish";
 	}

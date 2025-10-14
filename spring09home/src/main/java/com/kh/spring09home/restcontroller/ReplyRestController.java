@@ -15,6 +15,7 @@ import com.kh.spring09home.dao.BoardDao;
 import com.kh.spring09home.dao.ReplyDao;
 import com.kh.spring09home.dto.BoardDto;
 import com.kh.spring09home.dto.ReplyDto;
+import com.kh.spring09home.error.NeedPermissionException;
 import com.kh.spring09home.error.TargetNotfoundException;
 import com.kh.spring09home.vo.ReplyListVO;
 
@@ -67,12 +68,6 @@ public class ReplyRestController {
 		return result;
 	}
 	
-	@PostMapping("/delete")
-	public void delete(@RequestParam int replyNo) 
-	{
-		replyDao.delete(replyNo);
-	}
-	
 	@PostMapping("/write")
 	public void write(@ModelAttribute ReplyDto replyDto,
 			HttpSession session) 
@@ -84,9 +79,31 @@ public class ReplyRestController {
 		replyDao.insert(replyDto);
 	}
 	
-	@PostMapping("/edit")
-	public void edit(@ModelAttribute ReplyDto replyDto)
+	@PostMapping("/delete")
+	public void delete(@RequestParam int replyNo, HttpSession session) 
 	{
+		String loginId = (String)session.getAttribute("loginId");
+		ReplyDto findDto = replyDao.selectOne(replyNo);
+		if (findDto == null)
+			throw new TargetNotfoundException("존재하지 않는 댓글");		
+		boolean owner = loginId.equals(findDto.getReplyWriter());
+		if (owner == false)
+			throw new NeedPermissionException("권한 부족");		
+		
+		replyDao.delete(replyNo);
+	}
+	
+	@PostMapping("/edit")
+	public void edit(@ModelAttribute ReplyDto replyDto, HttpSession session)
+	{
+		String loginId = (String)session.getAttribute("loginId");
+		ReplyDto findDto = replyDao.selectOne(replyDto.getReplyNo());
+		if (findDto == null)
+			throw new TargetNotfoundException("존재하지 않는 댓글");		
+		boolean owner = loginId.equals(findDto.getReplyWriter());
+		if (owner == false)
+			throw new NeedPermissionException("권한 부족");		
+		
 		replyDao.update(replyDto);
 	}
 }

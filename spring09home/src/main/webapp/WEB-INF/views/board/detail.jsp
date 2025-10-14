@@ -11,7 +11,6 @@
 		var params = new URLSearchParams(location.search);
 		var boardNo = params.get("boardNo");
 		
-		loadList();
 		function loadList(){
 			$.ajax({
 				url:"/rest/reply/list",
@@ -34,6 +33,8 @@
 				}
 			});
 		}
+
+		loadList();
 		
 		$(".reply-list-wrapper").on("click", ".fa-trash", function(){
 			var choice = window.confirm("정말 삭제?");
@@ -46,14 +47,31 @@
 				url:"/rest/reply/delete",
 				method:"post",
 				data:{replyNo:replyNo},
-				success:function(response){ // response == List<ReplyDto>
+				success:function(response){
 					loadList();
 				}
 			});
-				
+		});
+		
+		// 댓글 등록
+		$(".reply-btn-write").on("click", function(){
+			var content = $(".reply-input").val();		
+			if (content.length == 0)
+				return;
+		
+			$.ajax({
+				url:"/rest/reply/write",
+				method:"post",
+				data:{replyTarget:boardNo, replyContent:content},
+				success:function(response){
+					loadList();
+					$(".reply-input").val("");
+				}
+			});
 		});
 	});
 </script>
+
 <!-- 댓글 표시용 템플릿 -->
 <script type="text/template" id="reply-view-template">
 	<div class="reply-wrapper">
@@ -152,8 +170,15 @@
 </div>
 
 <!-- 댓글 영역 -->
-<div class = "reply-write-wrapper">작성 영역</div>
 <div class = "reply-list-wrapper">목록 영역</div>
+<div class = "reply-write-wrapper">
+	<textarea class="field w-100 mt-50 reply-input" rows=4 style="resize:none" placeholder="댓글"></textarea>
+	<div class="cell right">
+		<button type="button" class="btn btn-positive reply-btn-write">
+			<span>댓글 작성</span>
+		</button>
+	</div>
+</div>
 
 <hr>
 <div>

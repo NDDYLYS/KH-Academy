@@ -38,4 +38,19 @@ public class ReplyDao {
 		Object[] params = {replyNo};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	
+	public int sequence() 
+	{
+		String sql= "select reply_seq.nextval from dual";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	
+	public void insert(ReplyDto replyDto) 
+	{
+		String sql = "insert into reply(reply_no, reply_writer, reply_target, reply_content) "
+				+ "values (?, ?, ?, ?)";
+		Object[] params = {replyDto.getReplyNo(), replyDto.getReplyWriter(), replyDto.getReplyTarget(), 
+				replyDto.getReplyContent()};
+		jdbcTemplate.update(sql, params);
+	}
 }

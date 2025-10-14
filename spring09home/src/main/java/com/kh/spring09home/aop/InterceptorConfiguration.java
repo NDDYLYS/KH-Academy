@@ -38,7 +38,9 @@ public class InterceptorConfiguration implements WebMvcConfigurer
 				"/admin/**", 
 				"/board/**", "/giftcard/**", 
 				"/rest/board/action",
-				"/rest/pokemon/action")
+				"/rest/pokemon/action",
+				"/rest/reply/write",
+				"/rest/reply/delete")
 		.excludePathPatterns(
 				"/member/join*", 
 				"/member/login", 

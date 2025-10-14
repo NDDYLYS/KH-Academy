@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.spring09home.dto.PokemonDto;
 import com.kh.spring09home.dto.ReplyDto;
 import com.kh.spring09home.mapper.ReplyMapper;
 
@@ -52,5 +53,21 @@ public class ReplyDao {
 		Object[] params = {replyDto.getReplyNo(), replyDto.getReplyWriter(), replyDto.getReplyTarget(), 
 				replyDto.getReplyContent()};
 		jdbcTemplate.update(sql, params);
+	}
+	
+	public boolean update(ReplyDto replyDto) 
+	{
+		String sql = "update reply set reply_content=?, reply_etime=systimestamp where "
+				+ "reply_no=?";
+		Object[] params = {replyDto.getReplyContent(), replyDto.getReplyNo()};
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+	
+	public ReplyDto selectOne(int replyNo) 
+	{
+		String sql = "select * from reply where reply_no=?";
+		Object[] params = {replyNo};
+		List<ReplyDto> list = jdbcTemplate.query(sql, replyMapper, params);
+		return list.isEmpty()? null : list.get(0);
 	}
 }

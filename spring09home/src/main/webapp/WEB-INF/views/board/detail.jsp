@@ -182,6 +182,9 @@
 		margin-top: 10px;
 		color: gray;
 	}
+	.reply-edit-wrapper {
+		padding:10px;
+	}
 </style>
 
 <script type="text/template" id="reply-view-template">
@@ -194,19 +197,19 @@
 			<pre class="reply-content">내용</pre>
 			<div class="reply-time">yyyy-MM-dd HH:mm:ss</div>
 			<div class="button-wrapper">
-				<i class="fa-solid fa-edit"></i>
-				<i class="fa-solid fa-trash"></i>
+				<i class="fa-solid fa-2x fa-edit orange"></i>
+				<i class="fa-solid fa-2x fa-trash red"></i>
 			</div>
 		</div>
 	</div>
 </script>
 <script type="text/template" id="reply-edit-template">
 	<div class="reply-edit-wrapper">
-		<h3 class="reply-writer">작성자</h3>
-		<textarea class="reply-editor field w-100"></textarea>
+		<h3 class="reply-writer"></h3>
+		<textarea class="reply-editor field w-100" rows="4" style="resize:none;"></textarea>
 		<div class="button-wrapper">
-			<i class="fa-solid fa-xmark"></i>
-			<i class="fa-solid fa-check"></i>
+			<i class="fa-solid fa-2x fa-xmark red"></i>
+			<i class="fa-solid fa-2x fa-check blue"></i>
 		</div>
 	</div>
 </script>

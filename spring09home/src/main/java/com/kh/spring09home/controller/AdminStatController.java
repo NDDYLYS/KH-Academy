@@ -41,4 +41,11 @@ public class AdminStatController
 		model.addAttribute("statList", statDao.countByMemberLevel());
 		return "/WEB-INF/views/admin/stat/member.jsp";
 	}
+	
+
+	@RequestMapping("/all")
+	public String all() 
+	{
+		return "/WEB-INF/views/admin/stat/all.jsp";
+	}
 }

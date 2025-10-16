@@ -5,8 +5,12 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/summernote/custom-summernote.css">
+<script src="/summernote/custom-summernote.js"></script>
 
-<div class = "container w-600">
+<div class = "container w-800">
     <form action="insert" method="post">
         <div class = "cell mb-30 center">
             <h1>자유 게시판 글쓰기</h1>
@@ -26,8 +30,7 @@
         </div>
         <div class = "cell">
             <label>글 내용 *</label>
-            <textarea name = "boardContent"
-                class = "field w-100" placeholder="본문" required></textarea>
+            <textarea name = "boardContent" class="summernote-editor" required></textarea>
         </div>
         <div class = "cell mt-50">
             <button class = "btn btn-positive w-100">글쓰기</button>

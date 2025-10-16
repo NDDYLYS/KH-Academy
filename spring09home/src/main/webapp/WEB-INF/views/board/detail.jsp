@@ -317,7 +317,7 @@
 	<c:if test="${sessionScope.loginId != null}">
 	<c:choose>
 		<c:when test="${sessionScope.loginId == boardDto.boardWriter}">
-			<a href="edit?boardNo=${boardDto.boardNo}">수정</a> 
+			<a href="update?boardNo=${boardDto.boardNo}">수정</a> 
 			<a href="delete?boardNo=${boardDto.boardNo}">삭제</a>
 		</c:when>
 		<c:when test="${sessionScope.loginLevel == '관리자'}">

@@ -1,7 +1,9 @@
 package com.kh.spring09home.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -165,6 +167,31 @@ public class BoardController {
 	@PostMapping("/update")
 	public String update(@ModelAttribute BoardDto boardDto) 
 	{
+		BoardDto beforeDto = boardDao.selectOne(boardDto.getBoardNo());
+		if (beforeDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 게시글 번호");		
+		
+		Set<Integer> before = new HashSet<>();
+		Document beforeDocument = Jsoup.parse(boardDto.getBoardContent());
+		Elements beforeElements = beforeDocument.select(".custom-image");
+		for(Element element : beforeElements) {
+			int attachmentNo = Integer.parseInt(element.attr("data-pk"));
+			before.add(attachmentNo);
+		}
+		
+		Set<Integer> after = new HashSet<>();
+		Document afterDocument = Jsoup.parse(boardDto.getBoardContent());
+		Elements afterElements = afterDocument.select(".custom-image");
+		for(Element element : afterElements) {
+			int attachmentNo = Integer.parseInt(element.attr("data-pk"));
+			before.add(attachmentNo);
+		}
+		
+		Set<Integer> minus= new HashSet<>(before);
+		minus.removeAll(after);
+		for(int attachmentNo : minus)
+			attachmentService.delete(attachmentNo);
+		
 		boardDao.update(boardDto);
 		return "redirect:detail?boardNo=" + boardDto.getBoardNo();
 	}
@@ -184,7 +211,6 @@ public class BoardController {
 //			int attachmentNo = Integer.parseInt(src.substring(equal + 1));
 			int attachmentNo = Integer.parseInt(element.attr("data-pk"));
 			attachmentService.delete(attachmentNo);
-			
 		}
 		
 		boardDao.delete(boardNo);

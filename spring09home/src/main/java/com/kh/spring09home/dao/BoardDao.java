@@ -241,14 +241,14 @@ public class BoardDao
 	
 	public void addReply(int boardNo) 
 	{
-		String sql = "update board set board_reply=board_reply+1 board where board_no=?";
+		String sql = "update board set board_reply=board_reply+1 where board_no=?";
 		Object[] params = {boardNo};
 		jdbcTemplate.update(sql, params);
 	}
 	
 	public void removeReply(int boardNo) 
 	{
-		String sql = "update board set board_reply=board_reply-1 board where board_no=?";
+		String sql = "update board set board_reply=board_reply-1 where board_no=?";
 		Object[] params = {boardNo};
 		jdbcTemplate.update(sql, params);
 	}

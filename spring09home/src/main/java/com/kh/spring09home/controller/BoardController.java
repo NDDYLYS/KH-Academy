@@ -172,7 +172,7 @@ public class BoardController {
 			throw new TargetNotfoundException("존재하지 않는 게시글 번호");		
 		
 		Set<Integer> before = new HashSet<>();
-		Document beforeDocument = Jsoup.parse(boardDto.getBoardContent());
+		Document beforeDocument = Jsoup.parse(beforeDto.getBoardContent());
 		Elements beforeElements = beforeDocument.select(".custom-image");
 		for(Element element : beforeElements) {
 			int attachmentNo = Integer.parseInt(element.attr("data-pk"));
@@ -184,7 +184,7 @@ public class BoardController {
 		Elements afterElements = afterDocument.select(".custom-image");
 		for(Element element : afterElements) {
 			int attachmentNo = Integer.parseInt(element.attr("data-pk"));
-			before.add(attachmentNo);
+			after.add(attachmentNo);
 		}
 		
 		Set<Integer> minus= new HashSet<>(before);

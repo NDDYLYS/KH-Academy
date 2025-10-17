@@ -72,7 +72,7 @@
 							</c:if>
 							
 							<a href="detail?boardNo=${boardListVO.boardNo}" class="board-title-link ellipsis">
-								${boardListVO.boardTitle}
+								${boardListVO.boardTitle}(${boardListVO.boardReply})
 							</a>
 						</div>
 					</td>

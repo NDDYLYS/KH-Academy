@@ -77,6 +77,7 @@ public class ReplyRestController {
 		String loginId = (String)session.getAttribute("loginId");
 		replyDto.setReplyWriter(loginId);
 		replyDao.insert(replyDto);
+		boardDao.addReply(replyDto.getReplyTarget());
 	}
 	
 	@PostMapping("/delete")
@@ -91,6 +92,7 @@ public class ReplyRestController {
 			throw new NeedPermissionException("권한 부족");		
 		
 		replyDao.delete(replyNo);
+		boardDao.removeReply(findDto.getReplyTarget());
 	}
 	
 	@PostMapping("/edit")

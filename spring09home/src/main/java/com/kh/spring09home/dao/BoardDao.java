@@ -238,4 +238,18 @@ public class BoardDao
 		Object[] params = {boardNo, boardNo};
 		return jdbcTemplate.update(sql, params) > 0;
 	}
+	
+	public void addReply(int boardNo) 
+	{
+		String sql = "update board set board_reply=board_reply+1 board where board_no=?";
+		Object[] params = {boardNo};
+		jdbcTemplate.update(sql, params);
+	}
+	
+	public void removeReply(int boardNo) 
+	{
+		String sql = "update board set board_reply=board_reply-1 board where board_no=?";
+		Object[] params = {boardNo};
+		jdbcTemplate.update(sql, params);
+	}
 }

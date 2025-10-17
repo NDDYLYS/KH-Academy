@@ -16,6 +16,8 @@ public class ReplyDao {
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private ReplyMapper replyMapper;
+	@Autowired
+	private BoardDao boardDao;
 	
 	// 댓글은 전체가 아니라 회원 또는 글 별로 조회
 	

@@ -11,5 +11,32 @@ $(function(){
         ["attach", ["picture"]],
         ["tool", ["ol", "ul", "paragraph", "table", "hr", "fullscreen"]],
         ],
+		
+		callbacks: {
+            onImageUpload: function(files) {
+                console.log("파일 업로드 중...");
+
+                // FormData 생성
+                var form = new FormData();
+				for(var i=0; i<files.length;i++)
+                	form.append("attach", files[i]);
+
+                // Ajax 업로드
+                $.ajax({
+                    processData: false,
+                    contentType: false,
+                    url: "/rest/board/temps",
+                    method: "post",
+                    data: form,
+                    success: function(response) { // response == 업로드된 파일번호(int)
+						for(var i=0;i<response.length;i++){
+	                        var img = $("<img>").attr("src", "/attachment/download?attachmentNo=" 
+								+ response[i]).attr("data-pk", response[i]).addClass("custom-image");
+	                        $(".summernote-editor").summernote("insertNode", img[0]);							
+						}
+                    }
+                });
+            }
+        }
     });
 });

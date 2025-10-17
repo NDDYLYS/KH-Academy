@@ -3,6 +3,10 @@ package com.kh.spring09home.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +22,7 @@ import com.kh.spring09home.dto.BoardDto;
 import com.kh.spring09home.dto.MemberDto;
 import com.kh.spring09home.error.NeedPermissionException;
 import com.kh.spring09home.error.TargetNotfoundException;
+import com.kh.spring09home.service.AttachmentService;
 import com.kh.spring09home.vo.BoardListVO;
 import com.kh.spring09home.vo.BoardMentionVO;
 import com.kh.spring09home.vo.PageVO;
@@ -27,10 +32,16 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/board")
 public class BoardController {
+
+    private final AttachmentService attachmentService;
 	@Autowired
 	private BoardDao boardDao;
 	@Autowired
 	private MemberDao memberDao;
+
+    BoardController(AttachmentService attachmentService) {
+        this.attachmentService = attachmentService;
+    }
 
 	@RequestMapping("/list")
 	public String list(Model model, 
@@ -164,6 +175,18 @@ public class BoardController {
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if (boardDto == null) 
 			throw new TargetNotfoundException("존재하지 않는 게시글 번호");		
+		
+		Document document = Jsoup.parse(boardDto.getBoardContent());
+		Elements elements = document.select(".custom-image");
+		for(Element element : elements) {
+//			String src = element.attr("src");
+//			int equal = src.lastIndexOf("=");
+//			int attachmentNo = Integer.parseInt(src.substring(equal + 1));
+			int attachmentNo = Integer.parseInt(element.attr("data-pk"));
+			attachmentService.delete(attachmentNo);
+			
+		}
+		
 		boardDao.delete(boardNo);
 		return "redirect:list";
 	}

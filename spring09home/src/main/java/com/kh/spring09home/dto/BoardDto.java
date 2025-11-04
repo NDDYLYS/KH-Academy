@@ -3,6 +3,7 @@ package com.kh.spring09home.dto;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import lombok.Data;
 
@@ -31,5 +32,19 @@ public class BoardDto
 		LocalDateTime now = LocalDateTime.now();
 		Duration d = Duration.between(wtime, now);
 		return d.toDays() >= 1;
+	}
+	
+	public String getFormattedWtime() {
+	    LocalDateTime wtime = boardWtime.toLocalDateTime();
+	    LocalDateTime now = LocalDateTime.now();
+
+	    DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
+	    DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+	    if (wtime.toLocalDate().isEqual(now.toLocalDate())) {
+	        return wtime.format(timeFmt); // 오늘이면 시:분
+	    } else {
+	        return wtime.format(dateFmt); // 그 외엔 월-일
+	    }
 	}
 }

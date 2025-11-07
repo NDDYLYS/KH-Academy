@@ -38,6 +38,23 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.8/flatly/bootstrap.min.css" rel="stylesheet">
      
     <script src = "/js/confirm.js"></script>
+    
+    <script type="text/javascript">
+        $(function () {
+            // Navbar에서 외부를 클릭하면 메뉴가 닫히게 구현
+            $(document).on("click", function(e){
+                //alert(e.target);
+                var parent = $(e.target).closest(".navbar");              
+                var valid1 = $(e.target).closest(".navbar-brand").length > 0;
+                var valid2 = $(e.target).closest(".nav-link").length > 0;
+                var valid3 = $(e.target).closest(".dropdown-item").length > 0;
+                if (parent.length > 0 && (!valid1 && !valid2 && !valid3))
+                    return;
+
+                $("#menu-body").collapse("hide");
+            });
+        });
+    </script>
 </head>
 <body>
    

@@ -3,8 +3,30 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-로그인 아이디 : ${sessionScope.loginId}
-<br>
-로그인 등급 : ${sessionScope.loginLevel}
+<%-- 로그인 아이디 : ${sessionScope.loginId} --%>
+<!-- <br> -->
+<%-- 로그인 등급 : ${sessionScope.loginLevel} --%>
+
+
+<div class="row">
+	<div class="col-md-6">
+		456
+	</div>
+	
+	<div class="col-md-6">
+		123
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6">
+		456
+	</div>
+	
+	<div class="col-md-6">
+		123
+	</div>
+</div>
+
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

@@ -1,89 +1,97 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
     
 <script type = "text/javascript">
-window.addEventListener("load", function()
-		{
-	            var state = 
-				{
-	               	pokemonNameValid : false,
-	               	pokemonTypeValid : false,
+	$(function () {
+	    //상태객체
+	    var state = {
+	        pokemonNameValid: false,
+	        pokemonTypeValid: false,
+	        ok: function () {
+	            return this.pokemonNameValid && this.pokemonTypeValid;
+	        }
+	    };
 	
-	               	ok : function()
-					{
-	                   		return this.pokemonNameValid && this.pokemonTypeValid;
-	              	}
-	           };
+	    //항목검사
+	    $("[name=pokemonName]").on("blur", function () {
+	        var regex = /^[가-힣]{1,10}$/;
+	        var valid = regex.test($(this).val());//jQuery
+	        $(this).removeClass("is-valid is-invalid").addClass(valid ? "is-valid" : "is-invalid");
+	        state.pokemonNameValid = valid;
+	    });
+	    $("[name=pokemonType]").on("blur", function () {
+	        var valid = $(this).val().length > 0;
+	        $(this).removeClass("is-valid is-invalid").addClass(valid ? "is-valid" : "is-invalid");
+	        state.pokemonTypeValid = valid;
+	    });
 	
-	           document.querySelector("[name=pokemonName]").addEventListener("blur", function()
-	{
-	               var regex = /^[가-힣]{1,10}$/;
-	               var valid = regex.test(this.value);
-	               this.classList.remove("success", "fail");
-	               this.classList.add(valid ? "success" : "fail");
-	               state.pokemonNameValid = valid;
-	           });
-	           document.querySelector("[name=pokemonType]").addEventListener("input", function()
-	{
-	               var regex = /^[가-힣,]{1,10}$/;
-	               var valid = regex.test(this.value);
-	               this.classList.remove("success", "fail");
-	               this.classList.add(valid ? "success" : "fail");
-	               state.pokemonTypeValid = valid;
-	           });
-	
-	           //폼 검사
-	           document.querySelector(".check-form").addEventListener("submit", function(e)
-	{
-	               document.querySelector("[name=pokemonName]").dispatchEvent(new Event("blur"));
-	               document.querySelector("[name=pokemonType]").dispatchEvent(new Event("input"));
-	               //var inputs = document.querySelectorAll("[name]");
-	
-	               if(state.ok() == false)
-	               {
-	               	window.alert("값이 누락되어 등록할 수 없습니다.");	
-	                   e.preventDefault();
-	               }
-	               else
-	               {
-	               	var choice = window.confirm("학생을 등록하시겠습니까?");
-	               	
-	               	if (choice == false)
-	               		e.preventDefault();
-	               }
-	           });
-	       });
+	    //폼검사
+	    $(".check-form").on("submit", function () {
+	        //this == 폼
+	        $(this).find("[name]").trigger("blur");//blur 강제 발생
+	        return state.ok();
+	    });
+	});
 </script>
     
-<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 
-<div class = "container w-250 center">
-	<form action="./add" method="post" enctype="multipart/form-data" class = "check-insert">
-        <div class = "cell mb-30 center">
-            <h1>포켓몬 등록</h1>
+<form action="add" method="post" autocomplete="off" class="check-form">
+        <div class="container-fluid mt-4">
+            <div class="row">
+                <div class="col-md-4 offset-md-4 col-sm-10 offset-sm-1">
+                    <div class="container-fluid">
+
+                        <!-- 점보트론(jumbotron) -->
+                    <div class="row">
+                        <div class="col">
+                            <div class="bg-dark text-light p-4 rounded-4">
+                                <h1>포켓몬 등록</h1>
+                                <p>포켓몬을 새로 등록합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col">
+                            <label>포켓몬 이름 <i class="fa-solid fa-asterisk text-danger"></i></label>
+                            <input type="text" name="pokemonName" placeholder="" class="form-control">
+                            <div class="valid-feedback">멋진 이름이네요!</div>
+                            <div class="invalid-feedback">한글 10글자 이내로 작성하세요!</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label>포켓몬 속성 <i class="fa-solid fa-asterisk text-danger"></i></label>
+                            <select name="pokemonType" class="form-select">
+                                <option value="">선택하세요</option>
+                                <option>전기</option>
+                                <option>풀</option>
+                                <option>땅</option>
+                                <option>독</option>
+                                <option>바람</option>
+                                <option>비행</option>
+                                <option>무속성</option>
+                            </select>
+                            <div class="valid-feedback">올바른 형식입니다</div>
+                            <div class="invalid-feedback">필수 항목입니다! 반드시 선택하세요!</div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col text-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span>포켓몬 등록</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class = "cell mt-30">
-            <label>포켓몬 이름 *</label>
-            <input type ="text" class="field w-100" 
-            name ="pokemonName" placeholder="(ex)피카츄">
-            <div class = "feedback"></div>
-        </div>
-        <div class = "cell">
-            <label>포켓몬 속성 *</label>
-            <input type ="text" class="field w-100" 
-            name ="pokemonType" placeholder="(ex)전기">
-            <div class = "feedback"></div>
-        </div>
-        <div class = "cell">
-            <label>포켓몬 이미지 *</label>
-            <input type = "file"
-            name = "attach" accept = ".png,.jpg" class = "field w-100">
-        </div>
-        <div class = "cell mt-30">
-            <button class = "btn btn-positive w-100">등록하기</button>
-        </div>
-	</form>
-</div>
+    </div>
+</form>
     
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

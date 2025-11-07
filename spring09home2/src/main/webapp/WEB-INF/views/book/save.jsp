@@ -1,0 +1,184 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<script type="text/javascript">
+        var bookTitleValid = false;//필수 항목
+        var bookAuthorValid = true;//선택 항목
+        var bookPublisherValid = true;//선택 항목
+        var bookPublicationDateValid = true;//선택 항목
+        var bookPriceValid = false;//필수 항목
+        var bookPageCountValid = false;//필수 항목
+        var bookGenreValid = false;//필수 항목
+
+        function checkBookTitle(){
+            var input = document.querySelector("[name=bookTitle]");
+            //var regex = /^.+$/;
+            //var valid = regex.test(input.value.trim());
+            var valid = input.value.trim().length > 0;
+
+            input.classList.remove("success", "fail");
+            input.classList.add(valid ? "success" : "fail");
+            bookTitleValid = valid;
+        }
+        function checkBookAuthor(){
+            var input = document.querySelector("[name=bookAuthor]");
+            var regex = /^[^!@#$]{1,30}$/;
+            var valid = input.value.length == 0 || regex.test(input.value);//선택항목이므로 없어도 통과
+            input.classList.remove("success", "fail");
+            input.classList.add(valid ? "success" : "fail");
+            bookAuthorValid = valid;
+        }
+        function checkBookPublisher(){
+            var input = document.querySelector("[name=bookPublisher]");
+            //검사할 내용이 없음(없어도 그만 아무거나 있어도 그만)
+            var valid = input.value.length <= 30;
+            input.classList.remove("success", "fail");
+            input.classList.add(valid ? "success" : "fail");
+            bookPublisherValid = valid;
+        }
+        function checkBookPublicationDate(){
+            var input = document.querySelector("[name=bookPublicationDate]");
+            var regex = /^(19[0-9]{2}|20[0-9]{2})-((02-(0[1-9]|1[0-9]|2[0-9]))|((0[469]|11)-(0[1-9]|1[0-9]|2[0-9]|30))|((0[13578]|1[02])-(0[1-9]|1[0-9]|2[0-9]|3[01])))$/;
+            var valid = input.value.length == 0 || regex.test(input.value);
+            input.classList.remove("success", "fail");
+            input.classList.add(valid ? "success" : "fail");
+            bookPublicationDateValid = valid;
+        }
+        function checkBookPrice(){
+            var input = document.querySelector("[name=bookPrice]");
+            var regex = /^[0-9]+$/;
+            var valid = regex.test(input.value) && parseInt(input.value) >= 0;
+            input.classList.remove("success", "fail");
+            input.classList.add(valid ? "success" : "fail");
+            bookPriceValid = valid;
+        }
+        function filterBookPrice() {
+            var input = document.querySelector("[name=bookPrice]");
+            var regex = /[^0-9]+/g;//숫자가 아닌 것을 의미하는 정규표현식(g가 붙으면 여러개여도 다 바꿈)
+            var result = input.value.replace(regex, "");//정규표현식에 해당하는것을 빈칸으로 바꾸세요
+            //(+추가) 최대가를 100만원으로...
+            result = Math.min(parseInt(result), 1000000);//100만원과 숫자 중 작은 걸 설정
+            input.value = result;//필터된 값을 재설정
+        }
+        function checkBookPageCount(){
+            var input = document.querySelector("[name=bookPageCount]");
+            var regex = /^[0-9]+$/;
+            var valid = regex.test(input.value) && parseInt(input.value) > 0;
+            input.classList.remove("success", "fail");
+            input.classList.add(valid ? "success" : "fail");
+            bookPageCountValid = valid;
+        }
+        function filterBookPageCount(){
+            var input = document.querySelector("[name=bookPageCount]");
+            var regex = /[^0-9]+/g;//숫자가 아닌 것을 의미하는 정규표현식(g가 붙으면 여러개여도 다 바꿈)
+            var result = input.value.replace(regex, "");
+            input.value = result;
+        }
+        function checkBookGenre(){
+            var input = document.querySelector("[name=bookGenre]");
+            //var valid = input.value != "";
+            var valid = input.value.length > 0;
+            //var valid = input.value != false;//부정적인 값이 아니면
+            input.classList.remove("success", "fail");
+            input.classList.add(valid ? "success" : "fail");
+            bookGenreValid = valid;
+        }
+
+        function checkForm(){
+            checkBookTitle();
+            checkBookAuthor()
+            checkBookPublisher();
+            checkBookPublicationDate();
+            checkBookPrice();
+            checkBookPageCount();
+            checkBookGenre();
+
+            //그냥 전송
+            // return bookTitleValid && bookAuthorValid && bookPublisherValid
+            //             && bookPublicationDateValid && bookPriceValid 
+            //             && bookPageCountValid && bookGenreValid;
+
+            //(+추가) 확인창
+            var all = bookTitleValid && bookAuthorValid && bookPublisherValid
+                        && bookPublicationDateValid && bookPriceValid 
+                        && bookPageCountValid && bookGenreValid;
+            if(all == false) return false;
+            var choice = confirm("정말 등록하시겠습니까?");
+            return choice;
+        }
+    </script>
+    
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+    
+<form action="save" method="post" autocomplete="off" 
+    onsubmit="return checkForm();">
+    <div class="container w-500">
+	        <div class="cell center">
+	            <h1>도서 등록</h1>
+	        </div>
+	        
+	        <div class="cell">
+	            <label>도서 제목<i class="fa-solid fa-asterisk red"></i></label>
+	            <input type="text" name="bookTitle" class="field w-100" onblur="checkBookTitle();">
+	            <!-- <div class="success-feedback">형식에 맞는 도서명입니다</div> -->
+	            <div class="fail-feedback">도서명은 필수 항목입니다</div>
+	        </div>
+	        <div class="cell">
+	            <label>저자</label>
+	            <input type="text" name="bookAuthor" class="field w-100" onblur="checkBookAuthor();">
+	            <!-- <div class="success-feedback">멋진 저자 이름입니다!</div> -->
+	            <div class="fail-feedback">특수문자는 사용하실 수 없습니다</div>
+	        </div>
+	        <div class="cell">
+	            <label>출간일</label>
+	            <input type="date" name="bookPublicationDate" class="field w-100" onblur="checkBookPublicationDate();">
+	            <!-- <div class="success-feedback">올바른 날짜 형식입니다</div> -->
+	            <div class="fail-feedback">잘못된 날짜 형식입니다</div>
+	        </div>
+	        <div class="cell">
+	            <label>출판사</label>
+	            <input type="text" name="bookPublisher" class="field w-100" onblur="checkBookPublisher();">
+	            <!-- <div class="success-feedback">올바른 형식의 출판사 이름입니다</div> -->
+	            <!-- <div class="fail-feedback">잘못된 형식의 출판사 이름입니다</div> -->
+	        </div>
+	        <div class="cell">
+	            <label>판매가<i class="fa-solid fa-asterisk red"></i></label>
+	            <input type="text" name="bookPrice" class="field w-100" 
+	                    onblur="checkBookPrice();" oninput="filterBookPrice();">
+	            <div class="success-feedback">가격 설정이 완료되었습니다</div>
+	            <div class="fail-feedback">가격은 0 이상으로 설정하셔야 합니다</div>
+	        </div>
+	        <div class="cell">
+	            <label>페이지 수<i class="fa-solid fa-asterisk red"></i></label>
+	            <input type="text" name="bookPageCount" class="field w-100" 
+	                    onblur="checkBookPageCount();" oninput="filterBookPageCount();">
+	            <div class="success-feedback">페이지 설정이 완료되었습니다</div>
+	            <div class="fail-feedback">페이지 수는 0보다 커야 합니다</div>
+	        </div>
+	        <div class="cell">
+	            <label>장르<i class="fa-solid fa-asterisk red"></i></label>
+	            <select name="bookGenre" class="field w-100" oninput="checkBookGenre();">
+	                <option value="">선택하세요</option>
+	                <option>추리/미스터리</option>
+	                <option>과학소설</option>
+	                <option>판타지</option>
+	                <option>로맨스</option>
+	                <option>스릴러/서스펜스</option>
+	                <option>역사 소설</option>
+	                <option>전기/평전</option>
+	                <option>성장 소설</option>
+	                <option>자기 계발</option>
+	            </select>
+	            <div class="fail-feedback">장르는 반드시 선택하셔야 합니다</div>
+	        </div>
+	
+	        <div class="cell mt-40">
+	            <button type="submit" class="btn btn-positive w-100">
+	                <i class="fa-solid fa-plus"></i>
+	                <span>저장하기</span>
+	            </button>
+	        </div>
+	</div>
+</form>
+
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

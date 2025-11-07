@@ -3,6 +3,8 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-
+로그인 아이디 : ${sessionScope.loginId}
+<br>
+로그인 등급 : ${sessionScope.loginLevel}
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

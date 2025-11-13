@@ -12,7 +12,7 @@ import com.kh.spring10.dto.StudentDto;
 
 @CrossOrigin // CORS 해제
 @RestController
-@RequestMapping("/pokemon")
+@RequestMapping("/student")
 public class StudentRestController 
 {
 	@Autowired

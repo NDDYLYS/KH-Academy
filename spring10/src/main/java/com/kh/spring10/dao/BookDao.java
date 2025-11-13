@@ -7,15 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.kh.spring10.dto.BookDto;
-import com.kh.spring10.mapper.BookMapper;
 
 @Repository
 public class BookDao 
 {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	@Autowired
-	private BookMapper bookMapper;
 	
 	public int sequence() 
 	{
@@ -61,32 +58,32 @@ public class BookDao
     	return 0 < result;
 	}
 	
-	public List<BookDto> selectList(String column, String keyword)
-	{
-		Set<String> allowList = Set.of("book_title", "book_author", "book_publisher");
-		
-		if (allowList.contains(column) == false)
-			return List.of(); // 비어있는 리스트;	
-		
-		String sql = "select * from book where instr("+column+", ?) > 0 "
-				+ "order by "+column+" asc, book_id asc";
-		Object[] params = {keyword};
-		return jdbcTemplate.query(sql, bookMapper, params);
-	}
-	
-	public List<BookDto> selectList()
-	{
-		String sql = "select * from book order by book_id asc";
-    	return jdbcTemplate.query(sql, bookMapper);
-	}
-	
-	public BookDto selectOne(int bookId) 
-	{
-		String sql = "select * from book where book_id = ?";
-		Object[] params = {bookId};
-		List<BookDto> list = jdbcTemplate.query(sql, bookMapper, params);
-		return list.isEmpty()? null : list.get(0);
-	}
+//	public List<BookDto> selectList(String column, String keyword)
+//	{
+//		Set<String> allowList = Set.of("book_title", "book_author", "book_publisher");
+//		
+//		if (allowList.contains(column) == false)
+//			return List.of(); // 비어있는 리스트;	
+//		
+//		String sql = "select * from book where instr("+column+", ?) > 0 "
+//				+ "order by "+column+" asc, book_id asc";
+//		Object[] params = {keyword};
+//		return jdbcTemplate.query(sql, bookMapper, params);
+//	}
+//	
+//	public List<BookDto> selectList()
+//	{
+//		String sql = "select * from book order by book_id asc";
+//    	return jdbcTemplate.query(sql, bookMapper);
+//	}
+//	
+//	public BookDto selectOne(int bookId) 
+//	{
+//		String sql = "select * from book where book_id = ?";
+//		Object[] params = {bookId};
+//		List<BookDto> list = jdbcTemplate.query(sql, bookMapper, params);
+//		return list.isEmpty()? null : list.get(0);
+//	}
 	
 //	public int count(PageVO pageVO) 
 //	{

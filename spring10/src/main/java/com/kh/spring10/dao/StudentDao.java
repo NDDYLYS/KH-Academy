@@ -6,16 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.kh.spring10.dto.StudentDto;
-import com.kh.spring10.mapper.StudentMapper;
 
 @Repository
 public class StudentDao 
 {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	@Autowired
-	private StudentMapper studentMapper;
-	
+//	@Autowired
+//	private StudentMapper studentMapper;
+//	
 	
 	public int sequence() 
 	{
@@ -57,27 +56,27 @@ public class StudentDao
     	return 0 < result;
 	}
 	
-	public List<StudentDto> selectList(String column, String keyword)
-	{
-		String sql = "select * from student where instr("+column+", ?) > 0 "
-				+ "order by "+column+" asc, student_no asc";
-		Object[] params = {keyword};
-		return jdbcTemplate.query(sql, studentMapper, params);
-	}
-	
-	public List<StudentDto> selectList()
-	{
-		String sql = "select * from student order by student_no asc";
-    	return jdbcTemplate.query(sql, studentMapper);
-	}
-	
-	public StudentDto selectOne(int studentNo)
-	{		
-		String sql = "select * from student where student_no = ?";
-		Object[] params = {studentNo};
-		List<StudentDto> list = jdbcTemplate.query(sql, studentMapper, params);
-		return list.isEmpty()? null : list.get(0);
-	}
+//	public List<StudentDto> selectList(String column, String keyword)
+//	{
+//		String sql = "select * from student where instr("+column+", ?) > 0 "
+//				+ "order by "+column+" asc, student_no asc";
+//		Object[] params = {keyword};
+//		return jdbcTemplate.query(sql, studentMapper, params);
+//	}
+//	
+//	public List<StudentDto> selectList()
+//	{
+//		String sql = "select * from student order by student_no asc";
+//    	return jdbcTemplate.query(sql, studentMapper);
+//	}
+//	
+//	public StudentDto selectOne(int studentNo)
+//	{		
+//		String sql = "select * from student where student_no = ?";
+//		Object[] params = {studentNo};
+//		List<StudentDto> list = jdbcTemplate.query(sql, studentMapper, params);
+//		return list.isEmpty()? null : list.get(0);
+//	}
 	
 //	public int count(PageVO pageVO) 
 //	{

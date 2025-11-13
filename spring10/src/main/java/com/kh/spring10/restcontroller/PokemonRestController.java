@@ -1,7 +1,10 @@
 package com.kh.spring10.restcontroller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,5 +39,12 @@ public class PokemonRestController
 		int pokemonNo = pokemonDao.sequence();
 		pokemonDto.setPokemonNo(pokemonNo);
 		pokemonDao.insert(pokemonDto);
+	}
+	
+	@GetMapping("/")
+	public List<PokemonDto> list() 
+	{
+		List<PokemonDto> pokemonDtoList = pokemonDao.selectList();
+		return pokemonDtoList;
 	}
 }

@@ -13,5 +13,11 @@
 	  	student_kor, student_eng, student_mat) values (#{studentNo}, 
 	  	#{studentName}, #{studentKor}, #{studentEng}, #{studentMat})
   	</insert>
+  	
+  	<!-- 목록 -->
+	<select id="list" resultType="StudentDto">
+		select * from student order by student_no asc
+	</select>
+<!-- 목록 -->
   
 </mapper>

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.PokemonDao;
 import com.kh.spring10.dto.PokemonDto;
+import com.kh.spring10.error.TargetNotfoundException;
 
 @CrossOrigin // CORS 해제
 @RestController
@@ -46,5 +49,23 @@ public class PokemonRestController
 	{
 		List<PokemonDto> pokemonDtoList = pokemonDao.selectList();
 		return pokemonDtoList;
+	}
+	
+	@GetMapping("/[pokemonNo]")
+	public PokemonDto detail(@PathVariable int pokemonNo) 
+	{
+		PokemonDto pokemonDto = pokemonDao.selectOne(pokemonNo);
+		if (pokemonDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 포켓몬");
+		return pokemonDto;
+	}
+	
+	@DeleteMapping("/[pokemonNo]")
+	public void delete(@PathVariable int pokemonNo) 
+	{
+		PokemonDto pokemonDto = pokemonDao.selectOne(pokemonNo);
+		if (pokemonDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 포켓몬");
+		pokemonDao.delete(pokemonNo);
 	}
 }

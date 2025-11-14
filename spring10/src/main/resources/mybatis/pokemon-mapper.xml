@@ -14,12 +14,24 @@
 	  	pokemon_type, pokemon_like) values (#{pokemonNo}, 
 	  	#{pokemonName}, #{pokemonType}, 0)
   	</insert>
-<!--   	등록 -->
+<!-- 등록 -->
 
 <!-- 목록 -->
 	<select id="list" resultType="PokemonDto">
 		select * from pokemon order by pokemon_no asc
 	</select>
 <!-- 목록 -->
+
+<!-- 상세조회 -->
+	<select id="detail" resultType="PokemonDto">
+		select * from pokemon where pokemon_no = #{pokemonNo}
+	</select>
+<!-- 상세조회 -->
+  
+<!--   삭제 -->
+	<delete id="delete">
+		delete pokemon where pokemon_no = #{pokemonNo}
+	</delete>
+<!--   삭제 -->
   
 </mapper>

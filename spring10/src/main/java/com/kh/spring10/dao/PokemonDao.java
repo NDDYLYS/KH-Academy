@@ -29,4 +29,14 @@ public class PokemonDao
 	{
 		return sqlSession.selectList("pokemon.list");
 	}
+	
+	public PokemonDto selectOne(int pokemonNo) 
+	{
+		return sqlSession.selectOne("pokemon.detail", pokemonNo);
+	}
+	
+	public boolean delete(int pokemonNo) 
+	{
+		return sqlSession.delete("pokemon.delete", pokemonNo) > 0;
+	}
 }

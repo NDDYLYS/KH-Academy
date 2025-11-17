@@ -39,4 +39,9 @@ public class PokemonDao
 	{
 		return sqlSession.delete("pokemon.delete", pokemonNo) > 0;
 	}
+	
+	public boolean update(PokemonDto pokemonDto) 
+	{
+		return sqlSession.update("pokemon.update", pokemonDto) > 0;
+	}
 }

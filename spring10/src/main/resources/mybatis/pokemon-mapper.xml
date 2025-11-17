@@ -33,5 +33,13 @@
 		delete pokemon where pokemon_no = #{pokemonNo}
 	</delete>
 <!--   삭제 -->
+
+<!-- 수정 -->
+	<update id="update">
+		update pokemon set
+		pokemon_name=#{pokemonName}, pokemon_type=#{pokemonType}, pokemon_like=#{pokemonLike}
+		where pokemon_no=#{pokemonNo}
+	</update>
+<!-- 수정 -->
   
 </mapper>

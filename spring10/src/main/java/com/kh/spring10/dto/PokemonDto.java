@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PokemonDto 
 {
-	private int pokemonNo;
+	private Integer pokemonNo;
 	private String pokemonName;
 	private String pokemonType;
-	private int pokemonLike;
+	private Integer pokemonLike;
 }

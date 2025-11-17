@@ -53,7 +53,7 @@ public class PokemonRestController
 		return pokemonDtoList;
 	}
 	
-	@GetMapping("/[pokemonNo]")
+	@GetMapping("/{pokemonNo}")
 	public PokemonDto detail(@PathVariable int pokemonNo) 
 	{
 		PokemonDto pokemonDto = pokemonDao.selectOne(pokemonNo);
@@ -62,7 +62,7 @@ public class PokemonRestController
 		return pokemonDto;
 	}
 	
-	@DeleteMapping("/[pokemonNo]")
+	@DeleteMapping("/{pokemonNo}")
 	public void delete(@PathVariable int pokemonNo) 
 	{
 		PokemonDto pokemonDto = pokemonDao.selectOne(pokemonNo);
@@ -71,15 +71,33 @@ public class PokemonRestController
 		pokemonDao.delete(pokemonNo);
 	}
 	
-//	@PutMapping("/[pokemonNo]")
-//	public void edit(@PathVariable int pokemonNo) 
-//	{
-//		
-//	}
-//	
-//	@PatchMapping("/[pokemonNo]")
-//	public void edit(@PathVariable int pokemonNo) 
-//	{
-//		
-//	}
+	// 전체 수정
+	@PutMapping("/{pokemonNo}")
+	public void updateAll(@PathVariable int pokemonNo, @RequestBody PokemonDto pokemonDto) 
+	{
+		PokemonDto originDto = pokemonDao.selectOne(pokemonNo);
+		if (originDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 포켓몬");
+		originDto.setPokemonName(pokemonDto.getPokemonName());
+		originDto.setPokemonType(pokemonDto.getPokemonType());	
+		originDto.setPokemonLike(pokemonDto.getPokemonLike());		
+		pokemonDao.update(originDto);
+	}
+	
+	//부분 수정
+	// 입력창마다 각기 저장 버튼이 존재
+	@PatchMapping("/{pokemonNo}")
+	public void update(@PathVariable int pokemonNo, @RequestBody PokemonDto pokemonDto) 
+	{
+		PokemonDto originDto = pokemonDao.selectOne(pokemonNo);
+		if (originDto == null) 
+			throw new TargetNotfoundException("존재하지 않는 포켓몬");
+		if (pokemonDto.getPokemonName() != null)
+			originDto.setPokemonName(pokemonDto.getPokemonName());
+		if (pokemonDto.getPokemonType() != null)
+			originDto.setPokemonType(pokemonDto.getPokemonType());		
+		if (pokemonDto.getPokemonLike() != null)
+			originDto.setPokemonLike(pokemonDto.getPokemonLike());		
+		pokemonDao.update(originDto);
+	}
 }

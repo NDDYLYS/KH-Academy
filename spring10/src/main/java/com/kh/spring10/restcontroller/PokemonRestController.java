@@ -2,6 +2,7 @@ package com.kh.spring10.restcontroller;
 
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -92,12 +93,12 @@ public class PokemonRestController
 		PokemonDto originDto = pokemonDao.selectOne(pokemonNo);
 		if (originDto == null) 
 			throw new TargetNotfoundException("존재하지 않는 포켓몬");
-		if (pokemonDto.getPokemonName() != null)
-			originDto.setPokemonName(pokemonDto.getPokemonName());
-		if (pokemonDto.getPokemonType() != null)
-			originDto.setPokemonType(pokemonDto.getPokemonType());		
-		if (pokemonDto.getPokemonLike() != null)
-			originDto.setPokemonLike(pokemonDto.getPokemonLike());		
-		pokemonDao.update(originDto);
+		pokemonDto.setPokemonNo(pokemonNo);
+		pokemonDao.updateUnit(pokemonDto);
+	}
+	
+	@GetMapping("/page/{page}")
+	public List<PokemonDto> listByPaging(@PathVariable int page) 
+	{
 	}
 }

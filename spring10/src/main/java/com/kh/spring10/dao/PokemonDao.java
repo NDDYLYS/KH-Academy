@@ -1,6 +1,8 @@
 package com.kh.spring10.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +45,23 @@ public class PokemonDao
 	public boolean update(PokemonDto pokemonDto) 
 	{
 		return sqlSession.update("pokemon.update", pokemonDto) > 0;
+	}
+	
+	public boolean updateUnit(PokemonDto pokemonDto) 
+	{
+		return sqlSession.update("pokemon.updateUnit", pokemonDto) > 0;
+	}
+	
+	public List<PokemonDto> selectList(int page) {
+		//필요한 값 계산
+		int size = 10;
+		int begin = page * size - (size - 1);
+		int end = page * size;
+		
+		Map<String, Integer> params = new HashMap<>();
+		params.put("begin", begin);
+		params.put("end", end);
+		
+		return sqlSession.selectList("pokemon.listByPaging", params);
 	}
 }

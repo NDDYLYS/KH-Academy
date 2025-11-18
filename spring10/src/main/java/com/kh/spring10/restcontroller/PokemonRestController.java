@@ -18,6 +18,7 @@ import com.kh.spring10.dao.PokemonDao;
 import com.kh.spring10.dto.PokemonDto;
 import com.kh.spring10.error.TargetNotfoundException;
 import com.kh.spring10.vo.PageVO;
+import com.kh.spring10.vo.PokemonListVO;
 
 @CrossOrigin // CORS 해제
 @RestController
@@ -98,12 +99,21 @@ public class PokemonRestController
 	}
 	
 	@GetMapping("/page/{page}")
-	public List<PokemonDto> listByPaging(@PathVariable int page) 
+	public PokemonListVO listByPaging(@PathVariable int page) 
 	{
 		PageVO pageVO = new PageVO();
 		pageVO.setPage(page);
 		pageVO.setDataCount(pokemonDao.count());
+		List<PokemonDto> list = pokemonDao.selectList(pageVO);
 		
-		return pokemonDao.selectList(pageVO);
+		return PokemonListVO.builder()
+				.page(pageVO.getPage())
+				.size(pageVO.getSize())
+				.count(pageVO.getDataCount())
+				.begin(pageVO.getBegin())
+				.end(pageVO.getEnd())
+				.last(pageVO.getPage() >= pageVO.getTotalPage())
+				.list(list)
+				.build();				
 	}
 }

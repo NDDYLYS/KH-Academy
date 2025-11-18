@@ -2,7 +2,6 @@ package com.kh.spring10.restcontroller;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.spring10.dao.PokemonDao;
 import com.kh.spring10.dto.PokemonDto;
 import com.kh.spring10.error.TargetNotfoundException;
+import com.kh.spring10.vo.PageVO;
 
 @CrossOrigin // CORS 해제
 @RestController
@@ -100,5 +100,10 @@ public class PokemonRestController
 	@GetMapping("/page/{page}")
 	public List<PokemonDto> listByPaging(@PathVariable int page) 
 	{
+		PageVO pageVO = new PageVO();
+		pageVO.setPage(page);
+		pageVO.setDataCount(pokemonDao.count());
+		
+		return pokemonDao.selectList(pageVO);
 	}
 }

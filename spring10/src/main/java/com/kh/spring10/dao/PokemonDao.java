@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring10.dto.PokemonDto;
+import com.kh.spring10.vo.PageVO;
 
 @Repository
 public class PokemonDao 
@@ -52,16 +53,15 @@ public class PokemonDao
 		return sqlSession.update("pokemon.updateUnit", pokemonDto) > 0;
 	}
 	
-	public List<PokemonDto> selectList(int page) {
-		//필요한 값 계산
-		int size = 10;
-		int begin = page * size - (size - 1);
-		int end = page * size;
-		
+	public int count() {
+		return sqlSession.selectOne("pokemon.countByPaging");
+	}
+	
+	public List<PokemonDto> selectList(PageVO pageVO) {
 		Map<String, Integer> params = new HashMap<>();
-		params.put("begin", begin);
-		params.put("end", end);
+		params.put("begin", pageVO.getBegin());
+		params.put("end", pageVO.getEnd());
 		
-		return sqlSession.selectList("pokemon.listByPaging", params);
+		return sqlSession.selectList("pokemon.listByPaging", params); // pageVO
 	}
 }

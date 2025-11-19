@@ -252,4 +252,9 @@ public class BoardDao
 		Object[] params = {boardNo};
 		jdbcTemplate.update(sql, params);
 	}
+	
+	public List<BoardDto> selectList() {
+	        String sql = "select * from board order by board_no desc";
+	    return jdbcTemplate.query(sql, boardMapper);
+	}
 }

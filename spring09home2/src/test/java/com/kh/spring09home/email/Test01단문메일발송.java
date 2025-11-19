@@ -3,11 +3,12 @@ package com.kh.spring09home.email;
 import java.util.Properties;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-@SpringBootTest
+@SpringBootApplication
 public class Test01단문메일발송 
 {
 	@Test

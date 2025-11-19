@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 // Spring-boot-starter-validation을 추가하면 검사용 annotation 사용 가능
 //@NotNull
@@ -24,6 +25,7 @@ import lombok.NoArgsConstructor;
 //@Positive
 //검사를 통과 안 하면 MethodArgumentNotValidException 발생
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
+@ToString(exclude={"accountPw"})
 public class AccountDto {
 	
 	@NotBlank

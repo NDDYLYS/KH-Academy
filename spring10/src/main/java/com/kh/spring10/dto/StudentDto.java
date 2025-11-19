@@ -2,12 +2,14 @@
 package com.kh.spring10.dto;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class StudentDto 
 {
 	private int studentNo;

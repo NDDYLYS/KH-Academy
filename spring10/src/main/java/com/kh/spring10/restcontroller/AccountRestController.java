@@ -77,8 +77,8 @@ public class AccountRestController {
 				responseCode = "500"//상태코드
 				, description = "서버 오류"//설명
 				, content = @Content(//결과 메세지의 형태 및 샘플
-					mediaType = "text/plain"//일반 글자
-					, schema = @Schema(implementation = String.class)
+					//mediaType = "text/plain"//일반 글자
+					schema = @Schema(implementation = String.class)
 					, examples = {
 						@ExampleObject(value = "server error")
 					}
@@ -114,8 +114,8 @@ public class AccountRestController {
 					responseCode = "500"//상태코드
 					, description = "서버 오류"//설명
 					, content = @Content(//결과 메세지의 형태 및 샘플
-						mediaType = "text/plain"//일반 글자
-						, schema = @Schema(implementation = String.class)
+						//mediaType = "text/plain"//일반 글자
+						schema = @Schema(implementation = String.class)
 						, examples = {
 							@ExampleObject(value = "server error")
 						}

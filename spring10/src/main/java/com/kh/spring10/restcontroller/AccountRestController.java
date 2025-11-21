@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.AccountDao;
 import com.kh.spring10.dto.AccountDto;
+import com.kh.spring10.error.TargetNotfoundException;
+import com.kh.spring10.vo.AccountLoginResponseVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -135,16 +137,19 @@ public class AccountRestController {
 	
 	//@GetMapping("/accountId/{accountId}/accountPw/{accountPw}")
 	@PostMapping("/login")
-	public boolean login(@RequestBody AccountDto accountDto) {
+	public AccountLoginResponseVO login(@RequestBody AccountDto accountDto) {
 		AccountDto findDto = accountDao.selectOne(accountDto.getAccountId());
 		if (findDto == null)
-			return false;
+			throw new TargetNotfoundException("존재하지 않는 계정");
 		
 		boolean valid = passwordEncoder.matches(accountDto.getAccountPw(), findDto.getAccountPw());
 		
 		if (valid == false)
-			return false;
+			throw new TargetNotfoundException("로그인 인증 실패");
 		
-		return true;
+		return AccountLoginResponseVO.builder()
+				.loginId(findDto.getAccountId())
+				.loginLevel(findDto.getAccountLevel())
+				.build();
 	}
 }

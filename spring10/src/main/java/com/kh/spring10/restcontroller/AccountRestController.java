@@ -1,6 +1,7 @@
 package com.kh.spring10.restcontroller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,8 @@ import jakarta.validation.Valid;
 public class AccountRestController {
 	@Autowired
 	private AccountDao accountDao;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 //	
 //	@Operation
 //	(
@@ -128,5 +131,20 @@ public class AccountRestController {
 	public boolean checkAccountNickname(@PathVariable String accountNickname) {
 		AccountDto accountDto = accountDao.selectOneByAccountNickname(accountNickname);
 		return accountDto == null;
+	}
+	
+	//@GetMapping("/accountId/{accountId}/accountPw/{accountPw}")
+	@PostMapping("/login")
+	public boolean login(@RequestBody AccountDto accountDto) {
+		AccountDto findDto = accountDao.selectOne(accountDto.getAccountId());
+		if (findDto == null)
+			return false;
+		
+		boolean valid = passwordEncoder.matches(accountDto.getAccountPw(), findDto.getAccountPw());
+		
+		if (valid == false)
+			return false;
+		
+		return true;
 	}
 }

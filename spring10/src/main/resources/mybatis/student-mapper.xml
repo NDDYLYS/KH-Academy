@@ -16,7 +16,7 @@
   	
   	<!-- 목록 -->
 	<select id="list" resultType="StudentDto">
-		select * from student order by student_no asc
+		select * from student order by student_no desc
 	</select>
 <!-- 목록 -->
   

@@ -30,7 +30,7 @@ public class TokenService {
 		Calendar c = Calendar.getInstance();
 		Date now = c.getTime();
 		
-		c.add(Calendar.MINUTE, 30);
+		c.add(Calendar.MINUTE, 1);
 		Date expire = c.getTime();
 		
 		String token = Jwts.builder()

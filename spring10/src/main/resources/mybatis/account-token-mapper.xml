@@ -5,6 +5,6 @@
 <mapper namespace="accountToken">
 	<insert id="insert">
 		insert into account_token(account_token_no, account_token_target, account_token_value)
-		values (#{accountTokenNo}, #{accountTokenTarget}, #{accountTokenValue})
+		values (account_token_seq.nextval, #{accountTokenTarget}, #{accountTokenValue})
 	</insert>
 </mapper>

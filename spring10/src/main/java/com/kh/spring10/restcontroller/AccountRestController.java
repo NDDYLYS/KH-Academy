@@ -154,6 +154,7 @@ public class AccountRestController {
 				.loginId(findDto.getAccountId())
 				.loginLevel(findDto.getAccountLevel())
 				.accessToken(tokenService.generateAccessToken(accountDto))
+				.refreshToken(tokenService.generateRefreshToken(accountDto))
 				.build();
 	}
 }

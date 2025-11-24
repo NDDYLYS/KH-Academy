@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.kh.spring10.configurtion.JwtProperties;
 import com.kh.spring10.dto.AccountDto;
+import com.kh.spring10.error.UnauthorizationException;
+import com.kh.spring10.vo.TokenVO;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -41,5 +44,25 @@ public class TokenService {
 		
 		//System.out.println(token);
 		return token;
+	}
+	
+	public TokenVO parse(String authorization) {
+		if (authorization.startsWith("Bearer ") == false)
+			throw new UnauthorizationException("토큰을 조작했다.");
+		
+		String token = authorization.substring(7);
+		SecretKey key = Keys.hmacShaKeyFor(jwtProperties.getKeyStr().getBytes(StandardCharsets.UTF_8));
+		
+		Claims claims =  (Claims) Jwts.parser()
+				.verifyWith(key)
+				.requireIssuer(jwtProperties.getIssuer())
+				.build()
+				.parse(token)
+				.getPayload();
+		
+		return TokenVO.builder()
+				.loginId((String)claims.get("loginId"))
+				.loginLevel((String)claims.get("loginLevel"))
+				.build();
 	}
 }

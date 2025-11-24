@@ -20,6 +20,11 @@ import com.kh.spring10.error.TargetNotfoundException;
 import com.kh.spring10.vo.PageVO;
 import com.kh.spring10.vo.PokemonListVO;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name="포켓몬관리 컨트롤러")
+
 @CrossOrigin // CORS 해제
 @RestController
 @RequestMapping("/pokemon")
@@ -40,6 +45,7 @@ public class PokemonRestController
 	
 	// /pokemon/ [post]
 	
+	@Operation(summary = "포켓몬 등록", description = "add pokemon")
 	@PostMapping("/")
 	public void insert(@RequestBody PokemonDto pokemonDto) 
 	{

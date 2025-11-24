@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.spring10.dao.BookDao;
 import com.kh.spring10.dto.BookDto;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name="도서관리 컨트롤러")
+
 @CrossOrigin // CORS 해제
 @RestController
 @RequestMapping("/book")

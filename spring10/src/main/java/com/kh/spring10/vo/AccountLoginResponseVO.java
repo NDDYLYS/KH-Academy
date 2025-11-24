@@ -10,4 +10,5 @@ public class AccountLoginResponseVO {
 
 	private String loginId;
 	private String loginLevel;
+	private String accessToken;	
 }

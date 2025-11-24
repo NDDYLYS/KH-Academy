@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.spring10.dao.AccountDao;
 import com.kh.spring10.dto.AccountDto;
 import com.kh.spring10.error.TargetNotfoundException;
+import com.kh.spring10.service.TokenService;
 import com.kh.spring10.vo.AccountLoginResponseVO;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +34,8 @@ public class AccountRestController {
 	private AccountDao accountDao;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private TokenService tokenService;
 //	
 //	@Operation
 //	(
@@ -150,6 +153,7 @@ public class AccountRestController {
 		return AccountLoginResponseVO.builder()
 				.loginId(findDto.getAccountId())
 				.loginLevel(findDto.getAccountLevel())
+				.accessToken(tokenService.generateAccessToken(accountDto))
 				.build();
 	}
 }

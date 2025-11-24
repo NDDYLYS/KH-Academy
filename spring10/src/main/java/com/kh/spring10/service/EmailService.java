@@ -1,26 +1,15 @@
 package com.kh.spring10.service;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Random;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.server.PathContainer.Element;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import com.kh.spring10.dao.CertDao;
-import com.kh.spring10.dto.AccountDto;
 import com.kh.spring10.dto.CertDto;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailService 

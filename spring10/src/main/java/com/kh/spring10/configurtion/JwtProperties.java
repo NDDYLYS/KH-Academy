@@ -9,4 +9,7 @@ import lombok.Data;
 public class JwtProperties {
 	private String keyStr; // custom.jwt.key-Str을 불러온다
 	private String issuer;
+	private int expiration;//액세스토큰 만료시간(분)
+	private int refreshExpiration;//갱신토큰 만료시간(일)
+	private int renewalLimit;//
 }

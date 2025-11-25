@@ -24,7 +24,7 @@ public class AccountTokenDao {
 		return sqlSession.delete("accountToken.delete", accountTokenNo) > 0;
 	}
 	
-	public boolean deleteById(AccountTokenDto accountTokenDto) {
-		return sqlSession.delete("accountToken.deleteById", accountTokenDto) > 0;
+	public boolean deleteByTarget(String accountTokenTarget) {
+		return sqlSession.delete("accountToken.deleteByTarget", accountTokenTarget) > 0;
 	}
 }

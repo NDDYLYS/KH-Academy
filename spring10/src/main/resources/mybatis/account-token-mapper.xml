@@ -20,7 +20,7 @@
 		delete account_token where account_token_no = #{accountTokenNo}
 	</delete>
 	
-	<delete id="deleteById">
+	<delete id="deleteByTarget">
 		delete account_token where account_token_target = #{accountTokenTarget}
 	</delete>
 </mapper>

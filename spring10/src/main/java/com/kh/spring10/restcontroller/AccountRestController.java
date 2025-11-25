@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.AccountDao;
 import com.kh.spring10.dao.AccountTokenDao;
 import com.kh.spring10.dto.AccountDto;
-import com.kh.spring10.dto.AccountTokenDto;
 import com.kh.spring10.error.TargetNotfoundException;
 import com.kh.spring10.error.UnauthorizationException;
 import com.kh.spring10.service.TokenService;
@@ -158,10 +158,6 @@ public class AccountRestController {
 		if (valid == false)
 			throw new TargetNotfoundException("로그인 인증 실패");
 		
-		accountTokenDao.deleteById(AccountTokenDto.builder()
-				.accountTokenTarget(accountDto.getAccountId())
-				.build());
-		
 		return AccountLoginResponseVO.builder()
 				.loginId(findDto.getAccountId())
 				.loginLevel(findDto.getAccountLevel())
@@ -171,10 +167,9 @@ public class AccountRestController {
 	}
 	
 	@DeleteMapping("/logout")
-	public void logout(@RequestBody String loginId) {
-		accountTokenDao.deleteById(AccountTokenDto.builder()
-				.accountTokenTarget(loginId)
-				.build());
+	public void logout(@RequestHeader("Authorization") String bearerToken) {
+		TokenVO tokenVO = tokenService.parse(bearerToken);
+		accountTokenDao.deleteByTarget(tokenVO.getLoginId());
 	}
 	
 	@PostMapping("/refresh")

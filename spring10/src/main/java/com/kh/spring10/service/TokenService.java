@@ -50,6 +50,8 @@ public class TokenService {
 		c.add(Calendar.MINUTE, jwtProperties.getExpiration());
 		Date expire = c.getTime();//만료 시각
 		
+		accountTokenDao.deleteByTarget(accountDto.getAccountId());
+		
 		//JWT 토큰 생성
 		return Jwts.builder()
 				.signWith(key)//토큰 해독에 사용할 키 설정
@@ -90,6 +92,8 @@ public class TokenService {
 				.claim("loginId", accountDto.getAccountId())//정보 추가(key,value)
 				.claim("loginLevel", accountDto.getAccountLevel())//정보 추가(key,value)
 			.compact();
+		
+		accountTokenDao.deleteByTarget(accountDto.getAccountId());
 		
 		//DB 저장 (액세스 토큰과 달라지는 작업)
 		accountTokenDao.insert(AccountTokenDto.builder()
@@ -157,12 +161,13 @@ public class TokenService {
 	{
 		AccountTokenDto accountTokenDto = accountTokenDao.selectOne(AccountTokenDto.builder()
 				.accountTokenTarget(tokenVO.getLoginId())
-				.accountTokenValue(refreshToken)
+				.accountTokenValue(refreshToken.substring(7))
 				.build());
 		
 		if (accountTokenDto == null) return false;
 		
-		accountTokenDao.delete(accountTokenDto.getAccountTokenNo());
+		//accountTokenDao.delete(accountTokenDto.getAccountTokenNo());
+		//accountTokenDao.deleteByTarget(tokenVO.getLoginId());
 		
 		return true;
 	}

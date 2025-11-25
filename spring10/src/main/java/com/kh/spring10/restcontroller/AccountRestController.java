@@ -3,6 +3,7 @@ package com.kh.spring10.restcontroller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,10 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.AccountDao;
+import com.kh.spring10.dao.AccountTokenDao;
 import com.kh.spring10.dto.AccountDto;
+import com.kh.spring10.dto.AccountTokenDto;
 import com.kh.spring10.error.TargetNotfoundException;
+import com.kh.spring10.error.UnauthorizationException;
 import com.kh.spring10.service.TokenService;
 import com.kh.spring10.vo.AccountLoginResponseVO;
+import com.kh.spring10.vo.AccountRefreshVO;
+import com.kh.spring10.vo.TokenVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,6 +42,8 @@ public class AccountRestController {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private TokenService tokenService;
+	@Autowired
+	private AccountTokenDao accountTokenDao;
 //	
 //	@Operation
 //	(
@@ -150,11 +158,40 @@ public class AccountRestController {
 		if (valid == false)
 			throw new TargetNotfoundException("로그인 인증 실패");
 		
+		accountTokenDao.deleteById(AccountTokenDto.builder()
+				.accountTokenTarget(accountDto.getAccountId())
+				.build());
+		
 		return AccountLoginResponseVO.builder()
 				.loginId(findDto.getAccountId())
 				.loginLevel(findDto.getAccountLevel())
 				.accessToken(tokenService.generateAccessToken(accountDto))
 				.refreshToken(tokenService.generateRefreshToken(accountDto))
+				.build();
+	}
+	
+	@DeleteMapping("/logout")
+	public void logout(@RequestBody String loginId) {
+		accountTokenDao.deleteById(AccountTokenDto.builder()
+				.accountTokenTarget(loginId)
+				.build());
+	}
+	
+	@PostMapping("/refresh")
+	public AccountLoginResponseVO refresh(@RequestBody AccountRefreshVO accountRefreshVO) 
+	{
+		String refreshToken = accountRefreshVO.getRefreshToken();
+		if (refreshToken == null) throw new UnauthorizationException();
+		
+		TokenVO tokenVO = tokenService.parse(refreshToken);
+		boolean valid = tokenService.checkRefreshToken(tokenVO, refreshToken);
+		if(valid == false) throw new TargetNotfoundException();
+		
+		return AccountLoginResponseVO.builder()
+				.loginId(tokenVO.getLoginId())
+				.loginLevel(tokenVO.getLoginLevel())
+				.accessToken(tokenService.generateAccessToken(tokenVO))
+				.refreshToken(tokenService.generateRefreshToken(tokenVO))
 				.build();
 	}
 }

@@ -14,4 +14,17 @@ public class AccountTokenDao {
 	public void insert(AccountTokenDto accountTokenDto ) {
 		sqlSession.insert("accountToken.insert", accountTokenDto);
 	}
+	
+	public AccountTokenDto selectOne (AccountTokenDto accountTokenDto) 
+	{
+		return sqlSession.selectOne("accountToken.detail", accountTokenDto);
+	}
+	
+	public boolean delete(Long accountTokenNo) {
+		return sqlSession.delete("accountToken.delete", accountTokenNo) > 0;
+	}
+	
+	public boolean deleteById(AccountTokenDto accountTokenDto) {
+		return sqlSession.delete("accountToken.deleteById", accountTokenDto) > 0;
+	}
 }

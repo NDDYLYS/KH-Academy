@@ -32,6 +32,14 @@ public class TokenService {
 	/**
 	 * 로그인한 사용자에게 향후 접근을 위한 액세스 토큰을 만드는 기능
 	 */
+	public String generateAccessToken(TokenVO tokenVO) 
+	{
+		return generateAccessToken(AccountDto.builder()
+				.accountId(tokenVO.getLoginId())
+				.accountLevel(tokenVO.getLoginLevel())
+				.build());
+	}
+	
 	public String generateAccessToken(AccountDto accountDto) {
 		String keyStr = jwtProperties.getKeyStr();//설정파일에 있는 keyStr값
 		SecretKey key = Keys.hmacShaKeyFor(keyStr.getBytes(StandardCharsets.UTF_8));
@@ -51,6 +59,14 @@ public class TokenService {
 				.claim("loginId", accountDto.getAccountId())//정보 추가(key,value)
 				.claim("loginLevel", accountDto.getAccountLevel())//정보 추가(key,value)
 			.compact();
+	}
+	
+	public String generateRefreshToken(TokenVO tokenVO) 
+	{
+		return generateRefreshToken(AccountDto.builder()
+				.accountId(tokenVO.getLoginId())
+				.accountLevel(tokenVO.getLoginLevel())
+				.build());
 	}
 	
 	public String generateRefreshToken(AccountDto accountDto) {
@@ -112,6 +128,14 @@ public class TokenService {
 		if(bearerToken.startsWith("Bearer ") == false)//Bearer 토큰이 아니라면
 			throw new UnauthorizationException();//예외 처리!
 		
+//		if (bearerToken == null || bearerToken.isBlank()) {
+//	        throw new UnauthorizationException("Authorization header missing");
+//	    }
+//
+//	    if (!bearerToken.startsWith("Bearer ")) {
+//	        throw new UnauthorizationException("Invalid token type");
+//	    }
+		
 		//앞 7글자 제거 (B.e.a.r.e.r. )
 		String token = bearerToken.substring(7);
 		
@@ -127,5 +151,19 @@ public class TokenService {
 		//return expire.getTime() - System.currentTimeMillis();//만료시각 - 현재시각
 		Date now = new Date();
 		return expire.getTime() - now.getTime();//만료시각 - 현재시각 (무조건 0이상)
+	}
+	
+	public boolean checkRefreshToken(TokenVO tokenVO, String refreshToken) 
+	{
+		AccountTokenDto accountTokenDto = accountTokenDao.selectOne(AccountTokenDto.builder()
+				.accountTokenTarget(tokenVO.getLoginId())
+				.accountTokenValue(refreshToken)
+				.build());
+		
+		if (accountTokenDto == null) return false;
+		
+		accountTokenDao.delete(accountTokenDto.getAccountTokenNo());
+		
+		return true;
 	}
 }

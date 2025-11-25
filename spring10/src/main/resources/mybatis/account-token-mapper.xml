@@ -7,4 +7,20 @@
 		insert into account_token(account_token_no, account_token_target, account_token_value)
 		values (account_token_seq.nextval, #{accountTokenTarget}, #{accountTokenValue})
 	</insert>
+	
+	<select id="detail" resultType="AccountTokenDto">
+		select * from accout_token 
+		where 
+			account_token_target = #{accountTokenTarget}
+			and
+			account_token_value = #{accountTokenValue}
+	</select>
+	
+	<delete id="delete">
+		delete account_token where account_token_no = #{accountTokenNo}
+	</delete>
+	
+	<delete id="deleteById">
+		delete account_token where account_token_target = #{accountTokenTarget}
+	</delete>
 </mapper>

@@ -7,14 +7,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class InterceptorConfiguration implements WebMvcConfigurer {
-
 	@Autowired
 	private MemberInterceptor memberInterceptor;
 	
+	@Autowired
+	private TokenRenewalInterceptor tokenRenewalInterceptor;
+	
 	@Override
-	public void addInterceptors(InterceptorRegistry registry) // 인터셉터 등록메소드
-	{
+	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(memberInterceptor)
-		.addPathPatterns("/pokemon/**");
+						.addPathPatterns("/student/**");
+		
+		registry.addInterceptor(tokenRenewalInterceptor)
+						.addPathPatterns("/**")
+						.excludePathPatterns("/account/login", "/account/refresh");
 	}
 }

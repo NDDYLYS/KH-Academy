@@ -21,4 +21,16 @@
 	<select id="detail-nickname" resultType="AccountDto">
 		select * from account where account_nickname = #{accountNickname}
 	</select>
+	
+	<select id="search" resultType="AccountDto">
+<!-- 		select * from account  -->
+<!-- 		where instr(#1 -> $, ? -> #) > 0 and account_level != '관리자' -->
+<!-- 		order by #1 asc, account_id asc -->
+			select * from account 
+			where
+				instr(${column}, #{keyword}) > 0
+				and
+				account_level != '관리자'
+			order by ${column} asc, account_id asc
+	</select>
 </mapper>

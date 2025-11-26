@@ -87,9 +87,9 @@
 					]]>
 				</when>
 			</choose>
-			<if test="accountLevelList != null">
+			<if test="accountLevelList != null and accountLevelList.size() > 0">
 				<foreach item="accountLevel" collection="accountLevelList" separator="," open="and account_level in (" close=")">
-					${accountLevel}
+					#{accountLevel}
 				</foreach> 
 			</if>
 		</where>

@@ -30,14 +30,14 @@ public class Test02복합검색 {
 		//params.put("minAccountPoint", 100);
 		//params.put("maxAccountPoint", 1000);
 		//params.put("beginAccountJoin", "2025-11-20");
-//		//params.put("endAccountJoin", "2025-11-23");
+		//params.put("endAccountJoin", "2025-11-23");
 //		params.put("accountLevelList", List.of());
 //		params.put("accountLevelList", List.of("일반회원"));
 //		params.put("accountLevelList", List.of("우수회원"));
 		params.put("accountLevelList", List.of("관리자"));
 //		params.put("accountLevelList", List.of("일반회원", "우수회원"));
-//		params.put("accountLevelList", List.of("우수회원", "관리자"));
 //		params.put("accountLevelList", List.of("일반회원", "관리자"));
+//		params.put("accountLevelList", List.of("우수회원", "관리자"));
 //		params.put("accountLevelList", List.of("일반회원", "우수회원", "관리자"));
 //		params.put("accountPost", 10);
 //		params.put("accountAddress1", "");

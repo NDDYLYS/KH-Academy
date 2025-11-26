@@ -36,69 +36,94 @@
 	
 	<select id="complexSearch" resultType="AccountDto">
 		select * from account
-		<where>		
+		<!-- 
+			where절이 조건부로 존재할 때 사용하는 태그 
+			- 내부에 작성된 and 구문은 상황에 맞게 알아서 제거됨
+			- 즉, 내부의 조건구문은 and 또는 or로 시작해야함 (대부분 and로 시작)
+		-->
+		<where>
+			<!-- 아이디 : 유사 검색 -->
 			<if test="accountId != null">
-				and instr(account_id, #{accountId}) > 0		
+			and instr(account_id, #{accountId}) > 0
 			</if>
+			<!-- 닉네임 : 유사 검색 -->
 			<if test="accountNickname != null">
-				and instr(account_nickname, #{accountNickname}) > 0		
+			and instr(account_nickname, #{accountNickname}) > 0
 			</if>
+			<!-- 이메일 : 유사 검색 -->
 			<if test="accountEmail != null">
-				and instr(account_email, #{accountEmail}) > 0		
+			and instr(account_email, #{accountEmail}) > 0
 			</if>
+			<!-- 전화번호 : 유사 검색(시작) -->
 			<if test="accountContact != null">
-				and account_contact like #{accountContact} || '%'
+			and account_contact like #{accountContact} || '%'
+			<!-- and account_contact like concat(#{accountContact}, '%') -->
 			</if>
+			<!-- 생년월일 : 일치 검색 -->
 			<if test="accountBirth != null">
-				and account_birth = #{accountBirth}
+			and account_birth = #{accountBirth}
 			</if>
+			<!-- 포인트 : 구간 검색 -->
 			<choose>
 				<when test="minAccountPoint != null and maxAccountPoint != null">
 					and account_point between #{minAccountPoint} and #{maxAccountPoint}
 				</when>
 				<when test="minAccountPoint != null">
-<!-- 					and account_point &gt;= #{minAccountPoint} -->
+					<!-- and account_point &gt;= #{minAccountPoint} -->
+					<!-- 사용할 수 없는 글자가 있다면 Character Data 구문을 만들어 표시 -->
 					<![CDATA[
 						and account_point >= #{minAccountPoint}
 					]]>
 				</when>
 				<when test="maxAccountPoint != null">
-<!-- 					and account_point &lt;= #{maxAccountPoint} -->
+					<!-- and account_point &lt;= #{maxAccountPoint} -->
 					<![CDATA[
 						and account_point <= #{maxAccountPoint}
 					]]>
 				</when>
 			</choose>
+			
+			<!-- 가입일 검사 -->
 			<choose>
 				<when test="beginAccountJoin != null and endAccountJoin != null">
-					and account_join between 
-					to_timestamp(#{beginAccountJoin} || '00.00.00.000', 'yyyy-mm-dd hh24:mi:ss.ff3') 
-					and 
-					to_timestamp(#{endAccountJoin} || '23.59.59.999', 'yyyy-mm-dd hh24:mi:ss.ff3') 
+					and account_join 
+						between 
+						to_timestamp(#{beginAccountJoin} || '00:00:00.000', 'yyyy-mm-dd hh24:mi:ss.ff3')
+						and 
+						to_timestamp(#{endAccountJoin} || '23:59:59.999', 'yyyy-mm-dd hh24:mi:ss.ff3')
 				</when>
 				<when test="beginAccountJoin != null">
 					<![CDATA[
-						and account_join >= to_timestamp(#{beginAccountJoin} || '00.00.00.000', 'yyyy-mm-dd hh24:mi:ss.ff3')
+					and account_join >= to_timestamp(#{beginAccountJoin} || '00:00:00.000', 'yyyy-mm-dd hh24:mi:ss.ff3')
 					]]>
 				</when>
 				<when test="endAccountJoin != null">
 					<![CDATA[
-						and account_join <= to_timestamp(#{endAccountJoin} || '23.59.59.999', 'yyyy-mm-dd hh24:mi:ss.ff3')
+					and account_join <= to_timestamp(#{endAccountJoin} || '23:59:59.999', 'yyyy-mm-dd hh24:mi:ss.ff3')
 					]]>
 				</when>
 			</choose>
+			
+			<!-- 원하는 등급을 검색 -->
 			<if test="accountLevelList != null and accountLevelList.size() > 0">
-				<foreach item="accountLevel" collection="accountLevelList" separator="," open="and account_level in (" close=")">
+				<!-- item(변수명), collection(저장소), separator(구분자) -->
+				<foreach item="accountLevel" collection="accountLevelList"
+								separator="," open="and account_level in (" close=")">
 					#{accountLevel}
-				</foreach> 
+				</foreach>
 			</if>
-<!-- 			<if test="addressTokenList != null and addressTokenList.lengh > 0"> -->
+			
+			<!-- 주소 토큰으로 검색 -->
+<!-- 			<if test="addressTokenList != null and addressTokenList.length > 0"> -->
 			<if test="addressTokenList != null and addressTokenList.size() > 0">
-				<foreach item="token" collection="addressTokenList" separator="and" open="(" close=")">
+				and 
+				<foreach collection="addressTokenList" item="token" 
+						separator="and" open="(" close=")">
 					instr(account_address1, #{token}) > 0
 				</foreach>
 			</if>
+			
 		</where>
-	</select>
+	</select>	
 		
 </mapper>

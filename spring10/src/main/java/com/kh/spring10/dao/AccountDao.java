@@ -33,6 +33,6 @@ public class AccountDao {
 	}
 	
 	public List<AccountDto> selectList(AccountComplexSearchVO vo){
-		return sqlSession.selectList("account.complexSearch", params);
+		return sqlSession.selectList("account.complexSearch", vo);
 	}
 }

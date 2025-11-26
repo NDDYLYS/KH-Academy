@@ -2,6 +2,7 @@ package com.kh.spring10.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.validation.constraints.Email;
@@ -68,8 +69,11 @@ public class AccountDto {
 	private String accountAddress2;
 	
 	// Timestamp 대신 LocalDateTime로 쓴다(myBatis가 자동 변환)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private LocalDateTime accountJoin;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private LocalDateTime accountChange;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private LocalDateTime accountLogin;
 
 }

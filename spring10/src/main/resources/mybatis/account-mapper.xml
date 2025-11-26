@@ -26,11 +26,53 @@
 <!-- 		select * from account  -->
 <!-- 		where instr(#1 -> $, ? -> #) > 0 and account_level != '관리자' -->
 <!-- 		order by #1 asc, account_id asc -->
-			select * from account 
-			where
-				instr(${column}, #{keyword}) > 0
-				and
-				account_level != '관리자'
-			order by ${column} asc, account_id asc
+		select * from account 
+		where 
+			instr(${column}, #{keyword}) > 0 
+			and 
+			account_level != '관리자' 
+		order by ${column} asc, account_id asc
 	</select>
+	
+	<select id="complexSearch" resultType="AccountDto">
+		select * from account
+		<where>		
+			<if test="accountId != null">
+				and instr(account_id, #{accountId}) > 0		
+			</if>
+			<if test="accountNickname != null">
+				and instr(account_nickname, #{accountNickname}) > 0		
+			</if>
+			<if test="accountEmail != null">
+				and instr(account_email, #{accountEmail}) > 0		
+			</if>
+			<if test="accountContact != null">
+				and account_contact like #{accountContact} || '%'
+			</if>
+			<if test="accountBirth != null">
+				and account_birth = #{accountBirth}
+			</if>
+			<if test="accountLevel != null">
+				and instr(account_level, #{accountLevel}) > 0		
+			</if>
+			<choose>
+				<when test="minAccountPoint != null and maxAccountPoint != null">
+					and account_point between #{minAccountPoint} and #{maxAccountPoint}
+				</when>
+				<when test="minAccountPoint != null">
+<!-- 					and account_point &gt;= #{minAccountPoint} -->
+					<![CDATA[
+						and account_point >= #{minAccountPoint}
+					]]>
+				</when>
+				<when test="maxAccountPoint != null">
+<!-- 					and account_point &lt;= #{maxAccountPoint} -->
+					<![CDATA[
+						and account_point <= #{maxAccountPoint}
+					]]>
+				</when>
+			</choose>
+		</where>
+	</select>
+		
 </mapper>

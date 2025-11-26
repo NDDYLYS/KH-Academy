@@ -1,11 +1,14 @@
 package com.kh.spring10.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring10.dto.AccountDto;
+import com.kh.spring10.vo.AccountComplexSearchVO;
 
 @Repository
 public class AccountDao {
@@ -27,5 +30,9 @@ public class AccountDao {
 	
 	public AccountDto selectOneByAccountNickname(String accountNickname) {
 		return sqlSession.selectOne("account.detail-nickname", accountNickname);
+	}
+	
+	public List<AccountDto> selectList(AccountComplexSearchVO vo){
+		return sqlSession.selectList("account.complexSearch", params);
 	}
 }

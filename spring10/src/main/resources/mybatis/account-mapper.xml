@@ -92,6 +92,12 @@
 					#{accountLevel}
 				</foreach> 
 			</if>
+<!-- 			<if test="addressTokenList != null and addressTokenList.lengh > 0"> -->
+			<if test="addressTokenList != null and addressTokenList.size() > 0">
+				<foreach item="token" collection="addressTokenList" separator="and" open="(" close=")">
+					instr(account_address1, #{token}) > 0
+				</foreach>
+			</if>
 		</where>
 	</select>
 		

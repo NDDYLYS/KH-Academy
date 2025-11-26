@@ -1,5 +1,7 @@
 package com.kh.spring10.restcontroller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,6 +20,7 @@ import com.kh.spring10.dto.AccountDto;
 import com.kh.spring10.error.TargetNotfoundException;
 import com.kh.spring10.error.UnauthorizationException;
 import com.kh.spring10.service.TokenService;
+import com.kh.spring10.vo.AccountComplexSearchVO;
 import com.kh.spring10.vo.AccountLoginResponseVO;
 import com.kh.spring10.vo.AccountRefreshVO;
 import com.kh.spring10.vo.TokenVO;
@@ -188,5 +191,12 @@ public class AccountRestController {
 				.accessToken(tokenService.generateAccessToken(tokenVO))
 				.refreshToken(tokenService.generateRefreshToken(tokenVO))
 				.build();
+	}
+	
+	// 복합검색
+	//@GetMapping("/") Json 수신 불가
+	@PostMapping("/search")
+	public List<AccountDto> search(@RequestBody AccountComplexSearchVO vo){
+		return accountDao.selectList(vo);
 	}
 }

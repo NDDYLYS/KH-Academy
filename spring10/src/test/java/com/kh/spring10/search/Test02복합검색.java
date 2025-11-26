@@ -27,9 +27,21 @@ public class Test02복합검색 {
 		//params.put("accountEmail", "@gmail.com");
 		//params.put("accountContact", "010");
 		//params.put("accountBirth", "2005-11-20");
-		//params.put("accountLevel", "관리자");
-		params.put("minAccountPoint", 100);
-		params.put("maxAccountPoint", 1000);
+		//params.put("minAccountPoint", 100);
+		//params.put("maxAccountPoint", 1000);
+		//params.put("beginAccountJoin", "2025-11-20");
+//		//params.put("endAccountJoin", "2025-11-23");
+//		params.put("accountLevelList", List.of());
+//		params.put("accountLevelList", List.of("일반회원"));
+//		params.put("accountLevelList", List.of("우수회원"));
+		params.put("accountLevelList", List.of("관리자"));
+//		params.put("accountLevelList", List.of("일반회원", "우수회원"));
+//		params.put("accountLevelList", List.of("우수회원", "관리자"));
+//		params.put("accountLevelList", List.of("일반회원", "관리자"));
+//		params.put("accountLevelList", List.of("일반회원", "우수회원", "관리자"));
+//		params.put("accountPost", 10);
+//		params.put("accountAddress1", "");
+//		params.put("accountAddress2", "");
 		
 		
 		List<AccountDto> list = sqlSession.selectList("account.complexSearch", params);

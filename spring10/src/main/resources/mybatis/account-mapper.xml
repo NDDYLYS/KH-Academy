@@ -52,9 +52,6 @@
 			<if test="accountBirth != null">
 				and account_birth = #{accountBirth}
 			</if>
-			<if test="accountLevel != null">
-				and instr(account_level, #{accountLevel}) > 0		
-			</if>
 			<choose>
 				<when test="minAccountPoint != null and maxAccountPoint != null">
 					and account_point between #{minAccountPoint} and #{maxAccountPoint}
@@ -72,6 +69,29 @@
 					]]>
 				</when>
 			</choose>
+			<choose>
+				<when test="beginAccountJoin != null and endAccountJoin != null">
+					and account_join between 
+					to_timestamp(#{beginAccountJoin} || '00.00.00.000', 'yyyy-mm-dd hh24:mi:ss.ff3') 
+					and 
+					to_timestamp(#{endAccountJoin} || '23.59.59.999', 'yyyy-mm-dd hh24:mi:ss.ff3') 
+				</when>
+				<when test="beginAccountJoin != null">
+					<![CDATA[
+						and account_join >= to_timestamp(#{beginAccountJoin} || '00.00.00.000', 'yyyy-mm-dd hh24:mi:ss.ff3')
+					]]>
+				</when>
+				<when test="endAccountJoin != null">
+					<![CDATA[
+						and account_join <= to_timestamp(#{endAccountJoin} || '23.59.59.999', 'yyyy-mm-dd hh24:mi:ss.ff3')
+					]]>
+				</when>
+			</choose>
+			<if test="accountLevelList != null">
+				<foreach item="accountLevel" collection="accountLevelList" separator="," open="and account_level in (" close=")">
+					${accountLevel}
+				</foreach> 
+			</if>
 		</where>
 	</select>
 		

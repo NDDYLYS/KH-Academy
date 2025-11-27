@@ -56,7 +56,7 @@ public class KakaoPayService {
 		body.put("partner_order_id", responseVO.getPartnerOrderId());
 		body.put("partner_user_id", responseVO.getPartnerUserId());
 		body.put("tid", responseVO.getTid());
-		body.put("pg_token", responseVO.getPgTOken());
+		body.put("pg_token", responseVO.getPgToken());
 		
 		KakaoPayApproveResponseVO response = webClient.post()//POST 요청
 				.uri("/online/v1/payment/approve")//webClient에 기본주소 설정이 있을 경우

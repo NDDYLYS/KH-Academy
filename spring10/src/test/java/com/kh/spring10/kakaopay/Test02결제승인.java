@@ -17,10 +17,10 @@ public class Test02결제승인 {
 
 	@Test
 	public void test() {
-		String partnerOrderId = "1620ae7b-ea83-49db-b51c-81c3dae01d94";
+		String partnerOrderId = "2fd95cc5-8124-47ef-befb-55e1aaf89cdd";
 		String partnerUserId = "testuser1";
-		String pgToken = "59b3dbf5d04f9318728d";
-		String tid = "T927b2737dd1751525bd";
+		String pgToken = "aa147049cdc596174541";
+		String tid = "T927d505299c193d802d";
 		
 		//WebClient 준비
 		WebClient webClient = WebClient.builder()

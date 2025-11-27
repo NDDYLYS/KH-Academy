@@ -14,21 +14,17 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
-public class KakaoPayApproveResponseVO {
-	private String aid;
-	private String tid;
-	private String cid;
-	private String sid;
-	private String partnerOrderId;
-	private String partnetUserId;
-	private String paymentMethodType;
-//	private KakaoPayAmountVO amount;
-//	private KakaoPayCardInfoVO cardInfo;
-	private String itemName;
-	private String itemCode;
-	private Integer quantity;
-	private LocalDateTime createdAt;
-	private LocalDateTime approvedAt;
-	private String payload;
-	
+public class KakaoPayCardInfoVO {
+	private String kakaopayPurchaseCorp;
+	private String kakaopayPurchaseCorpCode;
+	private String kakaopayIssuerCorp;
+	private String kakaopayIssuerCorpCode;
+	private String bin;
+	private String cardType;
+	private String installMonth;
+	private String approvedId;
+	private String cardMid;
+	private String interestFreeInstall;
+	private String installmentType;
+	private String cardItemCode;
 }

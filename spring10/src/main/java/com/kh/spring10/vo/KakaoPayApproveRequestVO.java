@@ -1,5 +1,14 @@
 package com.kh.spring10.vo;
 
-public class KakaoPayApproveRequestVO {
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
+public class KakaoPayApproveRequestVO {
+	private String partnerOrderId;
+	private String partnerUserId;
+	private String tid;
+	private String pgTOken;
 }

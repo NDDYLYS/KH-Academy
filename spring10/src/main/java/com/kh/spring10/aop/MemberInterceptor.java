@@ -28,7 +28,7 @@ public class MemberInterceptor implements HandlerInterceptor {
 		
 		// authorization 검사
 		try {
-			String authorization = request.getHeader("Authorazation");
+			String authorization = request.getHeader("Authorization");
 			if (authorization== null)
 				throw new UnauthorizationException("비회원이다.");
 			

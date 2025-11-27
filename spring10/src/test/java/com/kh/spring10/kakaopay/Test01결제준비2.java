@@ -58,19 +58,3 @@ public class Test01결제준비2 {
 		//body.put("", "");
 	}
 }
-
-
-
-//package com.kh.spring10.kakaopay;
-//
-//import org.junit.jupiter.api.Test;
-//import org.springframework.boot.test.context.SpringBootTest;
-//
-//@SpringBootTest
-//public class Test01결제준비 {
-//	
-//	@Test
-//	public void test() {
-//		
-//	}
-//}

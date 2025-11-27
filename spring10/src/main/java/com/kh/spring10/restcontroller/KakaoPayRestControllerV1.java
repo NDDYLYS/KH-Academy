@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,23 +44,26 @@ public class KakaoPayRestControllerV1 {
 	@PostMapping("/buy")
 	public KakaoPayReadyResponseVO buy(
 		@RequestBody KakaoPayReadyRequestVO requestVO,
+		@RequestHeader("Frontend-Url") String frontendUrl,//사용자의 현위치
 		@RequestAttribute TokenVO tokenVO//MemberInterceptor를 거쳐온 경우
 //		@RequestHeader("Authorization") String bearerToken//직접 해석할 경우
 	) {
-		log.debug(requestVO.toString());
-		log.debug(tokenVO.toString());
 		//requestVO에는 상품명과 금액만 존재한다
 		requestVO.setPartnerOrderId(UUID.randomUUID().toString());//주문번호
 		requestVO.setPartnerUserId(tokenVO.getLoginId());//주문자
 		//결제 준비 처리
 		KakaoPayReadyResponseVO responseVO = kakaoPayService.ready(requestVO);
 		
-		flashMap.put(requestVO.getPartnerOrderId(), KakaoPayFlashVO.builder()
-				.partnerOrderId(requestVO.getPartnerOrderId())
-				.partnerUserId(requestVO.getPartnerUserId())
-				.tid(responseVO.getTid())
-				.returnUrl(null)
-				.build());
+		//Flash Value 저장
+		flashMap.put(
+			requestVO.getPartnerOrderId(),//주문번호(key)
+			KakaoPayFlashVO.builder()//데이터(value)
+					.partnerOrderId(requestVO.getPartnerOrderId())
+					.partnerUserId(requestVO.getPartnerUserId())
+					.tid(responseVO.getTid())
+					.returnUrl(frontendUrl)
+				.build()
+		);
 		
 		return responseVO;
 	}
@@ -83,9 +87,19 @@ public class KakaoPayRestControllerV1 {
 		KakaoPayApproveResponseVO responseVO = kakaoPayService.approve(requestVO);
 		
 		//사용자에게 보여줄 수 있는 화면으로 이동시켜야함 (redirect)
-		response.sendRedirect("http://localhost:5173/kakaopay/v1/success");
+		response.sendRedirect(flashVO.getReturnUrl() + "/success");
 		//response.sendRedirect(returnUrl + "/success");
 	}
-//	@GetMapping("/buy/cancel/{partnerOrderId}")
-//	@GetMapping("/buy/fail/{partnerOrderId}")
+	
+	@GetMapping("/buy/cancel/{partnerOrderId}")
+	public void cancel(HttpServletResponse response, @PathVariable String partnerOrderId) throws IOException {
+		KakaoPayFlashVO flashVO = flashMap.remove(partnerOrderId);
+		response.sendRedirect(flashVO.getReturnUrl() + "/cancel");		
+	}
+
+	@GetMapping("/buy/fail/{partnerOrderId}")
+	public void fail(HttpServletResponse response, @PathVariable String partnerOrderId) throws IOException {
+		KakaoPayFlashVO flashVO = flashMap.remove(partnerOrderId);
+		response.sendRedirect(flashVO.getReturnUrl() + "/fail");
+	}
 }

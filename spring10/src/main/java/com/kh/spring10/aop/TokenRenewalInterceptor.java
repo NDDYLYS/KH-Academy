@@ -52,16 +52,11 @@ public class TokenRenewalInterceptor implements HandlerInterceptor{
 			return true;
 		}
 		
-		System.out.println("request.getMethod().equalsIgnoreCase(options) : " + request.getMethod().equalsIgnoreCase("options"));
-		
-		
 		//2
 		String bearerToken = request.getHeader("Authorization");
 		if(bearerToken == null) {//없으면 비회원
 			return true;
 		}
-		
-		System.out.println("bearerToken : " + bearerToken + "/");
 		
 		try {//Plan A : 토큰 재발급 여부 검사
 			

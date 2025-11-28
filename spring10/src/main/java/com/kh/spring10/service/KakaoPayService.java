@@ -34,6 +34,10 @@ public class KakaoPayService {
 		body.put("total_amount", String.valueOf(requestVO.getTotalAmount()));//판매금액
 		body.put("tax_free_amount", "0");//비과세액(해당없음, 0으로 설정)
 		
+		for(String name : body.keySet()) {
+			System.out.println(name + " : " + body.get(name));
+		}
+		
 		//(+추가) 주소가 한 페이지로 고정되면 안된다 (모든 처리를 한곳에서 할 수는 없으므로)
 		// - 현재 요청중인 페이지의 뒤에 /success , /cancel , /fail을 추가시켜서 설정
 		String currentPath = ServletUriComponentsBuilder.fromCurrentRequest().toUriString();

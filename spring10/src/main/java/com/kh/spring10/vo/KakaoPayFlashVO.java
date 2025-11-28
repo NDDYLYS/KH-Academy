@@ -1,5 +1,7 @@
 package com.kh.spring10.vo;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,5 +13,6 @@ public class KakaoPayFlashVO {
 	private String partnerUserId;
 	private String tid;
 	private String returnUrl;
+	private List<KakaoPayQtyVO> qtyList;
 	
 }

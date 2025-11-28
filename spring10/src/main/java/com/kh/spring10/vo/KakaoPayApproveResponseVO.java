@@ -22,8 +22,8 @@ public class KakaoPayApproveResponseVO {
 	private String partnerOrderId;
 	private String partnetUserId;
 	private String paymentMethodType;
-//	private KakaoPayAmountVO amount;
-//	private KakaoPayCardInfoVO cardInfo;
+	private KakaoPayAmountVO amount;
+	private KakaoPayCardInfoVO cardInfo;
 	private String itemName;
 	private String itemCode;
 	private Integer quantity;

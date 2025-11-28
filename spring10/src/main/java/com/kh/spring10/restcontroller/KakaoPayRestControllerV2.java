@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.GiftcardDao;
+import com.kh.spring10.dao.PaymentDao;
+import com.kh.spring10.dao.PaymentDetailDao;
 import com.kh.spring10.dto.GiftcardDto;
+import com.kh.spring10.dto.PaymentDto;
 import com.kh.spring10.error.TargetNotfoundException;
 import com.kh.spring10.service.KakaoPayService;
 import com.kh.spring10.service.TokenService;
@@ -46,6 +48,10 @@ public class KakaoPayRestControllerV2 {
 	private TokenService tokenService;
 	@Autowired
 	private GiftcardDao giftcardDao;
+	@Autowired
+	private PaymentDao paymentDao;
+	@Autowired
+	private PaymentDetailDao paymentDetailDao;
 	
 	private Map<String, KakaoPayFlashVO> flashMap = Collections.synchronizedMap(new HashMap<>());
 	
@@ -119,6 +125,15 @@ public class KakaoPayRestControllerV2 {
 		KakaoPayApproveResponseVO responseVO = kakaoPayService.approve(requestVO);
 		
 		// DB 저장
+		long paymentNo = paymentDao.sequence();
+		paymentDao.insert(PaymentDto.builder()
+				.paymentNo(paymentNo)
+				.paymentOwner(responseVO.getPartnetUserId())
+				.paymentTid(responseVO.getTid())
+				.paymentName(responseVO.getItemName())
+				.paymentTotal(responseVO.getAmount().getTotal())
+				.paymentRemain(responseVO.getAmount().getTotal())
+				.build());
 		
 		//사용자에게 보여줄 수 있는 화면으로 이동시켜야함 (redirect)
 		response.sendRedirect(flashVO.getReturnUrl() + "/success");

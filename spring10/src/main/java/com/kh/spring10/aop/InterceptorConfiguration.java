@@ -18,8 +18,8 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 		registry.addInterceptor(memberInterceptor)
 						.addPathPatterns(
 								"/student/**",
-								"/kakaopay/**"
-								
+								"/kakaopay/V1/buy", 
+								"/kakaopay/V2/buy"
 								);
 		
 		registry.addInterceptor(tokenRenewalInterceptor)

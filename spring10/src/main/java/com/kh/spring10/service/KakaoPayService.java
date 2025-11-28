@@ -11,6 +11,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.kh.spring10.configurtion.KakaoPayProperties;
 import com.kh.spring10.vo.KakaoPayApproveRequestVO;
 import com.kh.spring10.vo.KakaoPayApproveResponseVO;
+import com.kh.spring10.vo.KakaoPayOrderRequestVO;
+import com.kh.spring10.vo.KakaoPayOrderResponseVO;
 import com.kh.spring10.vo.KakaoPayReadyRequestVO;
 import com.kh.spring10.vo.KakaoPayReadyResponseVO;
 
@@ -75,5 +77,20 @@ public class KakaoPayService {
 				.block();//동기적으로 변환하여 응답이 올때까지 기다려라! (RestTemplate과 같아짐)
 		
 		return response;
+	}
+	
+	public KakaoPayOrderResponseVO order(KakaoPayOrderRequestVO requestVO) {
+		Map<String, String> body = new HashMap<>();
+		body.put("cid", kakaoPayProperties.getCid());
+		body.put("tid", "???");
+		
+		KakaoPayOrderResponseVO responseVO = webClient.post()//POST 요청
+				.uri("/online/v1/payment/order")//webClient에 기본주소 설정이 있을 경우
+				.bodyValue(body)//요청에 첨부할 데이터 설정
+			.retrieve()//응답을 수신하겠다
+				.bodyToMono(KakaoPayOrderResponseVO.class)//데이터는 한번에 오고(Mono) 형태는 KakaoPayApproveResponseVO이다 (↔ 연속적으로 오면 Flux)
+				.block();//동기적으로 변환하여 응답이 올때까지 기다려라! (RestTemplate과 같아짐)
+		
+		return responseVO;
 	}
 }

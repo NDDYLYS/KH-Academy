@@ -22,10 +22,9 @@ import com.kh.spring10.dao.GiftcardDao;
 import com.kh.spring10.dao.PaymentDao;
 import com.kh.spring10.dao.PaymentDetailDao;
 import com.kh.spring10.dto.GiftcardDto;
-import com.kh.spring10.dto.PaymentDetailDto;
-import com.kh.spring10.dto.PaymentDto;
 import com.kh.spring10.error.TargetNotfoundException;
 import com.kh.spring10.service.KakaoPayService;
+import com.kh.spring10.service.PaymentService;
 import com.kh.spring10.service.TokenService;
 import com.kh.spring10.vo.KakaoPayApproveRequestVO;
 import com.kh.spring10.vo.KakaoPayApproveResponseVO;
@@ -50,9 +49,7 @@ public class KakaoPayRestControllerV2 {
 	@Autowired
 	private GiftcardDao giftcardDao;
 	@Autowired
-	private PaymentDao paymentDao;
-	@Autowired
-	private PaymentDetailDao paymentDetailDao;
+	private PaymentService paymentService;
 	
 	private Map<String, KakaoPayFlashVO> flashMap = Collections.synchronizedMap(new HashMap<>());
 	
@@ -126,31 +123,7 @@ public class KakaoPayRestControllerV2 {
 		
 		KakaoPayApproveResponseVO responseVO = kakaoPayService.approve(requestVO);
 		
-		// DB 저장
-		long paymentNo = paymentDao.sequence();
-		paymentDao.insert(PaymentDto.builder()
-				.paymentNo(paymentNo)
-				.paymentOwner(responseVO.getPartnetUserId())
-				.paymentTid(responseVO.getTid())
-				.paymentName(responseVO.getItemName())
-				.paymentTotal(responseVO.getAmount().getTotal())
-				.paymentRemain(responseVO.getAmount().getTotal())
-				.build());
-		
-		
-		for(KakaoPayQtyVO qtyVO : flashVO.getQtyList()) 
-		{
-			long paymentDetailNo =  paymentDetailDao.sequence();
-			GiftcardDto giftcartDto = giftcardDao.selectOne(qtyVO.getNo());
-			paymentDetailDao.insert(PaymentDetailDto.builder()
-					.paymentDetailNo(paymentDetailNo)
-					.paymentDetailOrigin(paymentNo)
-					.paymentDetailItemNo(qtyVO.getNo())
-					.paymentDetailItemName(giftcartDto.getGiftcardName())
-					.paymentDetailItemPrice(giftcartDto.getGiftcardPrice())
-					.paymentDetailQty(qtyVO.getQty())
-					.build());
-		}
+		paymentService.insert(responseVO, flashVO);
 		
 		//사용자에게 보여줄 수 있는 화면으로 이동시켜야함 (redirect)
 		response.sendRedirect(flashVO.getReturnUrl() + "/success");
@@ -168,4 +141,6 @@ public class KakaoPayRestControllerV2 {
 		KakaoPayFlashVO flashVO = flashMap.remove(partnerOrderId);
 		response.sendRedirect(flashVO.getReturnUrl() + "/fail");
 	}
+	
+	
 }

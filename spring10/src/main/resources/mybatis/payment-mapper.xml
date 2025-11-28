@@ -19,4 +19,10 @@
 		)
 	</insert>
 		
+		<select id="listByOwner" resultType="PaymentDto">
+			select * from payment 
+			where payment_owner = #{loginId}
+			order by payment_no desc
+		</select>
+	
 </mapper>

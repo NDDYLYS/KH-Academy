@@ -13,5 +13,4 @@ public class PaymentDetailDto {
 	private String paymentDetailItemName;
 	private Integer paymentDetailItemPrice;
 	private Integer paymentDetailQty;
-	private String paymentDetailStatus;
 }

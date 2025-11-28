@@ -22,6 +22,7 @@ import com.kh.spring10.dao.GiftcardDao;
 import com.kh.spring10.dao.PaymentDao;
 import com.kh.spring10.dao.PaymentDetailDao;
 import com.kh.spring10.dto.GiftcardDto;
+import com.kh.spring10.dto.PaymentDetailDto;
 import com.kh.spring10.dto.PaymentDto;
 import com.kh.spring10.error.TargetNotfoundException;
 import com.kh.spring10.service.KakaoPayService;
@@ -101,6 +102,7 @@ public class KakaoPayRestControllerV2 {
 						.partnerUserId(requestVO.getPartnerUserId())
 						.tid(responseVO.getTid())
 						.returnUrl(frontendUrl)
+						.qtyList(qtyList)
 					.build()
 			);
 		
@@ -134,6 +136,21 @@ public class KakaoPayRestControllerV2 {
 				.paymentTotal(responseVO.getAmount().getTotal())
 				.paymentRemain(responseVO.getAmount().getTotal())
 				.build());
+		
+		
+		for(KakaoPayQtyVO qtyVO : flashVO.getQtyList()) 
+		{
+			long paymentDetailNo =  paymentDetailDao.sequence();
+			GiftcardDto giftcartDto = giftcardDao.selectOne(qtyVO.getNo());
+			paymentDetailDao.insert(PaymentDetailDto.builder()
+					.paymentDetailNo(paymentDetailNo)
+					.paymentDetailOrigin(paymentNo)
+					.paymentDetailItemNo(qtyVO.getNo())
+					.paymentDetailItemName(giftcartDto.getGiftcardName())
+					.paymentDetailItemPrice(giftcartDto.getGiftcardPrice())
+					.paymentDetailQty(qtyVO.getQty())
+					.build());
+		}
 		
 		//사용자에게 보여줄 수 있는 화면으로 이동시켜야함 (redirect)
 		response.sendRedirect(flashVO.getReturnUrl() + "/success");

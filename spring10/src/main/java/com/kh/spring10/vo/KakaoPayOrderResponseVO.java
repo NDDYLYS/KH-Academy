@@ -3,6 +3,7 @@ package com.kh.spring10.vo;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -29,8 +30,11 @@ public class KakaoPayOrderResponseVO {
 	private String itemName;//상품명
 	private String itemCode;//상품코드
 	private Integer quantity;//상품 수량
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private LocalDateTime createdAt;//시작시각
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private LocalDateTime approvedAt;//승인시각
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private LocalDateTime canceledAt;//취소시각(최종)
 	private KakaoPaySelectedCardInfoVO selectedCardInfo;//결제 카드 정보
 	private List<KakaoPayPaymentActionDetailVO> paymentActionDetails;//결제 및 취소 상세 내역

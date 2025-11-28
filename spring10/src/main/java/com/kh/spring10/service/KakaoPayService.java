@@ -82,7 +82,7 @@ public class KakaoPayService {
 	public KakaoPayOrderResponseVO order(KakaoPayOrderRequestVO requestVO) {
 		Map<String, String> body = new HashMap<>();
 		body.put("cid", kakaoPayProperties.getCid());
-		body.put("tid", "???");
+		body.put("tid", requestVO.getTid());
 		
 		KakaoPayOrderResponseVO responseVO = webClient.post()//POST 요청
 				.uri("/online/v1/payment/order")//webClient에 기본주소 설정이 있을 경우

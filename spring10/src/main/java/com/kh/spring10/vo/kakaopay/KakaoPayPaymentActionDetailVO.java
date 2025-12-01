@@ -1,4 +1,4 @@
-package com.kh.spring10.vo;
+package com.kh.spring10.vo.kakaopay;
 
 import java.time.LocalDateTime;
 

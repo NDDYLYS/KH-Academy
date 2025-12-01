@@ -1,6 +1,4 @@
-package com.kh.spring10.vo;
-
-import java.time.LocalDateTime;
+package com.kh.spring10.vo.kakaopay;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -14,11 +12,9 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
-public class KakaoPayAmountVO {
-	private Integer total;
-	private Integer texFree;
-	private Integer vat;
-	private Integer point;
-	private Integer discount;
-	private Integer greenDeposit;
+public class KakaoPayReadyResponseVO {
+	// 필요한 것만 받는다
+	
+	private String tid;
+	private String nextRedirectPcUrl;
 }

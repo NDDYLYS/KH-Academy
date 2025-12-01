@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.kh.spring10.service.KakaoPayService;
-import com.kh.spring10.vo.KakaoPayReadyRequestVO;
-import com.kh.spring10.vo.KakaoPayReadyResponseVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayReadyRequestVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayReadyResponseVO;
 
 import lombok.extern.slf4j.Slf4j;
 

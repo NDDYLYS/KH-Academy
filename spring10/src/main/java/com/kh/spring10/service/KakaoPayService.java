@@ -9,12 +9,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kh.spring10.configurtion.KakaoPayProperties;
-import com.kh.spring10.vo.KakaoPayApproveRequestVO;
-import com.kh.spring10.vo.KakaoPayApproveResponseVO;
-import com.kh.spring10.vo.KakaoPayOrderRequestVO;
-import com.kh.spring10.vo.KakaoPayOrderResponseVO;
-import com.kh.spring10.vo.KakaoPayReadyRequestVO;
-import com.kh.spring10.vo.KakaoPayReadyResponseVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayApproveRequestVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayApproveResponseVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayOrderRequestVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayOrderResponseVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayReadyRequestVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayReadyResponseVO;
 
 @Service
 public class KakaoPayService {

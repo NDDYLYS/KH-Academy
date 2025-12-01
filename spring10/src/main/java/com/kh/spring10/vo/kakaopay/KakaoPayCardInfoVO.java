@@ -1,6 +1,4 @@
-package com.kh.spring10.vo;
-
-import java.time.LocalDateTime;
+package com.kh.spring10.vo.kakaopay;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;

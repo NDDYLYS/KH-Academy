@@ -1,14 +1,14 @@
-package com.kh.spring10.vo;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+package com.kh.spring10.vo.kakaopay;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
-public class KakaoPayOrderRequestVO {
+public class KakaoPayApproveRequestVO {
+	private String partnerOrderId;
+	private String partnerUserId;
 	private String tid;
+	private String pgToken;
 }

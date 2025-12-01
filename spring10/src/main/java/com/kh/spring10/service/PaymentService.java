@@ -10,9 +10,9 @@ import com.kh.spring10.dao.PaymentDetailDao;
 import com.kh.spring10.dto.GiftcardDto;
 import com.kh.spring10.dto.PaymentDetailDto;
 import com.kh.spring10.dto.PaymentDto;
-import com.kh.spring10.vo.KakaoPayApproveResponseVO;
-import com.kh.spring10.vo.KakaoPayFlashVO;
-import com.kh.spring10.vo.KakaoPayQtyVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayApproveResponseVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayFlashVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayQtyVO;
 
 @Service
 public class PaymentService {

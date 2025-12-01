@@ -1,17 +1,18 @@
-package com.kh.spring10.vo;
+package com.kh.spring10.vo.kakaopay;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//결제 준비 요청에 필요한 데이터
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
-public class KakaoPayReadyRequestVO {
-	private String itemName;
-	private int totalAmount;
+public class KakaoPayFlashVO {
 	private String partnerOrderId;
 	private String partnerUserId;
+	private String tid;
+	private String returnUrl;
+	private List<KakaoPayQtyVO> qtyList;
+	
 }

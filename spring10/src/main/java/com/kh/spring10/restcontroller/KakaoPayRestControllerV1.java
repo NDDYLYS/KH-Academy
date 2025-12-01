@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.service.KakaoPayService;
-import com.kh.spring10.vo.KakaoPayApproveRequestVO;
-import com.kh.spring10.vo.KakaoPayApproveResponseVO;
-import com.kh.spring10.vo.KakaoPayFlashVO;
-import com.kh.spring10.vo.KakaoPayReadyRequestVO;
-import com.kh.spring10.vo.KakaoPayReadyResponseVO;
 import com.kh.spring10.vo.TokenVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayApproveRequestVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayApproveResponseVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayFlashVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayReadyRequestVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayReadyResponseVO;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

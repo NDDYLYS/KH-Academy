@@ -15,9 +15,9 @@ import com.kh.spring10.dto.PaymentDto;
 import com.kh.spring10.error.NeedPermissionException;
 import com.kh.spring10.error.TargetNotfoundException;
 import com.kh.spring10.service.KakaoPayService;
-import com.kh.spring10.vo.KakaoPayOrderRequestVO;
-import com.kh.spring10.vo.KakaoPayOrderResponseVO;
 import com.kh.spring10.vo.TokenVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayOrderRequestVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayOrderResponseVO;
 
 @CrossOrigin
 @RestController

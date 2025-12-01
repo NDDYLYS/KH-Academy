@@ -28,4 +28,15 @@
 	<select id="detail" resultType="PaymentDto">
 		select * from payment where payment_no = #{paymentNo}
 	</select>
+	
+	<update id="cancelAll">
+		update payment set payment_remain=0
+		where payment_no=#{paymentNo}
+	</update>
+	
+	<update id="cancelUnit">
+		update payment_detail 
+		set payment_detail_status = '취소' 
+		where payment_detail_origin=#{paymentDetailOrigin}
+	</update>
 </mapper>

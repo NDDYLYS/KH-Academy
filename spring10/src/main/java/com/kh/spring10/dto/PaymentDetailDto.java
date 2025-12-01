@@ -14,4 +14,8 @@ public class PaymentDetailDto {
 	private Integer paymentDetailItemPrice;
 	private Integer paymentDetailQty;
 	private String paymentDetailStatus;
+	
+	public Integer getPaymentDetailTotal() {//구매합계
+		return paymentDetailItemPrice * paymentDetailQty;
+	}
 }

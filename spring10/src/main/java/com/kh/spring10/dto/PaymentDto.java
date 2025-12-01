@@ -1,5 +1,4 @@
 package com.kh.spring10.dto;
-
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -9,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @Builder @NoArgsConstructor @AllArgsConstructor
+@Data @Builder @AllArgsConstructor @NoArgsConstructor
 public class PaymentDto {
 	private Long paymentNo;
 	private String paymentOwner;

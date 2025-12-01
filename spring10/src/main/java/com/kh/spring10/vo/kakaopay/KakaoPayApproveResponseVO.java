@@ -11,24 +11,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-@Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class KakaoPayApproveResponseVO {
-	private String aid;
-	private String tid;
-	private String cid;
-	private String sid;
-	private String partnerOrderId;
-	private String partnetUserId;
-	private String paymentMethodType;
+	private String aid;//요청 고유 번호
+	private String tid;//결제 고유 번호
+	private String cid;//가맹점 코드
+	private String sid;//정기 결제 코드
+	private String partnerOrderId;//가맹점 내의 주문번호
+	private String partnerUserId;//가맹점 내의 주문자
+	private String paymentMethodType;//카드 or 현금
 	private KakaoPayAmountVO amount;
 	private KakaoPayCardInfoVO cardInfo;
-	private String itemName;
-	private String itemCode;
-	private Integer quantity;
-	private LocalDateTime createdAt;
-	private LocalDateTime approvedAt;
-	private String payload;
-	
+	private String itemName;//상품이름
+	private String itemCode;//상품코드
+	private Integer quantity;//상품 수량
+	private LocalDateTime createdAt;//결제시작시각
+	private LocalDateTime approvedAt;//결제승인시각
+	private String payload;//결제에 대한 메모
 }

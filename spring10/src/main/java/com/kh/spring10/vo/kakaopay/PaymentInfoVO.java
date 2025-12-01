@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @Builder @NoArgsConstructor @AllArgsConstructor
+@Data @Builder @AllArgsConstructor @NoArgsConstructor
 public class PaymentInfoVO {
 	private PaymentDto paymentDto;
 	private List<PaymentDetailDto> paymentDetailList;

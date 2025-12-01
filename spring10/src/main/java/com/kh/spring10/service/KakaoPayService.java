@@ -11,6 +11,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.kh.spring10.configurtion.KakaoPayProperties;
 import com.kh.spring10.vo.kakaopay.KakaoPayApproveRequestVO;
 import com.kh.spring10.vo.kakaopay.KakaoPayApproveResponseVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayCancelRequestVO;
+import com.kh.spring10.vo.kakaopay.KakaoPayCancelResponseVO;
 import com.kh.spring10.vo.kakaopay.KakaoPayOrderRequestVO;
 import com.kh.spring10.vo.kakaopay.KakaoPayOrderResponseVO;
 import com.kh.spring10.vo.kakaopay.KakaoPayReadyRequestVO;
@@ -35,10 +37,6 @@ public class KakaoPayService {
 		body.put("quantity", "1");//수량(무조건 1, 우리가 관리)
 		body.put("total_amount", String.valueOf(requestVO.getTotalAmount()));//판매금액
 		body.put("tax_free_amount", "0");//비과세액(해당없음, 0으로 설정)
-		
-		for(String name : body.keySet()) {
-			System.out.println(name + " : " + body.get(name));
-		}
 		
 		//(+추가) 주소가 한 페이지로 고정되면 안된다 (모든 처리를 한곳에서 할 수는 없으므로)
 		// - 현재 요청중인 페이지의 뒤에 /success , /cancel , /fail을 추가시켜서 설정
@@ -78,7 +76,7 @@ public class KakaoPayService {
 		
 		return response;
 	}
-	
+	//결제 조회
 	public KakaoPayOrderResponseVO order(KakaoPayOrderRequestVO requestVO) {
 		Map<String, String> body = new HashMap<>();
 		body.put("cid", kakaoPayProperties.getCid());
@@ -89,6 +87,23 @@ public class KakaoPayService {
 				.bodyValue(body)//요청에 첨부할 데이터 설정
 			.retrieve()//응답을 수신하겠다
 				.bodyToMono(KakaoPayOrderResponseVO.class)//데이터는 한번에 오고(Mono) 형태는 KakaoPayApproveResponseVO이다 (↔ 연속적으로 오면 Flux)
+				.block();//동기적으로 변환하여 응답이 올때까지 기다려라! (RestTemplate과 같아짐)
+		
+		return responseVO;
+	}
+	//결제 취소
+	public KakaoPayCancelResponseVO cancel(KakaoPayCancelRequestVO requestVO) {
+		Map<String, String> body = new HashMap<>();
+		body.put("cid", kakaoPayProperties.getCid());
+		body.put("tid", requestVO.getTid());
+		body.put("cancel_amount", String.valueOf(requestVO.getCancelAmount()));
+		body.put("cancel_tax_free_amount", "0");
+		
+		KakaoPayCancelResponseVO responseVO = webClient.post()//POST 요청
+				.uri("/online/v1/payment/cancel")//webClient에 기본주소 설정이 있을 경우
+				.bodyValue(body)//요청에 첨부할 데이터 설정
+			.retrieve()//응답을 수신하겠다
+				.bodyToMono(KakaoPayCancelResponseVO.class)//데이터는 한번에 오고(Mono) 형태는 KakaoPayApproveResponseVO이다 (↔ 연속적으로 오면 Flux)
 				.block();//동기적으로 변환하여 응답이 올때까지 기다려라! (RestTemplate과 같아짐)
 		
 		return responseVO;

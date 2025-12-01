@@ -10,20 +10,28 @@ import com.kh.spring10.dto.PaymentDetailDto;
 
 @Repository
 public class PaymentDetailDao {
+
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public long sequence() 
-	{
+	public long sequence() {
 		return sqlSession.selectOne("paymentDetail.sequence");
 	}
-	
-	public long insert(PaymentDetailDto paymentDetailDto) 
-	{
-		return sqlSession.insert("paymentDetail.insert", paymentDetailDto);
+	public void insert(PaymentDetailDto paymentDetailDto) {
+		sqlSession.insert("paymentDetail.insert", paymentDetailDto);
+	}
+	public List<PaymentDetailDto> selectList(long paymentDetailOrigin) {
+		return sqlSession.selectList("paymentDetail.listByOrigin", paymentDetailOrigin);
 	}
 	
-	public List<PaymentDetailDto> selectList(long paymentDetailOrigin){
-		return sqlSession.selectList("listByOrigin", paymentDetailOrigin);
+	public boolean cancelAll(long paymentDetailOrigin) {
+		return sqlSession.update("paymentDetail.cancelAll", paymentDetailOrigin) > 0;
 	}
+	public boolean cancelUnit(PaymentDetailDto paymentDetailDto) {
+		return sqlSession.update("paymentDetail.cancelUnit", paymentDetailDto) > 0;
+	}
+	public PaymentDetailDto selectOne(long paymentDetailNo) {
+		return sqlSession.selectOne("paymentDetail.detail", paymentDetailNo);
+	}
+	
 }

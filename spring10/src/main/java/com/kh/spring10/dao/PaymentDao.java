@@ -1,6 +1,8 @@
 package com.kh.spring10.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +34,16 @@ public class PaymentDao {
 	public PaymentDto selectOne(long paymentNo) 
 	{
 		return sqlSession.selectOne("payment.detail", paymentNo);
+	}
+	
+	public boolean cancelAll(long paymentNo) 
+	{
+		return sqlSession.update("payment.cancelAll", paymentNo) > 0;
+	}
+	
+	public boolean cancelUnit(long paymentNo, Integer total) 
+	{
+		Map<String, Object> params = new HashMap<>();
+		return sqlSession.update("payment.cancelUnit", params) > 0;
 	}
 }

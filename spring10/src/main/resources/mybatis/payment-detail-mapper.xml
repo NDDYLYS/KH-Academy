@@ -20,5 +20,11 @@
 			#{paymentDetailItemPrice}, #{paymentDetailQty}
 		)
 	</insert>
+	
+	<select id="listByOrigin" resultType="PaymentDetailDto">
+		select * from payment_detail
+		where payment_detail_origin = #{paymentDetailOrigin}
+		order by payment_detail_no asc
+	</select>
 		
 </mapper>

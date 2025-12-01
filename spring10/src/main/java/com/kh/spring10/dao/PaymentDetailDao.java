@@ -1,11 +1,12 @@
 package com.kh.spring10.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring10.dto.PaymentDetailDto;
-import com.kh.spring10.dto.PaymentDto;
 
 @Repository
 public class PaymentDetailDao {
@@ -20,5 +21,9 @@ public class PaymentDetailDao {
 	public long insert(PaymentDetailDto paymentDetailDto) 
 	{
 		return sqlSession.insert("paymentDetail.insert", paymentDetailDto);
+	}
+	
+	public List<PaymentDetailDto> selectList(long paymentDetailOrigin){
+		return sqlSession.selectList("listByOrigin", paymentDetailOrigin);
 	}
 }

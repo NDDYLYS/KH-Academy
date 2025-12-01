@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.PaymentDao;
+import com.kh.spring10.dao.PaymentDetailDao;
+import com.kh.spring10.dto.PaymentDetailDto;
 import com.kh.spring10.dto.PaymentDto;
 import com.kh.spring10.error.NeedPermissionException;
 import com.kh.spring10.error.TargetNotfoundException;
@@ -18,6 +20,7 @@ import com.kh.spring10.service.KakaoPayService;
 import com.kh.spring10.vo.TokenVO;
 import com.kh.spring10.vo.kakaopay.KakaoPayOrderRequestVO;
 import com.kh.spring10.vo.kakaopay.KakaoPayOrderResponseVO;
+import com.kh.spring10.vo.kakaopay.PaymentInfoVO;
 
 @CrossOrigin
 @RestController
@@ -25,6 +28,8 @@ import com.kh.spring10.vo.kakaopay.KakaoPayOrderResponseVO;
 public class PaymentRestController {
 	@Autowired
 	private PaymentDao paymentDao;
+	@Autowired
+	private PaymentDetailDao paymentDetailDao;
 	@Autowired
 	private KakaoPayService kakaoPayService;
 	
@@ -36,7 +41,7 @@ public class PaymentRestController {
 	}
 	
 	@GetMapping("/{paymentNo}")
-	public KakaoPayOrderResponseVO detail (@PathVariable long paymentNo, 
+	public PaymentInfoVO detail (@PathVariable long paymentNo, 
 			@RequestAttribute TokenVO tokenVO) 
 	{
 		PaymentDto paymentDto = paymentDao.selectOne(paymentNo);
@@ -47,9 +52,17 @@ public class PaymentRestController {
 		if(isOwner == false) 
 			throw new NeedPermissionException();
 		
-		return kakaoPayService.order(KakaoPayOrderRequestVO.builder()
+		List<PaymentDetailDto> paymentDetailList = paymentDetailDao.selectList(paymentNo);
+		
+		KakaoPayOrderResponseVO responseVO = kakaoPayService.order(KakaoPayOrderRequestVO.builder()
 					.tid(paymentDto.getPaymentTid())
 				.build());
 		
+		
+		return PaymentInfoVO.builder()
+				.paymentDto(paymentDto)
+				.paymentDetailList(paymentDetailList)
+				.responseVO(responseVO)
+				.build();
 	}
 }

@@ -58,12 +58,6 @@ public class publicdata02 {
         String responseBody = webClient.get()
                 .uri(uri)
                 .retrieve()
-                .onStatus(
-                    // 400 Bad Request, 500 Internal Server Error 등의 응답 코드를 확인합니다.
-                    status -> status.isError(),
-                    clientResponse -> clientResponse.bodyToMono(String.class)
-                        .map(body -> new RuntimeException("API 호출 실패: HTTP 상태 코드 " + clientResponse.statusCode() + ", 응답 본문: " + body))
-                )
                 .bodyToMono(String.class) // 응답 본문을 String 타입으로 받습니다.
                 .block(); // 테스트 환경이므로 block()을 사용하여 동기적으로 결과를 기다립니다.
         

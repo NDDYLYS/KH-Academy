@@ -21,7 +21,7 @@ import com.kh.spring10.vo.kakaopay.KakaoPayReadyResponseVO;
 
 @Service
 public class KakaoPayService {
-	@Qualifier("kakaopayWebCLient")
+	@Qualifier("kakaopayWebClient")
 	@Autowired
 	private WebClient webClient;
 	@Autowired

@@ -3,8 +3,9 @@ package com.kh.spring10;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
 
+//@EnableWebSocket
 //@EnableScheduling
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class Spring10Application {

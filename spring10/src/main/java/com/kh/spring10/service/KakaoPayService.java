@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,6 +21,7 @@ import com.kh.spring10.vo.kakaopay.KakaoPayReadyResponseVO;
 
 @Service
 public class KakaoPayService {
+	@Qualifier("kakaopayWebCLient")
 	@Autowired
 	private WebClient webClient;
 	@Autowired

@@ -1,4 +1,4 @@
-package com.kh.spring10.configurtion;
+package com.kh.spring10.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

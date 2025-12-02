@@ -26,7 +26,13 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 		
 		registry.addInterceptor(tokenRenewalInterceptor)
 						.addPathPatterns("/**")
-						.excludePathPatterns("/account/login", "/account/refresh",  
-								"/account/logout",  "/account/join", "/cert/**");
+						.excludePathPatterns(
+								"/account/login", 
+								"/account/refresh",  
+								"/account/logout",  
+								"/account/join", 
+								"/cert/**", 
+								"/ws", 
+								"/websocket/**");
 	}
 }

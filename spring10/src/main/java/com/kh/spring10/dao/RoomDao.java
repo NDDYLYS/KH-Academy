@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.spring10.dto.RoomDto;
 import com.kh.spring10.error.TargetNotfoundException;
-import com.kh.spring10.websocket.RoomEnterVO;
+import com.kh.spring10.vo.RoomEnterVO;
 
 @Repository
 public class RoomDao {

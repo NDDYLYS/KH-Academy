@@ -167,7 +167,7 @@ public class TokenService {
 		if (accountTokenDto == null) return false;
 		
 		//accountTokenDao.delete(accountTokenDto.getAccountTokenNo());
-		//accountTokenDao.deleteByTarget(tokenVO.getLoginId());
+		accountTokenDao.deleteByTarget(tokenVO.getLoginId());
 		
 		return true;
 	}

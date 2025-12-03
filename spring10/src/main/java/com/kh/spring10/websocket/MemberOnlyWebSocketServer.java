@@ -9,6 +9,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
+import com.kh.spring10.configurtion.JwtProperties;
 import com.kh.spring10.service.TokenService;
 import com.kh.spring10.vo.TokenVO;
 
@@ -21,6 +22,8 @@ public class MemberOnlyWebSocketServer {
 	private SimpMessagingTemplate simpMessagingTemplate;
 	@Autowired
 	private TokenService tokenService;
+	@Autowired
+	private JwtProperties jwtProperties;
 	
 	@MessageMapping("/member")//이 주소는 /app/member
 	public void member(Message<WebSocketMemberRequestVO> message) {
@@ -38,10 +41,32 @@ public class MemberOnlyWebSocketServer {
 			TokenVO tokenVO;
 			try {//Plan A : 토큰이 멀쩡한 경우
 				tokenVO = tokenService.parse(accessToken);
+				//TokenRenewalInterceptor에 있는 갱신코드와 동일한 코드 사용
+				long ms = tokenService.getRemain(accessToken);
+				if(ms >= jwtProperties.getRenewalLimit() * 60L * 1000L) {
+					simpMessagingTemplate.convertAndSend(
+							"/private/token/"+tokenVO.getLoginId(), 
+							WebSocketTokenRefreshVO.builder()
+								.accessToken(tokenService.generateAccessToken(tokenVO))
+								.refreshToken(tokenService.generateRefreshToken(tokenVO))
+							.build()
+					);
+				}
 			}
 			catch(Exception e) {//Plan B : 토큰이 이상한 경우
 				tokenVO = tokenService.parse(refreshToken);
 				//DB에 존재하는 토큰인지 검사 후 재발급 처리
+				if(tokenService.checkRefreshToken(tokenVO, refreshToken) == false) {
+					throw new Exception();//Plan C로 가라!
+				}
+				//사용자에게 토큰 갱신이 필요하다고 알려줘야함 (/private/token/아이디)
+				simpMessagingTemplate.convertAndSend(
+						"/private/member/token/"+tokenVO.getLoginId(), 
+						WebSocketTokenRefreshVO.builder()
+							.accessToken(tokenService.generateAccessToken(tokenVO))
+							.refreshToken(tokenService.generateRefreshToken(tokenVO))
+						.build()
+				);
 			}
 			//메세지 추출
 			WebSocketMemberRequestVO requestVO = message.getPayload();
@@ -53,7 +78,7 @@ public class MemberOnlyWebSocketServer {
 			//[4] 일반 메세지는 필요한 정보를 추가하여 발송
 			//- 채널 : /public/member
 			simpMessagingTemplate.convertAndSend(
-					"/public/member", 
+					"/public/member/token", 
 					WebSocketMemberResponseVO.builder()
 						.loginId(tokenVO.getLoginId())//발신자ID
 						.loginLevel(tokenVO.getLoginLevel())//발신자회원등급

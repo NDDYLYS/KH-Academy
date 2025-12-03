@@ -54,4 +54,12 @@ public class RoomDao {
 		params.put("partyAccount", accountId);
 		return sqlSession.delete("room.leave", params) > 0;
 	}
+	
+	public boolean check(long roomNo, String accountId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("partyRoom", roomNo);
+		params.put("partyAccount", accountId);
+		int count = sqlSession.selectOne("room.check", params);
+		return count > 0;
+	}
 }

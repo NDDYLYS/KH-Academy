@@ -1,6 +1,7 @@
 package com.kh.spring10.restcontroller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -53,7 +54,15 @@ public class RoomRestController {
 	}
 	
 	@PostMapping("/check")
-	public void check(@RequestBody RoomDto roomDto, @RequestAttribute TokenVO tokenVO) 
-	{
+	public Map<String, Boolean> check(@RequestBody RoomDto roomDto,
+								@RequestAttribute TokenVO tokenVO) {
+		//DAO를 이용해서 참여 여부를 확인한 뒤 응답을 생성해서 반환
+		return Map.of(
+				"result", 
+				roomDao.check(roomDto.getRoomNo(), tokenVO.getLoginId())
+		);
+		//return RoomCheckVO.Builder().result(
+		//		roomDao.check(roomDto.getRoomNo(), tokenVO.getLoginId())
+		//).build();
 	}
 }

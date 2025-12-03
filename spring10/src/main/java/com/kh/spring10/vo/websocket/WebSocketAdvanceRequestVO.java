@@ -1,4 +1,4 @@
-package com.kh.spring10.websocket;
+package com.kh.spring10.vo.websocket;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

@@ -1,8 +1,5 @@
-package com.kh.spring10.websocket;
+package com.kh.spring10.vo.websocket;
 
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -10,12 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//group chat에서 사용자가 보내는 정보
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
-public class WebSocketSystemMessageVO {
-	private String type;
+public class WebSocketGroupRequestVO {
 	private String content;
-
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-	private LocalDateTime time;
 }

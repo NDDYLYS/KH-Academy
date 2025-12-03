@@ -57,4 +57,9 @@
         order by R.room_no asc
 	</select>
 	
+	<select id="check" resultType="int">
+		select count(*) from party
+		where party_room = #{partyRoom} and party_account = #{partyAccount}
+	</select>
+	
 </mapper>

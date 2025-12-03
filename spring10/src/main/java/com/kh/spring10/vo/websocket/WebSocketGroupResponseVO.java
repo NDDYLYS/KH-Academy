@@ -1,4 +1,4 @@
-package com.kh.spring10.websocket;
+package com.kh.spring10.vo.websocket;
 
 import java.time.LocalDateTime;
 
@@ -10,9 +10,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+//advance chat에서 사용자에게 보낼 정보
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
-public class WebSocketMemberResponseVO {
+public class WebSocketGroupResponseVO {
 	@Builder.Default
 	private String type = "chat";//유형
 	private String loginId;//발신자ID
@@ -21,4 +22,3 @@ public class WebSocketMemberResponseVO {
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime time;//보낸시간
 }
-

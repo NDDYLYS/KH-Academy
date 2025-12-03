@@ -9,6 +9,10 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
+import com.kh.spring10.vo.websocket.WebSocketAdvanceRequestVO;
+import com.kh.spring10.vo.websocket.WebSocketAdvanceResponseVO;
+import com.kh.spring10.vo.websocket.WebSocketSystemMessageVO;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

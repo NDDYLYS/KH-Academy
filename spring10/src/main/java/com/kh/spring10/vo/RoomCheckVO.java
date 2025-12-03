@@ -1,4 +1,4 @@
-package com.kh.spring10.websocket;
+package com.kh.spring10.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
-public class WebSocketTokenRefreshVO {
-	private String accessToken;
-	private String refreshToken;
+public class RoomCheckVO {	
+	private int a;
 }

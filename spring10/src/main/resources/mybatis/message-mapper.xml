@@ -4,4 +4,13 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="message">
 
+	<select id="sequence" resultType="long">
+		select message_seq.extval from dual
+	</select>
+	
+	<insert id="insert">
+		insert into message (massage_no, massage_type, massage_room, massage_sender, massage_content)
+		values (#{messageNo}, #{messageType}, #{messageRoom}, #{messageSender}, #{messageContent})
+	</insert>
+
 </mapper>

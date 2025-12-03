@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.RoomDao;
 import com.kh.spring10.dto.RoomDto;
-import com.kh.spring10.vo.RoomEnterVO;
 import com.kh.spring10.vo.TokenVO;
+import com.kh.spring10.vo.websocket.RoomEnterVO;
 
 @CrossOrigin
 @RestController

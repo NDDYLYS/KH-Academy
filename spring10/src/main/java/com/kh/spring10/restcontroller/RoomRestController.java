@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.spring10.dao.RoomDao;
 import com.kh.spring10.dto.RoomDto;
 import com.kh.spring10.vo.TokenVO;
+import com.kh.spring10.websocket.RoomEnterVO;
 
 @CrossOrigin
 @RestController
@@ -30,6 +31,10 @@ public class RoomRestController {
 		RoomDto resultDto = roomDao.insert(roomDto);
 		roomDao.enter(resultDto.getRoomNo(), tokenVO.getLoginId());
 		return resultDto;
+	}
+	@GetMapping("/")
+	public List<RoomEnterVO> list(@RequestAttribute TokenVO tokenVO) {
+		return roomDao.selectList(tokenVO.getLoginId());
 	}
 	@GetMapping("/list")
 	public List<RoomDto> list() {

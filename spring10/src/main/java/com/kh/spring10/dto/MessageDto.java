@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class MessageDto {
-	private int messageNo;
+	private Long messageNo;
 	private String messageType;
-	private int messageRoom;
+	private Long messageRoom;
 	private String messageSender;
 	private String messageContent;
 

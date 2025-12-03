@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class WebSocketGroupResponseVO {
-	@Builder.Default
-	private String type = "chat";//유형
+	private String type;//유형
+	private Long messageNo;
 	private String loginId;//발신자ID
 	private String loginLevel;//발신자등급
 	private String content;//본문

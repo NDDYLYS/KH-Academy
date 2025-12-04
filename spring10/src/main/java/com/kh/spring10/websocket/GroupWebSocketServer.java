@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import com.kh.spring10.configurtion.JwtProperties;
 import com.kh.spring10.dao.MessageDao;
 import com.kh.spring10.dto.MessageDto;
+import com.kh.spring10.service.GroupChatService;
 import com.kh.spring10.service.TokenService;
 import com.kh.spring10.vo.TokenVO;
 import com.kh.spring10.vo.websocket.WebSocketGroupRequestVO;
@@ -34,6 +35,8 @@ public class GroupWebSocketServer {
 	private JwtProperties jwtProperties;
 	@Autowired
 	private MessageDao messageDao;
+	@Autowired
+	private GroupChatService groupChatService;
 	
 	//이 서버는 채널명에 변수(방번호)가 존재한다
 	// - 웹에서의 경로변수와 유사하지만 통신방식이 다르므로 받는방법이 다름
@@ -103,19 +106,7 @@ public class GroupWebSocketServer {
 				return;
 			}
 			
-			//DB저장
-			MessageDto messageDto = messageDao.insert(MessageDto.builder()
-						.messageRoom(roomNo)
-						.messageType("chat")
-						.messageContent(requestVO.getContent())
-						.messageSender(tokenVO.getLoginId())
-					.build());
-			//전송
-			
-			//[4] 일반 메세지는 필요한 정보를 추가하여 발송
-			//- 채널 : /public/group/방번호
-			simpMessagingTemplate.convertAndSend(
-					"/public/group/"+roomNo, messageDto);
+			groupChatService.sendChat(roomNo, requestVO, tokenVO);
 		}
 		catch(Exception e) {//Plan C : 리프레시토큰마저 이상한경우
 			//더 이상 아무것도 할 필요가 없다

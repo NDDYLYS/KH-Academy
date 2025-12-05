@@ -2,11 +2,12 @@ package com.nddy.kakaopay.service;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import com.nddy.kakaopay.configuration.KakaoPayProperties;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayApproveRequestVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayApproveResponseVO;
@@ -17,6 +18,9 @@ import com.nddy.kakaopay.vo.kakaopay.KakaoPayOrderResponseVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayReadyRequestVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayReadyResponseVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class KakaoPayService {
 
@@ -57,7 +61,7 @@ public class KakaoPayService {
 		body.put("partner_user_id", requestVO.getPartnerUserId());
 		body.put("tid", requestVO.getTid());
 		body.put("pg_token", requestVO.getPgToken());
-
+		
 		KakaoPayApproveResponseVO response = webClient.post()
 				.uri("/online/v1/payment/approve")
 				.bodyValue(body)

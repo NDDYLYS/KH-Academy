@@ -6,17 +6,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.nddy.kakaopay.dao.GiftcardDao;
 import com.nddy.kakaopay.dao.PaymentDao;
 import com.nddy.kakaopay.dao.PaymentDetailDao;
@@ -24,15 +25,17 @@ import com.nddy.kakaopay.dto.GiftcardDto;
 import com.nddy.kakaopay.error.TargetNotfoundException;
 import com.nddy.kakaopay.service.KakaoPayService;
 import com.nddy.kakaopay.service.PaymentService;
-import com.nddy.kakaopay.vo.TokenVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayApproveRequestVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayApproveResponseVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayFlashVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayQtyVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayReadyRequestVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayReadyResponseVO;
-import jakarta.servlet.http.HttpServletResponse;
 
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping("/kakaopay")
@@ -77,7 +80,7 @@ public class KakaoPayRestController {
 
 		KakaoPayReadyRequestVO requestVO = KakaoPayReadyRequestVO.builder()
 				.partnerOrderId(UUID.randomUUID().toString())
-				.partnerUserId("이윤석")
+				.partnerUserId("nodvic")
 				.itemName(buffer.toString())// 상품명
 				.totalAmount(total)
 				.build();

@@ -41,7 +41,7 @@ public class PaymentRestController {
 	@GetMapping("/account")
 	public List<PaymentDto> listByOwner(@RequestAttribute TokenVO tokenVO) {
 		return paymentDao.selectList(TokenVO.builder()
-				.loginId("이윤석")
+				.loginId("nodvic")
 				.loginLevel("일반회원")
 				.build());
 	}

@@ -53,8 +53,9 @@ public class KakaoPayRestController {
 	@PostMapping("/buy")
 	public KakaoPayReadyResponseVO buy(
 			@RequestBody List<KakaoPayQtyVO> qtyList,
-			@RequestHeader("Frontend-Url") String frontendUrl,
-			@RequestAttribute TokenVO tokenVO) {
+			@RequestHeader("Frontend-Url") String frontendUrl
+//			@RequestAttribute TokenVO tokenVO) {
+			) {
 		if (qtyList == null || qtyList.isEmpty())
 			throw new TargetNotfoundException();
 
@@ -76,7 +77,7 @@ public class KakaoPayRestController {
 
 		KakaoPayReadyRequestVO requestVO = KakaoPayReadyRequestVO.builder()
 				.partnerOrderId(UUID.randomUUID().toString())
-				.partnerUserId(tokenVO.getLoginId())
+				.partnerUserId("이윤석")
 				.itemName(buffer.toString())// 상품명
 				.totalAmount(total)
 				.build();

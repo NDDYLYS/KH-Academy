@@ -17,6 +17,9 @@ import com.nddy.kakaopay.vo.kakaopay.KakaoPayCancelResponseVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayFlashVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayQtyVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class PaymentService {
 	@Autowired
@@ -56,6 +59,8 @@ public class PaymentService {
 			GiftcardDto giftcardDto = giftcardDao.selectOne(paymentDetailDto.getPaymentDetailItemNo());
 			addPoint += (giftcardDto.getGiftcardPoint() * paymentDetailDto.getPaymentDetailQty());
 		}
+		
+		log.debug("addPoint : " + addPoint);
 		
 		// "update member set member_point = member_point +" + addPoint + " where member_id = " + responseVO.getPartnerUserId();
 	}

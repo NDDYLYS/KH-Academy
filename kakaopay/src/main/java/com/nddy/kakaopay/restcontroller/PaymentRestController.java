@@ -25,6 +25,11 @@ import com.nddy.kakaopay.vo.kakaopay.KakaoPayOrderRequestVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayOrderResponseVO;
 import com.nddy.kakaopay.vo.kakaopay.PaymentInfoVO;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name="상품 관리 컨트롤러")
+
 @CrossOrigin
 @RestController
 @RequestMapping("/payment")
@@ -38,6 +43,8 @@ public class PaymentRestController {
 	@Autowired
 	private PaymentService paymentService;
 
+
+	@Operation(summary = "카카오페이 내 결제내역 조회", description = "KakaoPay-PaymentDto")
 	@GetMapping("/account")
 	public List<PaymentDto> listByOwner(@RequestAttribute TokenVO tokenVO) {
 		return paymentDao.selectList(TokenVO.builder()
@@ -46,6 +53,7 @@ public class PaymentRestController {
 				.build());
 	}
 
+	@Operation(summary = "카카오페이 내 결제내역 상세 조회", description = "KakaoPay-List-PaymentDetailDto")
 	@GetMapping("/{paymentNo}")
 	public PaymentInfoVO detail(@PathVariable long paymentNo,
 			@RequestAttribute TokenVO tokenVO) {
@@ -71,6 +79,8 @@ public class PaymentRestController {
 				.build();
 	}
 
+
+	@Operation(summary = "카카오페이 결제 전체 취소", description = "KakaoPay-CancelAll")
 	@DeleteMapping("/{paymentNo}")
 	public void cancel(@PathVariable long paymentNo,
 			@RequestAttribute TokenVO tokenVO) {
@@ -93,6 +103,8 @@ public class PaymentRestController {
 		paymentService.cancel(paymentNo);
 	}
 
+
+	@Operation(summary = "카카오페이 결제 부분 취소", description = "KakaoPay-CancelUnit")
 	@DeleteMapping("/detail/{paymentDetailNo}")
 	public void cancelUnit(@PathVariable long paymentDetailNo,
 			@RequestAttribute TokenVO tokenVO) {

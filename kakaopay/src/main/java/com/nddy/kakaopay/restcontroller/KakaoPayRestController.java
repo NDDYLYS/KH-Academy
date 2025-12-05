@@ -32,8 +32,12 @@ import com.nddy.kakaopay.vo.kakaopay.KakaoPayQtyVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayReadyRequestVO;
 import com.nddy.kakaopay.vo.kakaopay.KakaoPayReadyResponseVO;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
+@Tag(name="카카오페이 결제 컨트롤러")
 
 @Slf4j
 @CrossOrigin
@@ -53,6 +57,7 @@ public class KakaoPayRestController {
 
 	private Map<String, KakaoPayFlashVO> flashMap = Collections.synchronizedMap(new HashMap<>());
 
+	@Operation(summary = "카카오페이 구매", description = "KakaoPay-Purchase")
 	@PostMapping("/buy")
 	public KakaoPayReadyResponseVO buy(
 			@RequestBody List<KakaoPayQtyVO> qtyList,
@@ -101,6 +106,7 @@ public class KakaoPayRestController {
 		return responseVO;
 	}
 
+	@Operation(summary = "카카오페이 구매 성공", description = "KakaoPay-Purchase-Success")
 	@GetMapping("/buy/success/{partnerOrderId}")
 	public void success(@PathVariable String partnerOrderId,
 			@RequestParam("pg_token") String pgToken,
@@ -122,6 +128,7 @@ public class KakaoPayRestController {
 		response.sendRedirect(flashVO.getReturnUrl() + "/success");
 	}
 
+	@Operation(summary = "카카오페이 구매 취소", description = "KakaoPay-Purchase-Cancel")
 	@GetMapping("/buy/cancel/{partnerOrderId}")
 	public void cancel(@PathVariable String partnerOrderId,
 			HttpServletResponse response) throws IOException {
@@ -129,6 +136,7 @@ public class KakaoPayRestController {
 		response.sendRedirect(flashVO.getReturnUrl() + "/cancel");
 	}
 
+	@Operation(summary = "카카오페이 구매 실패", description = "KakaoPay-Purchase-Fail")
 	@GetMapping("/buy/fail/{partnerOrderId}")
 	public void fail(@PathVariable String partnerOrderId,
 			HttpServletResponse response) throws IOException {

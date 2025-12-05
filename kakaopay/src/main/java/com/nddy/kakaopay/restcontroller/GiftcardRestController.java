@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.nddy.kakaopay.dao.GiftcardDao;
 import com.nddy.kakaopay.dto.GiftcardDto;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+
+@Tag(name="상품권 목록 컨트롤러")
 
 @CrossOrigin
 @RestController
@@ -19,6 +23,7 @@ public class GiftcardRestController {
 	@Autowired
 	private GiftcardDao giftcardDao;
 	
+	@Operation(summary = "상품권 목록 조회", description = "Giftcard-List-GiftcardDto")
 	@GetMapping("/")
 	public List<GiftcardDto> list(){
 		List<GiftcardDto> giftcardDto = giftcardDao.selectList();
@@ -27,6 +32,7 @@ public class GiftcardRestController {
 		return giftcardDto;
 	}
 	
+	@Operation(summary = "상품권 상세 조회", description = "Giftcard-GiftcardDto")
 	@GetMapping("/{giftcardNo}")
 	public GiftcardDto detail(@PathVariable long giftcardNo){
 		return giftcardDao.selectOne(giftcardNo);

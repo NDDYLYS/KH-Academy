@@ -40,4 +40,5 @@
 	<select id="detail" resultType="PaymentDetailDto">
 		select * from payment_detail where payment_detail_no = #{paymentDetailNo}
 	</select>
+	
 </mapper>

@@ -33,6 +33,10 @@ public class PaymentDetailDao {
 	public PaymentDetailDto selectOne(long paymentDetailNo) {
 		return sqlSession.selectOne("paymentDetail.detail", paymentDetailNo);
 	}
+	
+	public List<PaymentDetailDto> selectListByItemNo(long paymentDetailItemNo) {
+		return sqlSession.selectList("paymentDetail.listByItemNo", paymentDetailItemNo);
+	}
 }
 
 
